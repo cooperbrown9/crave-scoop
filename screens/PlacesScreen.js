@@ -28,7 +28,6 @@ export default class PlacesScreen extends React.Component {
   }
 
   render() {
-
     const model = this.props.navigation.state.params.model;
     return (
       <View style={styles.container}>
