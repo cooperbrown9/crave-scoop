@@ -26,7 +26,6 @@ export default class FilterModal extends React.Component {
   render() {
     var favCheck = this.state.favoriteChecked ? require('../assets/images/check-mark.png') : null;
     var openNowCheck = this.state.openNowChecked ? require('../assets/images/check-mark.png') : null;
-
     return(
       <View style={styles.container} backgroundColor={Colors.CREAM} >
 
