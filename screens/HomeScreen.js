@@ -17,7 +17,7 @@ import FilterModal from './FilterModal.js';
 export default class HomeScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'Home',
+    title: 'Title',
     header: null
   };
 
