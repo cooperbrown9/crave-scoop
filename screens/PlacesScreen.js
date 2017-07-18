@@ -29,15 +29,16 @@ export default class PlacesScreen extends React.Component {
 
   render() {
     const model = this.props.navigation.state.params.model;
+
     return (
       <View style={styles.container}>
 
           <ScrollView style={styles.scrollContainer}>
 
             <View style={styles.itemContainer} >
-              <VendorItem model={model} onTouch={this._vendorPicked} text={'Cupcake Store'}/>
-              <VendorItem model={model} onTouch={this._vendorPicked} text={'Cake Store'}/>
-              <VendorItem model={model} onTouch={this._vendorPicked} text={'Kush Store'}/>
+              <VendorItem model={model} onTouch={this._vendorPicked} text={'Cupcake Store'} />
+              <VendorItem model={model} onTouch={this._vendorPicked} text={'Cake Store'} />
+              <VendorItem model={model} onTouch={this._vendorPicked} text={'Kush Store'} />
             </View>
 
           </ScrollView>
