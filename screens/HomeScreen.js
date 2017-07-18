@@ -8,9 +8,11 @@ import {
   StyleSheet,
   Text,
   View,
-  Dimensions
+  Dimensions,
+  Modal
 } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
+import FilterModal from './FilterModal.js';
 
 export default class HomeScreen extends React.Component {
 
@@ -19,10 +21,23 @@ export default class HomeScreen extends React.Component {
     header: null
   };
 
+  state = {
+    clicked: false
+  }
+
+  _presentController = () => {
+    this.state.clicked = true;
+    this.setState(this.state);
+  }
+
   _nextController = () => {
-    this.props.navigation.navigate('Profile');
+    this.props.navigation.navigate('Places', {model:{name: 'Cool Cakes', likeCount: '420' }});
   };
 
+  _dismissModal = () => {
+    this.state.clicked = false;
+    this.setState(this.state);
+  }
 
   render() {
 
@@ -30,7 +45,11 @@ export default class HomeScreen extends React.Component {
     let halfHeight = height / 2;
     return (
       <View style={styles.mainContainer} >
-
+        <Modal animationType={"slide"} transparent={false} visible={this.state.clicked} >
+          <View >
+            <FilterModal dismissFunc={this._dismissModal} />
+          </View>
+        </Modal>
         <View style={styles.welcomeContainer} >
           <Image source={require('../assets/images/cupcake.png')} style={styles.image} />
           <Text color='white' style={styles.welcomeMessage} >
@@ -39,11 +58,15 @@ export default class HomeScreen extends React.Component {
         </View>
 
         <View style={styles.buttonContainer} >
-          <RoundButton title='Bruh Hit' onPress={this._nextController} bgColor='white' textColor='black' />
+          <RoundButton title='Bruh Hit' onPress={this._presentController} bgColor='white' textColor='black' />
           <RoundButton title='Create Account' onPress={this._nextController} />
         </View>
         <Text style={styles.termsText}>Terms of Service</Text>
+        <View>
+          <Text backgroundColor="black">
 
+          </Text>
+        </View>
       </View>
     );
   }

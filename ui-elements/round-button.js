@@ -10,7 +10,7 @@ const RoundButton = (props) => (
   <TouchableOpacity
     title={props.title}
     onPress={props.onPress}
-    style={RoundButtonStyle.getButtonSheet(props.bgColor).style}
+    style={RoundButtonStyle.getButtonSheet(props.bgColor, props.borderOn).style}
   >
     <Text style={RoundButtonStyle.getTextSheet(props.textColor).style}>{props.title}</Text>
   </TouchableOpacity>

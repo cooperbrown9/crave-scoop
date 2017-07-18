@@ -1,9 +1,12 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { AppRegistry, Platform, StatusBar, StyleSheet, View } from 'react-native';
+// import { Provider } from 'react-redux';
+// import store from './entry/entry-point.js';
 import { AppLoading } from 'expo';
 import { FontAwesome } from '@expo/vector-icons';
 import StackNavigation from './navigation/TheRootNavigation.js';
 import cacheAssetsAsync from './utilities/cacheAssetsAsync';
+
 
 export default class AppContainer extends React.Component {
   state = {
@@ -19,6 +22,7 @@ export default class AppContainer extends React.Component {
             <View style={styles.statusBarUnderlay} />}
           <StackNavigation />
         </View>
+
       );
     } else {
       return <AppLoading />;
