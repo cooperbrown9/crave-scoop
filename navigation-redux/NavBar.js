@@ -3,11 +3,13 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import PlacesScreen from '../screens/PlacesScreen';
+import PlaceDetailScreen from '../screens/PlaceDetailScreen';
 
 const routeConfigurations = {
   Home: { screen: HomeScreen },
   Places: { screen: PlacesScreen },
   Settings: { screen: SettingsScreen },
+  PlaceDetail: { screen: PlaceDetailScreen }
 }
 
 const navbarConfiguration = {

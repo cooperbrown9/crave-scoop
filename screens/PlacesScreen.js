@@ -10,17 +10,38 @@ import {
   View,
   Button,
 } from 'react-native';
-
+import axios from 'react-native-axios';
 import VendorItem from '../ui-elements/vendor-item.js';
 
 export default class PlacesScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'Bruh'
+    title: 'Places'
   };
 
   static propTypes = {
-    model: React.PropTypes.object.isRequired
+    model: React.PropTypes.object
+  }
+
+  state = {
+    restaurants: [],
+    loading: true
+  }
+
+  static places;
+  componentDidMount() {
+    this.getRestaurants();
+  }
+
+  getRestaurants = () => {
+    axios.get('https://crave-scoop.herokuapp.com/get-restaurants').then(response => {
+      this.setState({restaurants: response.data, loading: false});
+
+      console.log(response.data);
+      console.log(this.state.restaurants);
+    }).catch(error => {
+      console.log('error fetching restaurants');
+    });
   }
 
   _vendorPicked = (props) => {
@@ -40,7 +61,7 @@ export default class PlacesScreen extends React.Component {
               <VendorItem model={model} onTouch={this._vendorPicked} text={'Cake Store'} />
               <VendorItem model={model} onTouch={this._vendorPicked} text={'Kush Store'} />
             </View>
-
+            <View backgroundColor={(this.state.loading) ? 'orange' : 'green'} style={{height:32, width: 32}}></View>
           </ScrollView>
 
       </View>
