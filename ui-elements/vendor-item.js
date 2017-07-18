@@ -79,8 +79,7 @@ const styles = StyleSheet.create({
     flex: 3,
     flexDirection: 'column',
     marginRight: 16,
-    alignSelf: 'stretch',
-    resizeMode: 'cover'
+    alignSelf: 'stretch'
   },
   image: {
     height: 160
