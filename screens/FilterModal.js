@@ -30,7 +30,9 @@ export default class FilterModal extends React.Component {
       <View style={styles.container} backgroundColor={Colors.CREAM} >
 
         <View style={styles.navBar} backgroundColor={Colors.CREAM}>
-          <Image style={styles.leftButton} source={require('../assets/images/close.png')} />
+          <TouchableOpacity style={styles.leftButton} onPress={this.props.dismissFunc}>
+            <Image style={styles.closeButton} source={require('../assets/images/close.png')} />
+          </TouchableOpacity>
           <Text style={styles.titleLabel} >FILTERS</Text>
           <Text style={styles.rightButton} >Reset</Text>
         </View>
@@ -81,6 +83,10 @@ const styles = StyleSheet.create({
     width: 16,
     marginLeft: 16,
     marginTop: 12,
+  },
+  closeButton: {
+    height: 16,
+    width: 16,
   },
   titleLabel: {
     height: 20,

@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
 import FilterModal from './FilterModal.js';
+import CustomNavBar from '../ui-elements/CustomNavBar.js';
 
 export default class HomeScreen extends React.Component {
 
@@ -45,6 +46,7 @@ export default class HomeScreen extends React.Component {
     let halfHeight = height / 2;
     return (
       <View style={styles.mainContainer} >
+        <CustomNavBar title='Title'/>
         <Modal animationType={"slide"} transparent={false} visible={this.state.clicked} >
           <View >
             <FilterModal dismissFunc={this._dismissModal} />
@@ -58,7 +60,7 @@ export default class HomeScreen extends React.Component {
         </View>
 
         <View style={styles.buttonContainer} >
-          <RoundButton title='Bruh Hit' onPress={this._presentController}bgColor='white' textColor='black' />
+          <RoundButton title='Bruh Hit' onPress={this._presentController} bgColor='white' textColor='black' />
 
           {/*<RoundButton title='Bruh Hit' onPress={() => {this.props.navigation.dispatch({type:'Places', payload: {route:'Places'}})}} bgColor='white' textColor='black' />*/}
           <RoundButton title='Create Account' onPress={this._nextController} />

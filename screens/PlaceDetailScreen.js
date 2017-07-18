@@ -42,16 +42,16 @@ export default class PlaceDetailScreen extends React.Component {
             <View style={styles.resturantInfoContainer} >
               <View style={styles.resturantInfoContainer_Hours}>
                 <View style={{marginRight: 8}} >
-                  <Image style={{height:16, width: 16}} source={require('../assets/images/heart.png')}></Image>
+                  <Image style={{height:16, width: 16}} source={require('../assets/images/clock.png')}></Image>
                 </View>
-                <Text style={{fontSize: 16, color: 'grey'}}>9am - 4pm</Text>
+                <Text style={{fontSize: 16, color: 'grey'}}> 9am - 4pm</Text>
               </View>
 
               <View style={styles.resturantInfoContainer_Addy}>
                 <View style={{marginRight: 8}} >
-                  <Image style={{height:16, width: 16}} source={require('../assets/images/heart.png')}></Image>
+                  <Image style={{height:16, width: 16}} source={require('../assets/images/pin.png')}></Image>
                 </View>
-                <Text style={{fontSize: 16, color: 'grey'}}>9am - 4pm</Text>
+                <Text style={{fontSize: 16, color: 'grey'}}>1911 Main Ave</Text>
               </View>
             </View>
 
