@@ -16,7 +16,7 @@ import VendorItem from '../ui-elements/vendor-item.js';
 export default class PlacesScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'Home'
+    title: 'Bruh'
   };
 
   static propTypes = {
