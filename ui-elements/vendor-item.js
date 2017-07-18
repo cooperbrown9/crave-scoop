@@ -33,8 +33,8 @@ export default class VendorItem extends Component {
 
   render() {
     const model = this.props.model;
-    var icon = this.state.active ? require('../assets/images/heart.png') : require('../assets/images/right-arrow.png');
-    
+    var icon = this.state.active ? require('../assets/images/black-heart.png') : require('../assets/images/heart.png');
+
     return(
       <View style={styles.container} >
         <TouchableOpacity onPress={this.props.onTouch} style={styles.wrapper}>

@@ -4,7 +4,6 @@ import { StackNavigator } from 'react-navigation';
 import Colors from '../constants/Colors';
 
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import PlaceDetailScreen from '../screens/PlaceDetailScreen.js';
@@ -24,9 +23,6 @@ export default StackNavigator(
     },
     Places: {
       screen: PlacesScreen
-    },
-    Next: {
-      screen: LinksScreen,
     },
     Settings: {
       screen: SettingsScreen,
