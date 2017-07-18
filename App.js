@@ -1,10 +1,11 @@
 import React from 'react';
 import { AppRegistry, Platform, StatusBar, StyleSheet, View } from 'react-native';
-// import { Provider } from 'react-redux';
-// import store from './entry/entry-point.js';
+import { Provider } from 'react-redux';
+import store from './entry/entry-point.js';
 import { AppLoading } from 'expo';
 import { FontAwesome } from '@expo/vector-icons';
 import StackNavigation from './navigation/TheRootNavigation.js';
+import MainStackNavigation from './navigation-redux/NavigationBar.js';
 import cacheAssetsAsync from './utilities/cacheAssetsAsync';
 
 
@@ -17,11 +18,12 @@ export default class AppContainer extends React.Component {
     if (this.state.appIsReady) {
       return (
         <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          {Platform.OS === 'android' &&
-            <View style={styles.statusBarUnderlay} />}
-          <StackNavigation />
-        </View>
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        {Platform.OS === 'android' &&
+          <View style={styles.statusBarUnderlay} />}
+        <StackNavigation />
+      </View>
+
 
       );
     } else {
@@ -41,3 +43,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.2)',
   },
 });
+
+//AppRegistry.registerComponent('Nav', () => Nav);

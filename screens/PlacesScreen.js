@@ -23,8 +23,8 @@ export default class PlacesScreen extends React.Component {
     model: React.PropTypes.object.isRequired
   }
 
-  _vendorPicked = () => {
-    this.props.navigation.navigate('PlaceDetail', {model: this.props.model});
+  _vendorPicked = (props) => {
+    this.props.navigation.navigate('PlaceDetail', {model:{name: 'Cool Cakes'}});
   }
 
   render() {
