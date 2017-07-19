@@ -35,6 +35,10 @@ export default class HomeScreen extends React.Component {
     this.props.navigation.navigate('Places', {model:{name: 'Cool Cakes', likeCount: '420' }});
   };
 
+  _goToPlacesScreen = () => {
+
+  };
+
   _dismissModal = () => {
     this.state.clicked = false;
     this.setState(this.state);

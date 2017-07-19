@@ -36,8 +36,6 @@ export default class PlacesScreen extends React.Component {
   getRestaurants = () => {
     axios.get('https://crave-scoop.herokuapp.com/get-restaurants').then(response => {
       this.setState({restaurants: response.data, loading: false});
-
-      console.log(response.data);
       console.log(this.state.restaurants);
     }).catch(error => {
       console.log('error fetching restaurants');
