@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import store from './entry/store.js';
 import { AppLoading } from 'expo';
 import { FontAwesome } from '@expo/vector-icons';
-import StackNavigation from './navigation/TheRootNavigation.js';
 import MainStackNavigation from './navigation-redux/NavigationBar.js';
 import cacheAssetsAsync from './utilities/cacheAssetsAsync';
 
