@@ -1,14 +1,15 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import Button from 'react-native-button';
 import * as Colors from '../colors/colors.js';
 
 
 const CustomNavBar = (props) => (
   <View style={styles.navBar} backgroundColor={Colors.CREAM}>
-    <TouchableOpacity style={styles.rightButton} onPress={props.rightOnPress}>
-      {props.rightButton}
+
+    <TouchableOpacity style={styles.leftButton} onPress={props.leftOnPress}>
+      {props.leftButton}
     </TouchableOpacity>
 
     <Text style={styles.titleLabel} >{props.title}</Text>
@@ -16,6 +17,7 @@ const CustomNavBar = (props) => (
     <TouchableOpacity style={styles.rightButton} onPress={props.rightOnPress}>
       {props.rightButton}
     </TouchableOpacity>
+
   </View>
 );
 
@@ -31,9 +33,9 @@ CustomNavBar.propTypes = {
 
 CustomNavBar.defaultProps = {
   leftOnPress: null,
-  leftButton: <Text>LB</Text>,
+  leftButton: <Text>Text</Text>,
   rightOnPress: null,
-  rightButton: <Text>LB</Text>,
+  rightButton: <Text>Text</Text>,
 };
 
 const styles = StyleSheet.create({
@@ -46,14 +48,13 @@ const styles = StyleSheet.create({
   navBar: {
     height: 64,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center'
   },
   leftButton: {
     height: 16,
-    width: 16,
-    marginLeft: 16,
     marginTop: 12,
+    marginRight: 24
   },
   closeButton: {
     height: 16,
@@ -66,14 +67,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 8,
     color: Colors.DARK_GREY,
-    marginLeft: 32
   },
   rightButton: {
     height: 16,
-    width: 48,
-    marginRight: 16,
     marginTop: 12,
-    color: 'red',
+    marginLeft: 24
+
   },
   optionsView: {
     flex: 1,

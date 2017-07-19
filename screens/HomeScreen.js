@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
 import FilterModal from './FilterModal.js';
-import CustomNavBar from '../ui-elements/CustomNavBar.js';
+import CustomNavBar from '../ui-elements/custom-nav-bar.js';
 
 export default class HomeScreen extends React.Component {
 
