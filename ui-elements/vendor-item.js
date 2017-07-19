@@ -8,12 +8,11 @@ import {
 } from 'react-native';
 import * as Colors from '../colors/colors.js';
 
-
 export default class VendorItem extends Component {
 
   static propTypes = {
-    onTouch: React.PropTypes.func.isRequired,
-    model: React.PropTypes.object.isRequired
+    onTouch: React.PropTypes.func,
+    model: React.PropTypes.object
   }
 
   state = {
@@ -27,19 +26,14 @@ export default class VendorItem extends Component {
     this.setState(this.state);
   }
 
-  _vendorPicked = () => {
-
-  }
-
   render() {
     const model = this.props.model;
     var icon = this.state.active ? require('../assets/images/black-heart.png') : require('../assets/images/heart.png');
-
     return(
       <View style={styles.container} >
         <TouchableOpacity onPress={this.props.onTouch} style={styles.wrapper}>
           <View style={styles.imageContainer} >
-            <Image style={styles.image} source={require('../assets/images/fake-bg.png')} />
+            <Image style={styles.image} source={require('../assets/images/fake-bg.jpg')} />
           </View>
 
           <View style={styles.bottomView}>
@@ -80,11 +74,10 @@ const styles = StyleSheet.create({
     flex: 3,
     flexDirection: 'column',
     marginRight: 16,
-    alignItems: 'stretch'
+    alignSelf: 'stretch'
   },
   image: {
-    height: 160,
-    width: 343
+    height: 160
   },
   bottomView: {
     flex: 1,
