@@ -11,11 +11,14 @@ import {
   Dimensions,
   Modal
 } from 'react-native';
+import { connect } from 'react-redux';
+import {changeDatText} from '../actions-new/index.js';
 import RoundButton from '../ui-elements/round-button.js';
 import FilterModal from './FilterModal.js';
 import CustomNavBar from '../ui-elements/custom-nav-bar.js';
 
-export default class HomeScreen extends React.Component {
+
+class HomeScreen extends React.Component {
 
   static navigationOptions = {
     title: 'Title',
@@ -24,6 +27,11 @@ export default class HomeScreen extends React.Component {
 
   state = {
     clicked: false
+  }
+
+  changeText = () => {
+    debugger;
+    this.props.dispatch(changeDatText('its liiiiit'));
   }
 
   _presentController = () => {
@@ -36,7 +44,7 @@ export default class HomeScreen extends React.Component {
   };
 
   _goToPlacesScreen = () => {
-    this.props.navigation.dispatch({type: 'GO_TO_PLACES_DETAIL', payload: {name: 'Cool Guy', description: 'ITs lit bruh'}});
+    // this.props.navigation.navigate('P' {name: 'Cool Guy', description: 'ITs lit bruh'}});
   };
 
   _dismissModal = () => {
@@ -65,13 +73,13 @@ export default class HomeScreen extends React.Component {
         <View style={styles.welcomeContainer} >
           <Image source={require('../assets/images/cupcake.png')} style={styles.image} />
           <Text color='white' style={styles.welcomeMessage} >
-            Welcome to your Daily Crave.
+            Welcome to your Daily Crave. { this.props.text }
           </Text>
         </View>
 
 
         <View style={styles.buttonContainer} >
-          <RoundButton title='Bruh Hit' onPress={this._goToPlacesScreen} bgColor='white' textColor='black' />
+          <RoundButton title='Bruh Hit' onPress={this.changeText} bgColor='white' textColor='black' />
 
           {/*<RoundButton title='Bruh Hit' onPress={() => {this.props.navigation.dispatch({type:'Places', payload: {route:'Places'}})}} bgColor='white' textColor='black' />*/}
           <RoundButton title='Create Account' onPress={this._nextController} />
@@ -131,3 +139,11 @@ const styles = StyleSheet.create({
     width: 16,
   },
 });
+
+var mapStateToProps = (state) => {
+  return {
+    text: state.text
+  }
+}
+
+export default connect(mapStateToProps)(HomeScreen);

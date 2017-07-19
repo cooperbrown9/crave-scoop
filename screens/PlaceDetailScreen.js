@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
 import PlaceDetailItem from '../ui-elements/place-detail-item.js';
+import { connect } from 'redux';
+import { bindActionCreators } from 'redux';
 // import { ProfileModel }  from '../models/profile-model.js';
 
 
@@ -23,6 +25,10 @@ export default class PlaceDetailScreen extends React.Component {
   _onPress = () => {
     this.setState({titty: ''})
   };
+
+  componentDidMount() {
+
+  }
 
   render() {
     debugger;
@@ -137,3 +143,9 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
 });
+
+var mapStateToProps = (state) => {
+  return {
+    name: state.name
+  }
+}

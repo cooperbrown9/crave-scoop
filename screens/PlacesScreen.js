@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import axios from 'react-native-axios';
 import VendorItem from '../ui-elements/vendor-item.js';
+import { goToPlacesDetail } from '../actions-new/index.js';
 
 export default class PlacesScreen extends React.Component {
 
@@ -42,7 +43,12 @@ export default class PlacesScreen extends React.Component {
     });
   }
 
+  selectVendor = () => {
+    // this.props.navigation.dispatch();
+  }
+
   _vendorPicked = (props) => {
+
     this.props.navigation.navigate('PlaceDetail', {model:{name: 'Cool Cakes'}});
   }
 
@@ -55,7 +61,7 @@ export default class PlacesScreen extends React.Component {
           <ScrollView style={styles.scrollContainer}>
 
             <View style={styles.itemContainer} >
-              <VendorItem model={model} onTouch={this._vendorPicked} text={'Cupcake Store'} />
+              <VendorItem model={model} onTouch={this.selectVendor} text={'Cupcake Store'} />
               <VendorItem model={model} onTouch={this._vendorPicked} text={'Cake Store'} />
               <VendorItem model={model} onTouch={this._vendorPicked} text={'Kush Store'} />
             </View>

@@ -15,10 +15,11 @@ const mapStateToProps = state => {
 
 class MainStackNavigation extends React.Component {
   render() {
-    const { dispatch, navigationState } = this.props;
+    // const { dispatch, navigationState } = this.props;
 
     return(
-      <NavBar navigation={addNavigationHelpers({dispatch: dispatch, state: navigationState})} />
+      <NavBar />
+      // <NavBar navigation={addNavigationHelpers({dispatch: dispatch, state: navigationState})} />
     )
   }
 }
