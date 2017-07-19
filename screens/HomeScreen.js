@@ -46,8 +46,14 @@ export default class HomeScreen extends React.Component {
     let halfHeight = height / 2;
     return (
       <View style={styles.mainContainer} >
-        <CustomNavBar title='Title'/>
-        <Modal animationType={"slide"} transparent={false} visible={this.state.clicked} >
+        <CustomNavBar title='Title'
+          leftButton={<Image style={styles.heart} source={require('../assets/images/heart.png')}/>} 
+          rightButton={<Image style={styles.heart} source={require('../assets/images/black-heart.png')}/>}
+          leftOnPress={this._presentController}
+          rightOnPress={this._presentController}
+          />
+
+      <Modal animationType={"slide"} transparent={false} visible={this.state.clicked} >
           <View >
             <FilterModal dismissFunc={this._dismissModal} />
           </View>
@@ -58,6 +64,7 @@ export default class HomeScreen extends React.Component {
             Welcome to your Daily Crave.
           </Text>
         </View>
+
 
         <View style={styles.buttonContainer} >
           <RoundButton title='Bruh Hit' onPress={this._presentController} bgColor='white' textColor='black' />
@@ -114,5 +121,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textDecorationStyle: 'solid',
     bottom: 32
-  }
+  },
+  heart:{
+    height: 16,
+    width: 16,
+  },
 });

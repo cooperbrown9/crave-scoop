@@ -7,17 +7,19 @@ import * as Colors from '../colors/colors.js';
 
 const CustomNavBar = (props) => (
   <View style={styles.navBar} backgroundColor={Colors.CREAM}>
-
-    <TouchableOpacity style={styles.leftButton} onPress={props.leftOnPress}>
-      {props.leftButton}
-    </TouchableOpacity>
-
-    <Text style={styles.titleLabel} >{props.title}</Text>
-
-    <TouchableOpacity style={styles.rightButton} onPress={props.rightOnPress}>
-      {props.rightButton}
-    </TouchableOpacity>
-
+    <View style={styles.navBarButtonContainer}>
+      <TouchableOpacity style={styles.leftButton} onPress={props.leftOnPress}>
+        {props.leftButton}
+      </TouchableOpacity>
+    </View>
+    <View style={styles.navBarTitleContainer}>
+      <Text style={styles.titleLabel} >{props.title}</Text>
+    </View>
+    <View style={styles.navBarButtonContainer}>
+      <TouchableOpacity style={styles.rightButton} onPress={props.rightOnPress}>
+        {props.rightButton}
+      </TouchableOpacity>
+    </View>
   </View>
 );
 
@@ -32,10 +34,8 @@ CustomNavBar.propTypes = {
 };
 
 CustomNavBar.defaultProps = {
-  leftOnPress: null,
-  leftButton: <Text>Text</Text>,
-  rightOnPress: null,
-  rightButton: <Text>Text</Text>,
+  leftButton: <View/>,
+  rightButton: <View/>,
 };
 
 const styles = StyleSheet.create({
@@ -54,25 +54,38 @@ const styles = StyleSheet.create({
   leftButton: {
     height: 16,
     marginTop: 12,
-    marginRight: 24
+    marginRight: 75
   },
-  closeButton: {
+  defaultButton: {
     height: 16,
     width: 16,
   },
+  navBarTitleContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   titleLabel: {
+    position: 'absolute',
     height: 20,
     fontSize: 14,
-    textAlignVertical: 'center',
-    textAlign: 'center',
+    alignItems: 'center',
     marginTop: 8,
     color: Colors.DARK_GREY,
   },
   rightButton: {
     height: 16,
     marginTop: 12,
-    marginLeft: 24
-
+    marginLeft: 75
+  },
+  navBarButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'stretch',
   },
   optionsView: {
     flex: 1,

@@ -3,6 +3,7 @@ import { StyleSheet, View, ScrollView, Text, Image, TouchableOpacity } from 'rea
 import CheckBox from 'react-native-check-box';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors.js';
+import CustomNavBar from '../ui-elements/custom-nav-bar.js';
 
 export default class FilterModal extends React.Component {
 
@@ -29,14 +30,12 @@ export default class FilterModal extends React.Component {
     return(
       <View style={styles.container} backgroundColor={Colors.CREAM} >
 
-        <View style={styles.navBar} backgroundColor={Colors.CREAM}>
-          <TouchableOpacity style={styles.leftButton} onPress={this.props.dismissFunc}>
-            <Image style={styles.closeButton} source={require('../assets/images/close.png')} />
-          </TouchableOpacity>
-          <Text style={styles.titleLabel} >FILTERS</Text>
-          <Text style={styles.rightButton} >Reset</Text>
-        </View>
 
+        <CustomNavBar title="Filters"
+          leftButton={<Image style={styles.closeButton} source={require('../assets/images/close.png')} />}
+          leftOnPress={this.props.dismissFunc}
+          rightButton={<Text>Reset</Text> }
+          />
         <Text style={{height: 24, width: 120, fontSize: 20, fontWeight: 'bold', marginTop: 16, marginLeft: 16}} textColor='black' >My Crave</Text>
 
         <View style={styles.optionsView} >
@@ -87,6 +86,9 @@ const styles = StyleSheet.create({
   closeButton: {
     height: 16,
     width: 16,
+  },
+  resetText: {
+
   },
   titleLabel: {
     height: 20,
