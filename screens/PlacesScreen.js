@@ -32,7 +32,6 @@ export default class PlacesScreen extends React.Component {
   componentDidMount() {
     this.getRestaurants();
   }
-
   getRestaurants = () => {
     axios.get('https://crave-scoop.herokuapp.com/get-restaurants').then(response => {
       this.setState({restaurants: response.data, loading: false});
@@ -47,20 +46,19 @@ export default class PlacesScreen extends React.Component {
   }
 
   render() {
-    const model = this.props.navigation.state.params.model;
 
+    
     return (
       <View style={styles.container}>
 
           <ScrollView style={styles.scrollContainer}>
-
             <View style={styles.itemContainer} >
-              <VendorItem model={model} onTouch={this._vendorPicked} text={'Cupcake Store'} />
-              <VendorItem model={model} onTouch={this._vendorPicked} text={'Cake Store'} />
-              <VendorItem model={model} onTouch={this._vendorPicked} text={'Kush Store'} />
+              {this.state.restaurants.map(model => <VendorItem model={model} onTouch={this._vendorPicked} />)}
             </View>
             <View backgroundColor={(this.state.loading) ? 'orange' : 'green'} style={{height:32, width: 32}}></View>
           </ScrollView>
+
+
 
       </View>
     );
