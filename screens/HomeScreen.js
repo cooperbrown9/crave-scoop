@@ -47,10 +47,10 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.mainContainer} >
         <CustomNavBar title='Title'
-          leftButton={<Image style={styles.heart} source={require('../assets/images/heart.png')}/>} 
+          leftButton={<Image style={styles.heart} source={require('../assets/images/heart.png')}/>}
           rightButton={<Image style={styles.heart} source={require('../assets/images/black-heart.png')}/>}
-          leftOnPress={this._presentController}
-          rightOnPress={this._presentController}
+          leftOnPress={this._dismissModal}
+          rightOnPress={this._dismissModal}
           />
 
       <Modal animationType={"slide"} transparent={false} visible={this.state.clicked} >
