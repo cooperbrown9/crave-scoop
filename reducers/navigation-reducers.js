@@ -1,4 +1,4 @@
-import * as NavigationActions from '../actionTypes/Navigation-action-types.js';
+import * as NavigationActions from '../actionTypes/navigation-action-types.js';
 
 const initialState = [
   {
