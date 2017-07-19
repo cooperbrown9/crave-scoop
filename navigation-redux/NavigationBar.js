@@ -7,7 +7,7 @@ import { NavBar } from './NavBar.js';
 //Redux
 import { connect } from 'react-redux';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
  return {
   navigationState: state.navBar,
   }

@@ -35,6 +35,10 @@ export default class HomeScreen extends React.Component {
     this.props.navigation.navigate('Places', {model:{name: 'Cool Cakes', likeCount: '420' }});
   };
 
+  _goToPlacesScreen = () => {
+    this.props.navigation.dispatch({type: 'GO_TO_PLACES_DETAIL', payload: {name: 'Cool Guy', description: 'ITs lit bruh'}});
+  };
+
   _dismissModal = () => {
     this.state.clicked = false;
     this.setState(this.state);
@@ -67,7 +71,7 @@ export default class HomeScreen extends React.Component {
 
 
         <View style={styles.buttonContainer} >
-          <RoundButton title='Bruh Hit' onPress={this._presentController} bgColor='white' textColor='black' />
+          <RoundButton title='Bruh Hit' onPress={this._goToPlacesScreen} bgColor='white' textColor='black' />
 
           {/*<RoundButton title='Bruh Hit' onPress={() => {this.props.navigation.dispatch({type:'Places', payload: {route:'Places'}})}} bgColor='white' textColor='black' />*/}
           <RoundButton title='Create Account' onPress={this._nextController} />

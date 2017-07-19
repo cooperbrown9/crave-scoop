@@ -13,7 +13,6 @@ export default createStore(
     navBar: navBarReducer,
     navigator: (state, action) =>
       NavBar.router.getStateForAction(action,state),
-
   }),
   middleware()
 )
