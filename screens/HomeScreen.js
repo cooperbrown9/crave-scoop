@@ -12,7 +12,6 @@ import {
   Modal
 } from 'react-native';
 import { connect } from 'react-redux';
-import {changeDatText} from '../actions-new/index.js';
 import RoundButton from '../ui-elements/round-button.js';
 import FilterModal from './FilterModal.js';
 
@@ -44,8 +43,8 @@ class HomeScreen extends React.Component {
   };
 
   _goToPlacesScreen = () => {
-    this.props.navigation.dispatch({type: 'Places', name: 'Luna', description: 'its lit'});
-    // this.props.navigation.navigate('P' {name: 'Cool Guy', description: 'ITs lit bruh'}});
+    this.props.navigation.dispatch({type: 'Places', name: 'Lunafghfg', description: 'its lit'});
+
   };
 
   _dismissModal = () => {
@@ -133,7 +132,8 @@ const styles = StyleSheet.create({
 
 var mapStateToProps = (state) => {
   return {
-    text: state.text
+    navigator: state.nav,
+
   }
 }
 

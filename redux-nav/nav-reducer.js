@@ -20,15 +20,19 @@ function nav (state = initialNavState, action) {
       break;
     case 'Places':
       nextState = AppNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'Places' }, {name: action.name, description: action.description}),
+        NavigationActions.navigate({ routeName: 'Places' }),
         state
       );
+      nextState.name = action.name;
+      nextState.description = action.description;
       break;
     case 'PlaceDetail':
       nextState = AppNavigator.router.getStateForAction(
         NavigationActions.navigate({routeName: 'PlaceDetail'}),
         state
       );
+      nextState.name = action.name;
+      nextState.description = action.description;
       break;
     default:
       nextState = AppNavigator.router.getStateForAction(action, state);

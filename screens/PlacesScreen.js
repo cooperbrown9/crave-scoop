@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import axios from 'react-native-axios';
 import VendorItem from '../ui-elements/vendor-item.js';
-import { goToPlacesDetail } from '../actions-new/index.js';
 import { connect } from 'react-redux';
 
 
@@ -49,10 +48,22 @@ class PlacesScreen extends React.Component {
     });
   }
 
-  selectVendor = () => {
-    this.props.navigation.dispatch({type: 'PlaceDetail'});
+  handleKeyPress(item) {
+    return function(e) {
+      e.preventDefault();
+      console.log(e);
+      console.log(item);
+      this.props.navigation.dispatch({type:'PlaceDetail', name: item.name, description: 'fgsfdgsf'});
+    }
 
   }
+
+  renderVendorItem(item) {
+    return(
+      <VendorItem model={{name: item.name}} onTouch={this.handleKeyPress(item).bind(this)} key={item._id} />
+    )
+  }
+
 
   _vendorPicked = (props) => {
 
@@ -61,20 +72,19 @@ class PlacesScreen extends React.Component {
 
   render() {
     const model = {name: 'abc', likeCount: '420'}
+    let counter = 0;
     return (
       <View style={styles.container}>
 
           <ScrollView style={styles.scrollContainer}>
             <View style={styles.itemContainer} >
-
-              {this.state.restaurants.map(model => <VendorItem model={model} onTouch={this._vendorPicked} />)}
+              {/*this.state.restaurants.map(this.renderVendorItem)*/}
+              {this.state.restaurants.map(model => <VendorItem model={model} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
 
             </View>
             <View backgroundColor={(this.state.loading) ? 'orange' : 'green'} style={{height:32, width: 32}}></View>
             <Text>{this.props.name}</Text>
           </ScrollView>
-
-
 
       </View>
     );
@@ -183,7 +193,8 @@ const styles = StyleSheet.create({
 
 var mapStateToProps = (state) => {
   return {
-    name: state.name
+    navigator: state.nav,
+    name: state.nav.name
   }
 }
 

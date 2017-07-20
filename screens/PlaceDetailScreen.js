@@ -2,13 +2,12 @@ import React from 'react';
 import { StyleSheet, ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
 import PlaceDetailItem from '../ui-elements/place-detail-item.js';
-import { connect } from 'redux';
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import { ProfileModel }  from '../models/profile-model.js';
 
 
 
-export default class PlaceDetailScreen extends React.Component {
+class PlaceDetailScreen extends React.Component {
   static navigationOptions = {
     title: 'Places'
   };
@@ -27,11 +26,11 @@ export default class PlaceDetailScreen extends React.Component {
   };
 
   componentDidMount() {
-
+    console.log(this.props);
   }
 
   render() {
-    debugger;
+
     // const model = this.props.navigation.state.params.model;
     const model = {name: 'Cool Place', description: 'fsdfgdsg'};
     return(
@@ -44,7 +43,7 @@ export default class PlaceDetailScreen extends React.Component {
 
           <View style={styles.infoContainer} >
             <TouchableOpacity onPress={this._onPress} >
-            <Text style={styles.infoTitle}>{model.name}</Text>
+            <Text style={styles.infoTitle}>{this.props.name}</Text>
             </TouchableOpacity>
             <View style={styles.resturantInfoContainer} >
               <View style={styles.resturantInfoContainer_Hours}>
@@ -147,6 +146,9 @@ const styles = StyleSheet.create({
 
 var mapStateToProps = (state) => {
   return {
-    name: state.name
+    name: state.nav.name,
+    description: state.nav.description
   }
 }
+
+export default connect(mapStateToProps)(PlaceDetailScreen);
