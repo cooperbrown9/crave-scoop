@@ -38,8 +38,11 @@ class PlacesScreen extends React.Component {
     console.log(this.state);
     console.log(this.props);
   }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 4c4f8814be83ef8de1a808650eb0f3d5e5516254
   getRestaurants = () => {
     axios.get('https://crave-scoop.herokuapp.com/get-restaurants').then(response => {
       this.setState({restaurants: response.data, loading: false});
@@ -59,23 +62,34 @@ class PlacesScreen extends React.Component {
     this.props.navigation.navigate('PlaceDetail', {model:{name: 'Cool Cakes'}});
   }
 
+<<<<<<< HEAD
 
   render() {
     // const model = this.props.navigation.state.params.model;
     const model = {name: 'abc', likeCount: '420'}
+=======
+  render() {
+
+    
+>>>>>>> 4c4f8814be83ef8de1a808650eb0f3d5e5516254
     return (
       <View style={styles.container}>
 
           <ScrollView style={styles.scrollContainer}>
-
             <View style={styles.itemContainer} >
+<<<<<<< HEAD
               <VendorItem model={model} onTouch={this.selectVendor} text={'Cupcake Store'} />
               <VendorItem model={model} onTouch={this._vendorPicked} text={'Cake Store'} />
               <VendorItem model={model} onTouch={this._vendorPicked} text={'Kush Store'} />
+=======
+              {this.state.restaurants.map(model => <VendorItem model={model} onTouch={this._vendorPicked} />)}
+>>>>>>> 4c4f8814be83ef8de1a808650eb0f3d5e5516254
             </View>
             <View backgroundColor={(this.state.loading) ? 'orange' : 'green'} style={{height:32, width: 32}}></View>
             <Text>{this.props.name}</Text>
           </ScrollView>
+
+
 
       </View>
     );

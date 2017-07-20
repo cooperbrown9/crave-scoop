@@ -27,13 +27,14 @@ export default class FilterModal extends React.Component {
   render() {
     var favCheck = this.state.favoriteChecked ? require('../assets/images/check-mark.png') : null;
     var openNowCheck = this.state.openNowChecked ? require('../assets/images/check-mark.png') : null;
+
     return(
       <View style={styles.container} backgroundColor={Colors.CREAM} >
 
 
         <CustomNavBar title="Filters"
           leftButton={<Image style={styles.closeButton} source={require('../assets/images/close.png')} />}
-          leftOnPress={this.props.dismissFunc}
+          leftOnPress={this.props.dismissFunc.bind(this)}
           rightButton={<Text>Reset</Text> }
           />
         <Text style={{height: 24, width: 120, fontSize: 20, fontWeight: 'bold', marginTop: 16, marginLeft: 16}} textColor='black' >My Crave</Text>

@@ -48,39 +48,46 @@ const styles = StyleSheet.create({
   navBar: {
     height: 64,
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center'
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'red'
   },
   leftButton: {
-    height: 16,
+    height: 40,
+    width:64,
     marginTop: 12,
-    marginRight: 75
+    marginLeft: 32,
+    backgroundColor: 'green',
+    justifyContent:'center',
+    alignItems:'center'
   },
+
   defaultButton: {
     height: 16,
     width: 16,
   },
   navBarTitleContainer: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
+    marginTop: 12,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'orange'
   },
   titleLabel: {
-    position: 'absolute',
     height: 20,
     fontSize: 14,
     alignItems: 'center',
     marginTop: 8,
     color: Colors.DARK_GREY,
+    backgroundColor: 'yellow'
   },
   rightButton: {
-    height: 16,
+    height: 40,
     marginTop: 12,
-    marginLeft: 75
+    marginRight: 32,
+    width:64,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'yellow'
   },
   navBarButtonContainer: {
     flexDirection: 'row',
