@@ -13,10 +13,10 @@ import {
 import axios from 'react-native-axios';
 import VendorItem from '../ui-elements/vendor-item.js';
 import { goToPlacesDetail } from '../actions-new/index.js';
+import { connect } from 'react-redux';
 
 
-
-export default class PlacesScreen extends React.Component {
+class PlacesScreen extends React.Component {
 
   static navigationOptions = {
     title: 'Places'
@@ -28,12 +28,15 @@ export default class PlacesScreen extends React.Component {
 
   state = {
     restaurants: [],
-    loading: true
+    loading: true,
+    name: 'gfh'
   }
 
   static places;
   componentDidMount() {
     this.getRestaurants();
+    console.log(this.state);
+    console.log(this.props);
   }
 
 
@@ -47,7 +50,7 @@ export default class PlacesScreen extends React.Component {
   }
 
   selectVendor = () => {
-    this.props.navigation.dispatch(goToPlacesDetail('Luna', 'hella lit'));
+    this.props.navigation.dispatch({type: 'PlaceDetail'});
 
   }
 
@@ -56,9 +59,10 @@ export default class PlacesScreen extends React.Component {
     this.props.navigation.navigate('PlaceDetail', {model:{name: 'Cool Cakes'}});
   }
 
-  render() {
-    const model = this.props.navigation.state.params.model;
 
+  render() {
+    // const model = this.props.navigation.state.params.model;
+    const model = {name: 'abc', likeCount: '420'}
     return (
       <View style={styles.container}>
 
@@ -70,6 +74,7 @@ export default class PlacesScreen extends React.Component {
               <VendorItem model={model} onTouch={this._vendorPicked} text={'Kush Store'} />
             </View>
             <View backgroundColor={(this.state.loading) ? 'orange' : 'green'} style={{height:32, width: 32}}></View>
+            <Text>{this.props.name}</Text>
           </ScrollView>
 
       </View>
@@ -176,3 +181,11 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
 });
+
+var mapStateToProps = (state) => {
+  return {
+    name: state.name
+  }
+}
+
+export default connect(mapStateToProps)(PlacesScreen);

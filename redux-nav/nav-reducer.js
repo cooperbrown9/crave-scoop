@@ -6,20 +6,27 @@ import { AppNavigator } from './app-navigator.js';
 const firstAction = AppNavigator.router.getActionForPathAndParams('Home');
 const tempNavState = AppNavigator.router.getStateForAction(firstAction);
 const secondAction = AppNavigator.router.getActionForPathAndParams('Places');
-const initialNavState = AppNavigator.router.getStateForAction(secondAction, tempNavState);
+const initialNavState = AppNavigator.router.getStateForAction(firstAction, tempNavState);
 
 function nav (state = initialNavState, action) {
   let nextState;
   switch (action.type) {
     case 'Home':
+    debugger;
       nextState = AppNavigator.router.getStateForAction(
-        NavigationActions.back(),
+        NavigationActions.navigate.goBack(),
         state
       );
       break;
     case 'Places':
       nextState = AppNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'Places' }),
+        NavigationActions.navigate({ routeName: 'Places' }, {name: action.name, description: action.description}),
+        state
+      );
+      break;
+    case 'PlaceDetail':
+      nextState = AppNavigator.router.getStateForAction(
+        NavigationActions.navigate({routeName: 'PlaceDetail'}),
         state
       );
       break;

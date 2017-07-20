@@ -32,7 +32,8 @@ export default class PlaceDetailScreen extends React.Component {
 
   render() {
     debugger;
-    const model = this.props.navigation.state.params.model;
+    // const model = this.props.navigation.state.params.model;
+    const model = {name: 'Cool Place', description: 'fsdfgdsg'};
     return(
       <ScrollView style={styles.ScrollContainer} >
         <View style={styles.topContainer} >

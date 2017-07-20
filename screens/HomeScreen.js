@@ -15,7 +15,6 @@ import { connect } from 'react-redux';
 import {changeDatText} from '../actions-new/index.js';
 import RoundButton from '../ui-elements/round-button.js';
 import FilterModal from './FilterModal.js';
-import CustomNavBar from '../ui-elements/custom-nav-bar.js';
 
 
 class HomeScreen extends React.Component {
@@ -34,6 +33,7 @@ class HomeScreen extends React.Component {
 
   }
 
+
   _presentController = () => {
     this.state.clicked = true;
     this.setState(this.state);
@@ -44,7 +44,7 @@ class HomeScreen extends React.Component {
   };
 
   _goToPlacesScreen = () => {
-    this.props.navigation.dispatch({type: 'Places'});
+    this.props.navigation.dispatch({type: 'Places', name: 'Luna', description: 'its lit'});
     // this.props.navigation.navigate('P' {name: 'Cool Guy', description: 'ITs lit bruh'}});
   };
 
@@ -59,13 +59,6 @@ class HomeScreen extends React.Component {
     let halfHeight = height / 2;
     return (
       <View style={styles.mainContainer} >
-        <CustomNavBar title='Title'
-          leftButton={<Image style={styles.heart} source={require('../assets/images/heart.png')}/>}
-          rightButton={<Image style={styles.heart} source={require('../assets/images/black-heart.png')}/>}
-          leftOnPress={this._dismissModal}
-          rightOnPress={this._dismissModal}
-          />
-
       <Modal animationType={"slide"} transparent={false} visible={this.state.clicked} >
           <View >
             <FilterModal dismissFunc={this._dismissModal} />
@@ -81,8 +74,6 @@ class HomeScreen extends React.Component {
 
         <View style={styles.buttonContainer} >
           <RoundButton title='Bruh Hit' onPress={this._goToPlacesScreen} bgColor='white' textColor='black' />
-
-          {/*<RoundButton title='Bruh Hit' onPress={() => {this.props.navigation.dispatch({type:'Places', payload: {route:'Places'}})}} bgColor='white' textColor='black' />*/}
           <RoundButton title='Create Account' onPress={this._nextController} />
         </View>
         <Text style={styles.termsText}>Terms of Service</Text>

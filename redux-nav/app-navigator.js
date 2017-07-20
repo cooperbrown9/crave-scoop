@@ -14,7 +14,7 @@ export const AppNavigator = StackNavigator({
 });
 
 const AppNavigatorWithState = ({ dispatch, nav }) => (
-  <AppNavigator navigator={addNavigationHelpers({dispatch, state: nav})} />
+  <AppNavigator navigation={addNavigationHelpers({dispatch, state: nav})} />
 );
 
 AppNavigatorWithState.propTypes = {

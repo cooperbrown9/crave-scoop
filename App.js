@@ -41,7 +41,7 @@ import AppNavigatorWithState from './redux-nav/app-navigator.js';
 
 // const newstore = createStore(appReducer);
 
-class AppContainer extends React.Component {
+class App extends React.Component {
 
   store = createStore(NavReducer);
 
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppContainer;
+export default App;
 
 // const mapStateToProps = (state) => ({
 //   nav: state.nav
