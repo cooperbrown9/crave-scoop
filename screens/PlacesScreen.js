@@ -14,6 +14,8 @@ import axios from 'react-native-axios';
 import VendorItem from '../ui-elements/vendor-item.js';
 import { goToPlacesDetail } from '../actions-new/index.js';
 
+
+
 export default class PlacesScreen extends React.Component {
 
   static navigationOptions = {
@@ -34,6 +36,7 @@ export default class PlacesScreen extends React.Component {
     this.getRestaurants();
   }
 
+
   getRestaurants = () => {
     axios.get('https://crave-scoop.herokuapp.com/get-restaurants').then(response => {
       this.setState({restaurants: response.data, loading: false});
@@ -44,7 +47,8 @@ export default class PlacesScreen extends React.Component {
   }
 
   selectVendor = () => {
-    // this.props.navigation.dispatch();
+    this.props.navigation.dispatch(goToPlacesDetail('Luna', 'hella lit'));
+
   }
 
   _vendorPicked = (props) => {

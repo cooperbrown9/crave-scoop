@@ -9,28 +9,50 @@ import { FontAwesome } from '@expo/vector-icons';
 import MainStackNavigation from './navigation-redux/NavigationBar.js';
 import cacheAssetsAsync from './utilities/cacheAssetsAsync';
 import { configureStore } from './store-new/index.js';
+import { StackNavigator, addNavigationHelpers } from 'react-navigation';
+import { combineReducers } from 'redux';
+import { connect } from 'react-redux';
+import NavReducer from './redux-nav/nav-reducer.js';
+import AppNavigatorWithState from './redux-nav/app-navigator.js';
 
-//const theStore = createStore(
-  //NavigationReducer
-//);
+//
+// const AppNavigator = StackNavigator(
+//   {
+//     Home: { screen: HomeScreen },
+//     Places: { screen: PlacesScreen },
+//     Settings: { screen: SettingsScreen },
+//     PlaceDetail: { screen: PlaceDetailScreen }
+// });
+//
+// const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Home'));
+//
+// const navReducer = (state = initialState, action) => {
+//   const nextState = AppNavigator.router.getStateForAction(action, state);
+//
+//   // Simply return the original `state` if `nextState` is null or undefined.
+//   return nextState || state;
+// };
+//
+// const appReducer = combineReducers({
+//   nav: navReducer,
+//
+// });
 
-export default class AppContainer extends React.Component {
-  state = {
-    appIsReady: true,
-  };
+
+// const newstore = createStore(appReducer);
+
+class AppContainer extends React.Component {
+
+  store = createStore(NavReducer);
 
   render() {
-    if (this.state.appIsReady) {
-      return (
-        <Provider store={configureStore()}>
-          <MainStackNavigation />
-        </Provider>
 
+    return (
+      <Provider store={this.store}>
+        <AppNavigatorWithState />
+      </Provider>
 
-      );
-    } else {
-      return <AppLoading />;
-    }
+    );
   }
 }
 
@@ -44,5 +66,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.2)',
   },
 });
+
+export default AppContainer;
+
+// const mapStateToProps = (state) => ({
+//   nav: state.nav
+// });
+//
+// const AppWithNavigationState = connect(mapStateToProps)(AppContainer);
+
+
 
 // AppRegistry.registerComponent('AppContainer', () => Nav);

@@ -30,8 +30,8 @@ class HomeScreen extends React.Component {
   }
 
   changeText = () => {
-    debugger;
-    this.props.dispatch(changeDatText('its liiiiit'));
+
+
   }
 
   _presentController = () => {
@@ -44,6 +44,7 @@ class HomeScreen extends React.Component {
   };
 
   _goToPlacesScreen = () => {
+    this.props.navigation.dispatch({type: 'Places'});
     // this.props.navigation.navigate('P' {name: 'Cool Guy', description: 'ITs lit bruh'}});
   };
 
@@ -79,7 +80,7 @@ class HomeScreen extends React.Component {
 
 
         <View style={styles.buttonContainer} >
-          <RoundButton title='Bruh Hit' onPress={this.changeText} bgColor='white' textColor='black' />
+          <RoundButton title='Bruh Hit' onPress={this._goToPlacesScreen} bgColor='white' textColor='black' />
 
           {/*<RoundButton title='Bruh Hit' onPress={() => {this.props.navigation.dispatch({type:'Places', payload: {route:'Places'}})}} bgColor='white' textColor='black' />*/}
           <RoundButton title='Create Account' onPress={this._nextController} />
