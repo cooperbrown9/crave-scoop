@@ -71,15 +71,8 @@ class HomeScreen extends React.Component {
           </Text>
         </View>
 
-
         <View style={styles.buttonContainer} >
-<<<<<<< HEAD
           <RoundButton title='Bruh Hit' onPress={this._goToPlacesScreen} bgColor='white' textColor='black' />
-=======
-          <RoundButton title='Bruh Hit' onPress={this._presentController} bgColor='white' textColor='black' />
-
-          {/*<RoundButton title='Bruh Hit' onPress={() => {this.props.navigation.dispatch({type:'Places', payload: {route:'Places'}})}} bgColor='white' textColor='black' />*/}
->>>>>>> 4c4f8814be83ef8de1a808650eb0f3d5e5516254
           <RoundButton title='Create Account' onPress={this._nextController} />
         </View>
         <Text style={styles.termsText}>Terms of Service</Text>
