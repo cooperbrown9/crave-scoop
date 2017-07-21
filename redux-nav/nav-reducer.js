@@ -33,6 +33,7 @@ function nav (state = initialNavState, action) {
       );
       nextState.name = action.name;
       nextState.description = action.description;
+      nextState.model = { name: action.name, description: action.description };
       break;
     default:
       nextState = AppNavigator.router.getStateForAction(action, state);

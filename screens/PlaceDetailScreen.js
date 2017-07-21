@@ -147,7 +147,8 @@ const styles = StyleSheet.create({
 var mapStateToProps = (state) => {
   return {
     name: state.nav.name,
-    description: state.nav.description
+    description: state.nav.description,
+    model: {name: state.nav.name, description: state.nav.description}
   }
 }
 
