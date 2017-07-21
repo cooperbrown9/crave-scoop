@@ -14,6 +14,7 @@ import {
 import { connect } from 'react-redux';
 import RoundButton from '../ui-elements/round-button.js';
 import FilterModal from './FilterModal.js';
+import LinearGradient from 'react-native-linear-gradient';
 
 
 class HomeScreen extends React.Component {
@@ -52,12 +53,13 @@ class HomeScreen extends React.Component {
     this.setState(this.state);
   }
 
-  render() {
 
+  render() {
     let {width, height} = Dimensions.get('window');
     let halfHeight = height / 2;
     return (
       <View style={styles.mainContainer} >
+        
       <Modal animationType={"slide"} transparent={false} visible={this.state.clicked} >
           <View >
             <FilterModal dismissFunc={this._dismissModal.bind(this)} />

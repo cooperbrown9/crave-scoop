@@ -3,7 +3,7 @@ import { StyleSheet, View, ScrollView, Text, Image, TouchableOpacity } from 'rea
 import CheckBox from 'react-native-check-box';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors.js';
-import CustomNavBar from '../ui-elements/custom-nav-bar.js';
+import NavBar from '../ui-elements/nav-bar.js';
 
 export default class FilterModal extends React.Component {
 
@@ -32,7 +32,7 @@ export default class FilterModal extends React.Component {
       <View style={styles.container} backgroundColor={Colors.CREAM} >
 
 
-        <CustomNavBar title="Filters"
+        <Navbar title="Filters"
           leftButton={<Image style={styles.closeButton} source={require('../assets/images/close.png')} />}
           leftOnPress={this.props.dismissFunc.bind(this)}
           rightButton={<Text>Reset</Text> }

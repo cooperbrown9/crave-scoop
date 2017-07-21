@@ -5,26 +5,30 @@ import Button from 'react-native-button';
 import * as Colors from '../colors/colors.js';
 
 
-const CustomNavBar = (props) => (
+const NavBar = (props) => (
   <View style={styles.navBar} backgroundColor={Colors.CREAM}>
+
     <View style={styles.navBarButtonContainer}>
       <TouchableOpacity style={styles.leftButton} onPress={props.leftOnPress}>
         {props.leftButton}
       </TouchableOpacity>
     </View>
+
     <View style={styles.navBarTitleContainer}>
       <Text style={styles.titleLabel} >{props.title}</Text>
     </View>
+
     <View style={styles.navBarButtonContainer}>
       <TouchableOpacity style={styles.rightButton} onPress={props.rightOnPress}>
         {props.rightButton}
       </TouchableOpacity>
     </View>
+
   </View>
 );
 
 
-CustomNavBar.propTypes = {
+NavBar.propTypes = {
   title: React.PropTypes.string.isRequired,
   leftOnPress: React.PropTypes.func,
   leftButton: React.PropTypes.element,
@@ -33,7 +37,7 @@ CustomNavBar.propTypes = {
 
 };
 
-CustomNavBar.defaultProps = {
+NavBar.defaultProps = {
   leftButton: <View/>,
   rightButton: <View/>,
 };
@@ -42,22 +46,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'stretch',
-    backgroundColor: 'blue'
+    alignItems: 'stretch'
   },
   navBar: {
     height: 64,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'red'
   },
   leftButton: {
     height: 40,
     width:64,
     marginTop: 12,
     marginLeft: 32,
-    backgroundColor: 'green',
     justifyContent:'center',
     alignItems:'center'
   },
@@ -69,16 +70,14 @@ const styles = StyleSheet.create({
   navBarTitleContainer: {
     marginTop: 12,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'orange'
+    alignItems: 'center'
   },
   titleLabel: {
     height: 20,
     fontSize: 14,
     alignItems: 'center',
     marginTop: 8,
-    color: Colors.DARK_GREY,
-    backgroundColor: 'yellow'
+    color: Colors.DARK_GREY
   },
   rightButton: {
     height: 40,
@@ -87,7 +86,6 @@ const styles = StyleSheet.create({
     width:64,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'yellow'
   },
   navBarButtonContainer: {
     flexDirection: 'row',
@@ -128,4 +126,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default CustomNavBar;
+export default NavBar;

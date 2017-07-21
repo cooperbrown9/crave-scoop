@@ -31,17 +31,21 @@ export default class VendorItem extends Component {
     var icon = this.state.active ? require('../assets/images/black-heart.png') : require('../assets/images/heart.png');
     return(
       <View style={styles.container} >
+
         <TouchableOpacity onPress={this.props.onTouch} style={styles.wrapper}>
           <View style={styles.imageContainer} >
             <Image style={styles.image} source={require('../assets/images/fake-bg.jpg')} />
           </View>
 
           <View style={styles.bottomView}>
+
             <Text style={styles.text}>{model.name}</Text>
             <Text style={styles.number}>{model.likeCount}</Text>
+
             <TouchableOpacity onPress={this._iconSwitch}>
               <Image style={styles.heart} source={icon}/>
             </TouchableOpacity>
+
           </View>
         </TouchableOpacity>
       </View>
@@ -54,7 +58,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    height: 160,
+    height: 180,
     backgroundColor: 'transparent',
     marginBottom: 16,
     marginLeft: 16,
@@ -90,16 +94,17 @@ const styles = StyleSheet.create({
   text:{
     flex: 3,
     marginLeft: 16,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize: 18
   },
   number:{
-    fontSize: 10,
-    width: 24
+    fontSize: 12,
+    width: 32
   },
   heart:{
     marginRight: 16,
-    height: 16,
-    width: 16,
+    height: 24,
+    width: 24,
     tintColor: 'blue'
   },
 });

@@ -13,12 +13,13 @@ import {
 import axios from 'react-native-axios';
 import VendorItem from '../ui-elements/vendor-item.js';
 import { connect } from 'react-redux';
-
+import NavBar from '../ui-elements/nav-bar.js';
+import * as Colors from '../colors/colors.js';
 
 class PlacesScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'Places'
+    header: null
   };
 
   static propTypes = {
@@ -36,6 +37,12 @@ class PlacesScreen extends React.Component {
     this.getRestaurants();
     console.log(this.state);
     console.log(this.props);
+  }
+
+  leftButton() {
+    return (
+      <Image source={require('../assets/images/close.png')} style={{tintColor: Colors.BLUE, backgroundColor:'blue',width:16,height:16}} />
+    )
   }
 
 
@@ -75,18 +82,18 @@ class PlacesScreen extends React.Component {
     let counter = 0;
     return (
       <View style={styles.container}>
+        <NavBar title={'Places'} leftButton={this.leftButton} />
 
           <ScrollView style={styles.scrollContainer}>
-            <View style={styles.itemContainer} >
-              {/*this.state.restaurants.map(this.renderVendorItem)*/}
-              {this.state.restaurants.map(model => <VendorItem model={model} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
 
+            <View style={styles.itemContainer} >
+              {this.state.restaurants.map(model => <VendorItem model={model} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
             </View>
-            <View backgroundColor={(this.state.loading) ? 'orange' : 'green'} style={{height:32, width: 32}}></View>
-            <Text>{this.props.name}</Text>
+
           </ScrollView>
 
       </View>
+
     );
   }
 }
