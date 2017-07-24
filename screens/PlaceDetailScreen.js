@@ -22,23 +22,20 @@ class PlaceDetailScreen extends React.Component {
 
 
   _onPress = () => {
-    debugger;
-    console.log(this.props);
+    // console.log(this.props);
     this.setState({titty: ''})
   };
 
   _getHoursForDay() {
-
+    return 'bruh';
   };
 
   componentDidMount() {
-    console.log(this.props);
+    // console.log(this.props);
   }
 
   render() {
 
-    // const model = this.props.navigation.state.params.model;
-    const model = {name: 'Cool Place', description: 'fsdfgdsg'};
     return(
       <ScrollView style={styles.ScrollContainer} >
         <View style={styles.topContainer} >
@@ -56,7 +53,7 @@ class PlaceDetailScreen extends React.Component {
                 <View style={{marginRight: 8}} >
                   <Image style={{height:16, width: 16}} source={require('../assets/images/clock.png')}></Image>
                 </View>
-                <Text style={{fontSize: 16, color: 'grey'}}>{this._getHoursForDay}</Text>
+                <Text style={{fontSize: 16, color: 'grey'}}>{this._getHoursForDay()}</Text>
               </View>
 
               <View style={styles.resturantInfoContainer_Addy}>
@@ -74,7 +71,8 @@ class PlaceDetailScreen extends React.Component {
         </View>
 
         <View style={styles.menuContainer}>
-          <PlaceDetailItem />
+
+
           <PlaceDetailItem name='Deez Nuts' description='Theyre so good and tasty like hella good bruh u gotta munch'/>
           <PlaceDetailItem />
           <PlaceDetailItem />

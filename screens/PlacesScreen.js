@@ -35,8 +35,8 @@ class PlacesScreen extends React.Component {
   static places;
   componentDidMount() {
     this.getRestaurants();
-    console.log(this.state);
-    console.log(this.props);
+    // console.log(this.state);
+    // console.log(this.props);
   }
 
   _leftButton() {
@@ -48,16 +48,16 @@ class PlacesScreen extends React.Component {
   getRestaurants = () => {
     axios.get('https://crave-scoop.herokuapp.com/get-restaurants').then(response => {
       this.setState({restaurants: response.data, loading: false});
-      console.log(this.state.restaurants);
+      // console.log(this.state.restaurants);
     }).catch(error => {
-      console.log('error fetching restaurants');
+      // console.log('error fetching restaurants');
     });
   }
 
   handleKeyPress(item) {
     return function(e) {
       e.preventDefault();
-      console.log(e);
+      // console.log(e);
 
       let model = { id: item._id, name: item.name, description: item.info.description, hours: item.info.hours, products: item.info.products }
       this.props.navigation.dispatch({type:'PlaceDetail', model: model});
