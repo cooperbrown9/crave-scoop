@@ -39,12 +39,11 @@ class PlacesScreen extends React.Component {
     console.log(this.props);
   }
 
-  leftButton() {
+  _leftButton() {
     return (
       <Image source={require('../assets/images/close.png')} style={{tintColor: Colors.BLUE, backgroundColor:'blue',width:16,height:16}} />
     )
   }
-
 
   getRestaurants = () => {
     axios.get('https://crave-scoop.herokuapp.com/get-restaurants').then(response => {
@@ -67,6 +66,8 @@ class PlacesScreen extends React.Component {
 
 
   renderVendorItem(item) {
+    console.log(item);
+    debugger;
     return(
 
       <VendorItem model={{name: item.name}} onTouch={this.handleKeyPress(item).bind(this)} key={item._id} />
@@ -75,7 +76,6 @@ class PlacesScreen extends React.Component {
 
 
   _vendorPicked = (props) => {
-
     this.props.navigation.navigate('PlaceDetail', {model:{name: 'Cool Cakes'}});
   }
 
@@ -84,15 +84,13 @@ class PlacesScreen extends React.Component {
     let counter = 0;
     return (
       <View style={(this.state.loading) ? styles.loadingHider : styles.container }>
-
           <ScrollView style={styles.scrollContainer}>
 
             <View style={styles.itemContainer} >
-              {this.state.restaurants.map(model => <VendorItem model={model} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
+              {this.state.restaurants.map(model => <VendorItem model={{name: model.name, like_count: model.like_count}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
 
               </View>
-            <View backgroundColor={(this.state.loading) ? 'orange' : 'green'} style={{height:32, width: 32}}></View>
-            <Text>{this.props.name}</Text>
+
           </ScrollView>
 
       </View>

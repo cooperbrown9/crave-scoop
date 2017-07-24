@@ -40,7 +40,7 @@ export default class VendorItem extends Component {
           <View style={styles.bottomView}>
 
             <Text style={styles.text}>{model.name}</Text>
-            <Text style={styles.number}>{model.likeCount}</Text>
+            <Text style={styles.number}>{model.like_count}</Text>
 
             <TouchableOpacity onPress={this._iconSwitch}>
               <Image style={styles.heart} source={icon}/>
