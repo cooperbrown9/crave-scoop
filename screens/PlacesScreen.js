@@ -58,8 +58,10 @@ class PlacesScreen extends React.Component {
 
   }
 
+
   renderVendorItem(item) {
     return(
+      
       <VendorItem model={{name: item.name}} onTouch={this.handleKeyPress(item).bind(this)} key={item._id} />
     )
   }
@@ -74,14 +76,14 @@ class PlacesScreen extends React.Component {
     const model = {name: 'abc', likeCount: '420'}
     let counter = 0;
     return (
-      <View style={styles.container}>
+      <View style={(this.state.loading) ? styles.loadingHider : styles.container }>
 
           <ScrollView style={styles.scrollContainer}>
             <View style={styles.itemContainer} >
               {/*this.state.restaurants.map(this.renderVendorItem)*/}
               {this.state.restaurants.map(model => <VendorItem model={model} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
 
-            </View>
+              </View>
             <View backgroundColor={(this.state.loading) ? 'orange' : 'green'} style={{height:32, width: 32}}></View>
             <Text>{this.props.name}</Text>
           </ScrollView>
@@ -189,6 +191,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#2e78b7',
   },
+  loadingHider: {
+    display: 'none',
+  }
 });
 
 var mapStateToProps = (state) => {
