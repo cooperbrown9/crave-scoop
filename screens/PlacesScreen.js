@@ -66,10 +66,7 @@ class PlacesScreen extends React.Component {
 
 
   renderVendorItem(item) {
-    console.log(item);
-    debugger;
     return(
-
       <VendorItem model={{name: item.name}} onTouch={this.handleKeyPress(item).bind(this)} key={item._id} />
     )
   }
