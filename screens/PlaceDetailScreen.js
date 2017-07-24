@@ -27,7 +27,10 @@ class PlaceDetailScreen extends React.Component {
   };
 
   _getHoursForDay() {
-    return 'bruh';
+    const today = todayHours = this.props.model.hours[new Date().getDay()];
+    let todayHours = today.open + today.open_tod + ' - ' + today.close + today.close_tod;
+
+    return todayHours;
   };
 
   componentDidMount() {
@@ -46,7 +49,7 @@ class PlaceDetailScreen extends React.Component {
 
           <View style={styles.infoContainer} >
             <TouchableOpacity onPress={this._onPress} >
-            <Text style={styles.infoTitle}>{this.props.name}</Text>
+            <Text style={styles.infoTitle}>{this.props.model.name}</Text>
             </TouchableOpacity>
             <View style={styles.resturantInfoContainer} >
               <View style={styles.resturantInfoContainer_Hours}>
@@ -60,11 +63,11 @@ class PlaceDetailScreen extends React.Component {
                 <View style={{marginRight: 8}} >
                   <Image style={{height:16, width: 16}} source={require('../assets/images/pin.png')}></Image>
                 </View>
-                <Text style={{fontSize: 16, color: 'grey'}}>1911 Main Ave</Text>
+                <Text style={{fontSize: 16, color: 'grey'}}>{this.props.model.location.address}</Text>
               </View>
             </View>
 
-            <Text style={styles.restaurantDescription}>This food is hella good oh yum yum yum This food is hella good oh yum yum yum This food is hella good oh yum yum yum</Text>
+            <Text style={styles.restaurantDescription}>{this.props.model.description}</Text>
 
           </View>
 
@@ -72,10 +75,8 @@ class PlaceDetailScreen extends React.Component {
 
         <View style={styles.menuContainer}>
 
-
-          <PlaceDetailItem name='Deez Nuts' description='Theyre so good and tasty like hella good bruh u gotta munch'/>
-          <PlaceDetailItem />
-          <PlaceDetailItem />
+          {this.props.model.products.map(product => <PlaceDetailItem name={product.name} description={product.description} /> )}
+          
         </View>
 
       </ScrollView>

@@ -59,7 +59,7 @@ class PlacesScreen extends React.Component {
       e.preventDefault();
       // console.log(e);
 
-      let model = { id: item._id, name: item.name, description: item.info.description, hours: item.info.hours, products: item.info.products }
+      let model = { id: item._id, name: item.name, location: item.info.location, description: item.info.description, hours: item.info.hours, products: item.info.products }
       this.props.navigation.dispatch({type:'PlaceDetail', model: model});
     }
 
@@ -77,8 +77,6 @@ class PlacesScreen extends React.Component {
   }
 
   render() {
-    const model = {name: 'abc', likeCount: '420'}
-    let counter = 0;
     return (
       <View style={(this.state.loading) ? styles.loadingHider : styles.container }>
           <ScrollView style={styles.scrollContainer}>
