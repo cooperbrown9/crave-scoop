@@ -22,7 +22,13 @@ class PlaceDetailScreen extends React.Component {
 
 
   _onPress = () => {
+    debugger;
+    console.log(this.props);
     this.setState({titty: ''})
+  };
+
+  _getHoursForDay() {
+
   };
 
   componentDidMount() {
@@ -50,7 +56,7 @@ class PlaceDetailScreen extends React.Component {
                 <View style={{marginRight: 8}} >
                   <Image style={{height:16, width: 16}} source={require('../assets/images/clock.png')}></Image>
                 </View>
-                <Text style={{fontSize: 16, color: 'grey'}}> 9am - 4pm</Text>
+                <Text style={{fontSize: 16, color: 'grey'}}>{this._getHoursForDay}</Text>
               </View>
 
               <View style={styles.resturantInfoContainer_Addy}>
@@ -148,7 +154,7 @@ var mapStateToProps = (state) => {
   return {
     name: state.nav.name,
     description: state.nav.description,
-    model: {name: state.nav.name, description: state.nav.description}
+    model: state.nav.model
   }
 }
 

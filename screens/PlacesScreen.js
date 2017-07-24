@@ -58,12 +58,12 @@ class PlacesScreen extends React.Component {
     return function(e) {
       e.preventDefault();
       console.log(e);
-      console.log(item);
-      this.props.navigation.dispatch({type:'PlaceDetail', name: item.name, description: 'fgsfdgsf'});
+
+      let model = { id: item._id, name: item.name, description: item.info.description, hours: item.info.hours, products: item.info.products }
+      this.props.navigation.dispatch({type:'PlaceDetail', model: model});
     }
 
   }
-
 
   renderVendorItem(item) {
     return(
