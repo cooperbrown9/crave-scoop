@@ -68,7 +68,7 @@ class PlacesScreen extends React.Component {
 
   renderVendorItem(item) {
     return(
-      
+
       <VendorItem model={{name: item.name}} onTouch={this.handleKeyPress(item).bind(this)} key={item._id} />
     )
   }
@@ -83,26 +83,16 @@ class PlacesScreen extends React.Component {
     const model = {name: 'abc', likeCount: '420'}
     let counter = 0;
     return (
-<<<<<<< HEAD
-      <View style={styles.container}>
-        <NavBar title={'Places'} leftButton={this.leftButton} />
-=======
       <View style={(this.state.loading) ? styles.loadingHider : styles.container }>
->>>>>>> master
 
           <ScrollView style={styles.scrollContainer}>
 
             <View style={styles.itemContainer} >
               {this.state.restaurants.map(model => <VendorItem model={model} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
-<<<<<<< HEAD
-            </View>
-
-=======
 
               </View>
             <View backgroundColor={(this.state.loading) ? 'orange' : 'green'} style={{height:32, width: 32}}></View>
             <Text>{this.props.name}</Text>
->>>>>>> master
           </ScrollView>
 
       </View>
