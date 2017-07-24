@@ -59,7 +59,9 @@ class HomeScreen extends React.Component {
     let halfHeight = height / 2;
     return (
       <View style={styles.mainContainer} >
-        
+      <LinearGradient colors={['blue', 'yellow']} >
+        <Text>Bruh</Text>
+      </LinearGradient>
       <Modal animationType={"slide"} transparent={false} visible={this.state.clicked} >
           <View >
             <FilterModal dismissFunc={this._dismissModal.bind(this)} />
