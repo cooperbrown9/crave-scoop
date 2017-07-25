@@ -43,6 +43,10 @@ class HomeScreen extends React.Component {
     this.props.navigation.navigate('Places', {model:{name: 'Cool Cakes', likeCount: '420' }});
   };
 
+  _toProfileScreen = () => {
+    this.props.navigation.navigate('Profile');
+  }
+
   _goToPlacesScreen = () => {
     this.props.navigation.dispatch({type: 'Places', name: 'Lunafghfg', description: 'its lit'});
 
@@ -76,7 +80,7 @@ class HomeScreen extends React.Component {
 
         <View style={styles.buttonContainer} >
           <RoundButton title='Bruh Hit' onPress={this._goToPlacesScreen} bgColor='white' textColor='black' />
-          <RoundButton title='Create Account' onPress={this._presentController} />
+          <RoundButton title='Create Account' onPress={this._toProfileScreen} />
         </View>
         <Text style={styles.termsText}>Terms of Service</Text>
         <View>
