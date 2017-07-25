@@ -105,6 +105,6 @@ const styles = StyleSheet.create({
     marginRight: 16,
     height: 24,
     width: 24,
-    tintColor: 'blue'
+    tintColor: '#41d9f4'
   },
 });

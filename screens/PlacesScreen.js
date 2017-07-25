@@ -91,8 +91,8 @@ class PlacesScreen extends React.Component {
 
         <CustomNavBar
           title={'My Places'}
-          leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/back-arrow.png')}/>}
-          rightButton={<Image style={styles.navBarRightButton} source={require('../assets/images/profile.png')}/>}
+          leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/search.png')}/>}
+          rightButton={<Image style={styles.navBarRightButton} source={require('../assets/images/settings.png')}/>}
           leftOnPress={() => this.props.navigation.goBack()}
           rightOnPress={this._presentModal}/>
 
@@ -112,7 +112,7 @@ class PlacesScreen extends React.Component {
         </ScrollView>
 
         <View style={styles.filterButton}>
-          <RoundButton title='FILTERS' onPress={this.getRestaurants} bgColor={Colors.BLUE} borderOn={false}/>
+          <RoundButton title='FILTERS' onPress={this.getRestaurants} bgColor={Colors.DARK_BLUE} borderOn={false}/>
         </View>
 
       </View>
@@ -132,12 +132,14 @@ const styles = StyleSheet.create({
   navBarLeftButton:{
     height: 16,
     width: 16,
-    marginRight: 36
+    marginRight: 36,
+    tintColor: '#41d9f4'
   },
   navBarRightButton:{
     height: 16,
     width: 16,
-    marginLeft: 36
+    marginLeft: 36,
+    tintColor: '#41d9f4'
 
   },
   scrollContainer: {

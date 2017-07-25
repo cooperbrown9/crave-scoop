@@ -29,15 +29,20 @@ export default class FilterModal extends React.Component {
     var openNowCheck = this.state.openNowChecked ? require('../assets/images/check-mark.png') : null;
 
     return(
-      <View style={styles.container} backgroundColor={Colors.CREAM} >
+      <View style={styles.container}  >
 
 
+        <CustomNavBar
+          title={'Filters'}
+          leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/close.png')}/>}
+          rightButton={<Text style={styles.navBarRightButton}>Reset</Text>}
+          leftOnPress={this.props.dismissFunc}/>
 
-        <Text style={{height: 24, width: 120, fontSize: 20, fontWeight: 'bold', marginTop: 16, marginLeft: 16}} textColor='black' >My Crave</Text>
+        <Text style={{height: 24, width: 120, fontSize: 20, fontWeight: 'bold', marginTop: 16, marginLeft: 16, }} textColor='black' >My Crave</Text>
 
         <View style={styles.optionsView} >
           <Text style={styles.text}>Favorites</Text>
-            <TouchableOpacity onPress={this._checkFavorite} style={{justifyContent: 'center', alignItems: 'center',backgroundColor: (this.state.favoriteChecked) ? Colors.DARK_BLUE : 'transparent', width: 24, height: 24, borderRadius: 4, borderWidth: 2, borderColor: Colors.DARK_GREY}} >
+            <TouchableOpacity onPress={this._checkFavorite} style={{justifyContent: 'center', alignItems: 'center', backgroundColor: (this.state.favoriteChecked) ? Colors.DARK_BLUE : 'transparent', width: 24, height: 24, borderRadius: 4, borderWidth: 2, borderColor: Colors.DARK_GREY}} >
               <Image source={favCheck} style={{width: 18, height: 18}} />
             </TouchableOpacity>
           </View>
@@ -45,11 +50,13 @@ export default class FilterModal extends React.Component {
 
         <View style={styles.optionsView} >
           <Text style={styles.text}>Open Now</Text>
-            <TouchableOpacity onPress={this._checkOpenNow} style={{justifyContent: 'center', alignItems: 'center',backgroundColor: (this.state.openNowChecked) ? Colors.DARK_BLUE : 'transparent', width: 24, height: 24, borderRadius: 4, borderWidth: 2, borderColor: Colors.DARK_GREY}} >
+            <TouchableOpacity onPress={this._checkOpenNow} style={{justifyContent: 'center', alignItems: 'center', backgroundColor: (this.state.openNowChecked) ? Colors.DARK_BLUE : 'transparent', width: 24, height: 24, borderRadius: 4, borderWidth: 2, borderColor: Colors.DARK_GREY}} >
               <Image source={openNowCheck} style={{width: 18, height: 18}} />
             </TouchableOpacity>
         </View>
         <View style={styles.underline}></View>
+        <Text style={{height: 24, width: 120, fontSize: 20, fontWeight: 'bold', marginTop: 42, marginLeft: 16, }} textColor='black' >Dietary</Text>
+
 
         <View style={styles.buttonStyle} >
           <RoundButton title='VIEW PLACES' bgColor={Colors.DARK_BLUE} borderOn={false} onPress={this.props.dismissFunc}/>
@@ -66,13 +73,17 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'stretch',
-    backgroundColor: 'blue'
   },
-  navBar: {
-    height: 64,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+  navBarLeftButton:{
+    height: 12,
+    width: 12,
+    marginRight: 36
+  },
+  navBarRightButton:{
+    height: 16,
+    width: 64,
+    marginLeft: 36,
+    color: 'red'
   },
   leftButton: {
     height: 16,
@@ -93,7 +104,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     textAlign: 'center',
     marginTop: 8,
-    color: Colors.DARK_GREY,
+    color: Colors.CREAM,
     marginLeft: 32
   },
   rightButton: {
@@ -111,7 +122,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 16,
     marginRight: 16,
-    marginBottom: 24
+    marginBottom: 24,
   },
   checkbox: {
     backgroundColor: 'blue',
@@ -130,6 +141,8 @@ const styles = StyleSheet.create({
     marginRight: 16
   },
   buttonStyle: {
+    flex: 1,
+    alignItems: 'stretch',
     marginRight: 64,
     marginLeft: 64,
     marginTop: 128
