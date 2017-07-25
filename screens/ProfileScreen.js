@@ -4,6 +4,7 @@ import RoundButton from '../ui-elements/round-button.js';
 import DARK_BLUE from '../colors/colors.js';
 import UserID from '../test-user/user.js';
 import axios from 'react-native-axios';
+import CustomNavBar from '../ui-elements/custom-nav-bar';
 // import ProfileModel from '../models/profile-model.js';
 
 export default class ProfileScreen extends React.Component {
@@ -50,10 +51,15 @@ export default class ProfileScreen extends React.Component {
 
     return(
       <View style={styles.container} >
-
+        <CustomNavBar
+          title={'Settings'}
+          leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/close.png')}/>}
+          leftOnPress={this.props.dismissFunc}
+          rightButton={<Text style={styles.navBarRightButton}>Log Out</Text>}/>
         <View style={styles.infoView} >
 
           <View style={styles.imageView}>
+
               <Image style={styles.image} source={require('../assets/images/cupcake.png')}/>
           </View>
 
@@ -126,6 +132,17 @@ const styles = StyleSheet.create({
   },
   imageView: {
     alignItems: 'center'
+  },
+  navBarLeftButton:{
+    height: 12,
+    width: 12,
+    marginRight: 36
+  },
+  navBarRightButton:{
+    height: 16,
+    width: 64,
+    marginLeft: 36,
+    color: 'red'
   },
   image: {
     height: 72,
