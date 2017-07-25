@@ -75,7 +75,7 @@ class PlaceDetailScreen extends React.Component {
 
         <View style={styles.menuContainer}>
 
-          {this.props.model.products.map(product => <PlaceDetailItem name={product.name} description={product.description} /> )}
+          {this.props.model.products.map(product => <PlaceDetailItem name={product.name} description={product.description} key={product.name} /> )}
           
         </View>
 
