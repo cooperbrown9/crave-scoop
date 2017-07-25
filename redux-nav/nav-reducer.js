@@ -31,8 +31,6 @@ function nav (state = initialNavState, action) {
         NavigationActions.navigate({routeName: 'PlaceDetail'}),
         state
       );
-      nextState.name = action.name;
-      nextState.description = action.description;
       nextState.model = action.model;
       break;
     default:

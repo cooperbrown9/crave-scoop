@@ -2,27 +2,40 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
 import DARK_BLUE from '../colors/colors.js';
+import UserID from '../test-user/user.js';
+import axios from 'react-native-axios';
 // import ProfileModel from '../models/profile-model.js';
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = ({
-    title: 'SETTINGS',
-    headerTitleStyle: {
-      color: 'red',
-      fontSize: 16
-    },
-    headerRight: <TouchableOpacity><Text>Log out</Text></TouchableOpacity>
+    header: null,
 
   });
+  state = {
+    user: {},
 
+  }
   static propTypes = {
     name: React.PropTypes.string,
     location: React.PropTypes.string,
     person: React.PropTypes.shape({
       name: React.PropTypes.string.isRequired,
       location: React.PropTypes.string.isRequired
-    })
+    }),
+    dismissFunc: React.PropTypes.func.isRequired
   };
+
+  componentDidMount(){
+    this.getProfiles();
+  }
+  getProfiles = () => {
+    axios.get('https://crave-scoop.herokuapp.com/get-user/' + UserID).then(response => {
+      this.setState({user: response.data});
+      // console.log(this.state.restaurants);
+    }).catch(error => {
+      // console.log('error fetching restaurants');
+    });
+  }
 
   _editProfile = () => {
     console.log('yuh');
@@ -34,7 +47,6 @@ export default class ProfileScreen extends React.Component {
   };
 
   render() {
-    let user = this.props.navigation.state.params.person;
 
     return(
       <View style={styles.container} >
@@ -45,8 +57,8 @@ export default class ProfileScreen extends React.Component {
               <Image style={styles.image} source={require('../assets/images/cupcake.png')}/>
           </View>
 
-          <Text style={styles.name} textColor='black'>{user.name}</Text>
-          <Text style={styles.location} textColor='grey'>{user.location}</Text>
+          <Text style={styles.name} textColor='black'>{this.state.user.name}</Text>
+          <Text style={styles.location} textColor='grey'>{this.state.user.location}</Text>
 
           <View style={styles.button}>
             <RoundButton title='EDIT PROFILE' onPress={this._editProfile} bgColor='blue' textColor='white' borderOn={false}/>

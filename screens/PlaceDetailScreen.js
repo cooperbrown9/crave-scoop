@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 
 class PlaceDetailScreen extends React.Component {
   static navigationOptions = {
-    title: 'Places'
+    header: null,
   };
 
   static propTypes = {
