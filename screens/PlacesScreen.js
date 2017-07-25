@@ -9,13 +9,15 @@ import {
   TouchableOpacity,
   View,
   Button,
+  Modal
 } from 'react-native';
 import axios from 'react-native-axios';
 import VendorItem from '../ui-elements/vendor-item.js';
 import { connect } from 'react-redux';
 import NavBar from '../ui-elements/nav-bar.js';
 import * as Colors from '../colors/colors.js';
-import RoundButton from '../ui-elements/round-button.js';
+import CustomNavBar from '../ui-elements/custom-nav-bar.js';
+import ProfileScreen from '../screens/ProfileScreen.js';
 
 class PlacesScreen extends React.Component {
 
@@ -30,7 +32,9 @@ class PlacesScreen extends React.Component {
   state = {
     restaurants: [],
     loading: true,
-    name: 'gfh'
+    name: 'gfh',
+    profilePresented: false,
+
   }
 
   static places;
@@ -40,11 +44,6 @@ class PlacesScreen extends React.Component {
     // console.log(this.props);
   }
 
-  _leftButton() {
-    return (
-      <Image source={require('../assets/images/close.png')} style={{tintColor: Colors.BLUE, backgroundColor:'blue',width:16,height:16}} />
-    )
-  }
 
   getRestaurants = () => {
     axios.get('https://crave-scoop.herokuapp.com/get-restaurants').then(response => {
@@ -71,6 +70,16 @@ class PlacesScreen extends React.Component {
     )
   }
 
+  _dismissModal = () => {
+    this.state.profilePresented = false;
+    this.setState(this.state);
+  }
+
+  _presentModal = () => {
+    this.state.profilePresented = true;
+    this.setState(this.state);
+  }
+
   _vendorPicked = (props) => {
     this.props.navigation.navigate('PlaceDetail', {model:{name: 'Cool Cakes'}});
   }
@@ -78,6 +87,19 @@ class PlacesScreen extends React.Component {
   render() {
     return (
       <View style={(this.state.loading) ? styles.loadingHider : styles.container }>
+
+          <CustomNavBar
+            title={'My Places'}
+            leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/back-arrow.png')}/>}
+            rightButton={<Image style={styles.navBarRightButton} source={require('../assets/images/profile.png')}/>}
+            leftOnPress={() => this.props.navigation.goBack()}
+            rightOnPress={this._presentModal}/>
+
+          <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} >
+
+                <ProfileScreen dismissFunc={this._dismissModal.bind(this)} />
+
+          </Modal>
           <ScrollView style={styles.scrollContainer}>
 
             <View style={styles.itemContainer} >
@@ -100,6 +122,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'transparent',
+  },
+  navBarLeftButton:{
+    height: 16,
+    width: 16,
+    marginRight: 36
+
+
+  },
+  navBarRightButton:{
+    height: 16,
+    width: 16,
+    marginLeft: 36
+
   },
   scrollContainer: {
     flex: 1,

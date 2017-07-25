@@ -6,13 +6,21 @@ import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import PlacesScreen from '../screens/PlacesScreen';
 import PlaceDetailScreen from '../screens/PlaceDetailScreen';
+<<<<<<< HEAD
 import ProfileScreen from '../screens/ProfileScreen.js';
+=======
+import ProfileScreen from '../screens/ProfileScreen'
+>>>>>>> colt-dev
 
 export const AppNavigator = StackNavigator({
   Home: { screen: HomeScreen },
   Places: { screen: PlacesScreen },
   PlaceDetail: { screen: PlaceDetailScreen },
+<<<<<<< HEAD
   Profile: { screen: ProfileScreen }
+=======
+  Profile: {screen: ProfileScreen }
+>>>>>>> colt-dev
 });
 
 const AppNavigatorWithState = ({ dispatch, nav }) => (
