@@ -53,21 +53,24 @@ class PlaceDetailScreen extends React.Component {
           </View>
 
           <View style={styles.infoContainer} >
+
             <TouchableOpacity onPress={this._onPress} >
             <Text style={styles.infoTitle}>{this.props.model.name}</Text>
             </TouchableOpacity>
+
             <View style={styles.resturantInfoContainer} >
+
               <View style={styles.resturantInfoContainer_Hours}>
-                <View style={{marginRight: 8}} >
-                  <Image style={{height:16, width: 16}} source={require('../assets/images/clock.png')}></Image>
-                </View>
+
+                  <Image style={{marginRight: 8, height:16, width: 16}} source={require('../assets/images/clock.png')}></Image>
+
                 <Text style={{fontSize: 16, color: 'grey'}}>{this._getHoursForDay()}</Text>
               </View>
 
               <View style={styles.resturantInfoContainer_Addy}>
-                <View style={{marginRight: 8}} >
-                  <Image style={{height:16, width: 16}} source={require('../assets/images/pin.png')}></Image>
-                </View>
+
+                  <Image style={{marginRight: 8, height:16, width: 16}} source={require('../assets/images/pin.png')}></Image>
+
                 <Text style={{fontSize: 16, color: 'grey'}}>{this.props.model.location.address}</Text>
               </View>
             </View>
@@ -127,22 +130,21 @@ const styles = StyleSheet.create({
   resturantInfoContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
     height: 20,
     marginTop: 16,
     marginLeft: 16,
-    marginRight: 16
+    marginRight: 16,
   },
   resturantInfoContainer_Hours: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginRight: 10
+    marginRight: 8
   },
   resturantInfoContainer_Addy: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    marginLeft: 10
+    marginLeft: 8
   },
   restaurantDescription: {
     flex: 1,
