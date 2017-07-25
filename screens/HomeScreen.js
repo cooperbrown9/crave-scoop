@@ -76,7 +76,7 @@ class HomeScreen extends React.Component {
 
         <View style={styles.buttonContainer} >
           <RoundButton title='Bruh Hit' onPress={this._goToPlacesScreen} bgColor='white' textColor='black' />
-          <RoundButton title='Create Account' onPress={this._nextController} />
+          <RoundButton title='Create Account' onPress={this._presentController} />
         </View>
         <Text style={styles.termsText}>Terms of Service</Text>
         <View>

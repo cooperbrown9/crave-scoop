@@ -6,12 +6,7 @@ import DARK_BLUE from '../colors/colors.js';
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = ({
-    title: 'SETTINGS',
-    headerTitleStyle: {
-      color: 'red',
-      fontSize: 16
-    },
-    headerRight: <TouchableOpacity><Text>Log out</Text></TouchableOpacity>
+    header: null
 
   });
 
@@ -34,7 +29,7 @@ export default class ProfileScreen extends React.Component {
   };
 
   render() {
-    let user = this.props.navigation.state.params.person;
+    let user = {name: '', location: ''};
 
     return(
       <View style={styles.container} >

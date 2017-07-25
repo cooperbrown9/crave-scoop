@@ -15,6 +15,7 @@ import VendorItem from '../ui-elements/vendor-item.js';
 import { connect } from 'react-redux';
 import NavBar from '../ui-elements/nav-bar.js';
 import * as Colors from '../colors/colors.js';
+import RoundButton from '../ui-elements/round-button.js';
 
 class PlacesScreen extends React.Component {
 
@@ -62,7 +63,6 @@ class PlacesScreen extends React.Component {
       let model = { id: item._id, name: item.name, location: item.info.location, description: item.info.description, hours: item.info.hours, products: item.info.products }
       this.props.navigation.dispatch({type:'PlaceDetail', model: model});
     }
-
   }
 
   renderVendorItem(item) {
@@ -70,7 +70,6 @@ class PlacesScreen extends React.Component {
       <VendorItem model={{name: item.name}} onTouch={this.handleKeyPress(item).bind(this)} key={item._id} />
     )
   }
-
 
   _vendorPicked = (props) => {
     this.props.navigation.navigate('PlaceDetail', {model:{name: 'Cool Cakes'}});
@@ -87,7 +86,9 @@ class PlacesScreen extends React.Component {
               </View>
 
           </ScrollView>
-
+          <View style={styles.filterButton}>
+            <RoundButton title='FILTERS' onPress={this.getRestaurants} bgColor={Colors.BLUE} borderOn={false}/>
+          </View>
       </View>
 
     );
@@ -98,7 +99,7 @@ class PlacesScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
   },
   scrollContainer: {
     flex: 1,
@@ -194,6 +195,11 @@ const styles = StyleSheet.create({
   },
   loadingHider: {
     display: 'none',
+  },
+  filterButton: {
+    marginLeft: 84,
+    marginRight: 84,
+    backgroundColor: 'rgba(0,0,0,0)'
   }
 });
 
