@@ -7,15 +7,11 @@ import SettingsScreen from '../screens/SettingsScreen';
 import PlacesScreen from '../screens/PlacesScreen';
 import PlaceDetailScreen from '../screens/PlaceDetailScreen';
 
-import ProfileScreen from '../screens/ProfileScreen'
-
 
 export const AppNavigator = StackNavigator({
   Home: { screen: HomeScreen },
   Places: { screen: PlacesScreen },
   PlaceDetail: { screen: PlaceDetailScreen },
-
-  Profile: {screen: ProfileScreen }
 
 });
 

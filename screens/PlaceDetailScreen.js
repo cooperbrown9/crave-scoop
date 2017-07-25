@@ -4,6 +4,7 @@ import RoundButton from '../ui-elements/round-button.js';
 import PlaceDetailItem from '../ui-elements/place-detail-item.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import CustomNavBar from '../ui-elements/custom-nav-bar';
 
 
 
@@ -41,6 +42,10 @@ class PlaceDetailScreen extends React.Component {
 
     return(
       <ScrollView style={styles.ScrollContainer} >
+        <CustomNavBar
+          title={''}
+          leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/back-arrow.png')}/>}
+          leftOnPress={() => this.props.navigation.goBack()}/>
         <View style={styles.topContainer} >
 
           <View style={styles.topView_Image} >
@@ -76,13 +81,14 @@ class PlaceDetailScreen extends React.Component {
         <View style={styles.menuContainer}>
 
           {this.props.model.products.map(product => <PlaceDetailItem name={product.name} description={product.description} key={product.name} /> )}
-          
+
         </View>
 
       </ScrollView>
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   scrollContainer: {
@@ -99,6 +105,12 @@ const styles = StyleSheet.create({
   },
   topImage: {
     height: 180
+  },
+  navBarLeftButton: {
+    height: 16,
+    width: 16,
+    marginRight: 36
+
   },
   infoContainer: {
     flex: 1,

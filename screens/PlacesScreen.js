@@ -18,6 +18,8 @@ import NavBar from '../ui-elements/nav-bar.js';
 import * as Colors from '../colors/colors.js';
 import CustomNavBar from '../ui-elements/custom-nav-bar.js';
 import ProfileScreen from '../screens/ProfileScreen.js';
+import RoundButton from '../ui-elements/round-button.js'
+
 
 class PlacesScreen extends React.Component {
 
