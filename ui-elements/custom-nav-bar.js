@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     height: 40,
     width:64,
     marginTop: 12,
-    marginLeft: 32,
+    marginLeft: 16,
     justifyContent:'center',
     alignItems:'center'
   },
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   rightButton: {
     height: 40,
     marginTop: 12,
-    marginRight: 32,
+    marginRight: 16,
     width:64,
     justifyContent: 'center',
     alignItems: 'center',
