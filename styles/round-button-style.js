@@ -14,7 +14,8 @@ export default class RoundButtonStyle {
         shadowColor: 'black',
         shadowOffset: {width: 0, height: 8},
         shadowRadius: 8,
-        shadowOpacity: 0.2
+        shadowOpacity: 0.2,
+        alignItems: 'center'
       }
     });
   }

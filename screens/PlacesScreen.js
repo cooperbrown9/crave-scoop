@@ -18,6 +18,7 @@ import NavBar from '../ui-elements/nav-bar.js';
 import * as Colors from '../colors/colors.js';
 import CustomNavBar from '../ui-elements/custom-nav-bar.js';
 import ProfileScreen from '../screens/ProfileScreen.js';
+import RoundButton from '../ui-elements/round-button.js';
 
 class PlacesScreen extends React.Component {
 
@@ -86,31 +87,34 @@ class PlacesScreen extends React.Component {
 
   render() {
     return (
-      <View style={(this.state.loading) ? styles.loadingHider : styles.container }>
+      <View style={(this.state.loading) ? styles.loadingHider : styles.container } >
+        
+        <CustomNavBar
+          title={'My Places'}
+          leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/back-arrow.png')}/>}
+          rightButton={<Image style={styles.navBarRightButton} source={require('../assets/images/profile.png')}/>}
+          leftOnPress={() => this.props.navigation.goBack()}
+          rightOnPress={this._presentModal}/>
 
-          <CustomNavBar
-            title={'My Places'}
-            leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/back-arrow.png')}/>}
-            rightButton={<Image style={styles.navBarRightButton} source={require('../assets/images/profile.png')}/>}
-            leftOnPress={() => this.props.navigation.goBack()}
-            rightOnPress={this._presentModal}/>
+        <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} >
 
-          <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} >
+            <ProfileScreen dismissFunc={this._dismissModal.bind(this)} />
 
-                <ProfileScreen dismissFunc={this._dismissModal.bind(this)} />
+        </Modal>
 
-          </Modal>
-          <ScrollView style={styles.scrollContainer}>
+        <ScrollView style={styles.scrollContainer}>
 
-            <View style={styles.itemContainer} >
-              {this.state.restaurants.map(model => <VendorItem model={{name: model.name, like_count: model.like_count}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
+          <View style={styles.itemContainer} >
+            {this.state.restaurants.map(model => <VendorItem model={{name: model.name, like_count: model.like_count}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
 
-              </View>
+            </View>
 
-          </ScrollView>
-          <View style={styles.filterButton}>
-            <RoundButton title='FILTERS' onPress={this.getRestaurants} bgColor={Colors.BLUE} borderOn={false}/>
-          </View>
+        </ScrollView>
+
+        <View style={styles.filterButton}>
+          <RoundButton title='FILTERS' onPress={this.getRestaurants} bgColor={Colors.BLUE} borderOn={false}/>
+        </View>
+
       </View>
 
     );
@@ -122,13 +126,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'transparent',
+    justifyContent: 'flex-start',
+    flexDirection: 'column'
   },
   navBarLeftButton:{
     height: 16,
     width: 16,
     marginRight: 36
-
-
   },
   navBarRightButton:{
     height: 16,
@@ -138,7 +142,8 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
+    backgroundColor: 'transparent'
   },
   itemContainer: {
     flex: 1,
@@ -232,11 +237,12 @@ const styles = StyleSheet.create({
     display: 'none',
   },
   filterButton: {
-    marginLeft: 84,
-    marginRight: 84,
-    backgroundColor: 'rgba(0,0,0,0)'
+    marginLeft: 64,
+    marginRight: 64,
+    backgroundColor: 'transparent'
   }
 });
+
 
 var mapStateToProps = (state) => {
   return {
