@@ -33,7 +33,7 @@ export default class VendorItem extends Component {
 
   _iconSwitch = () => {
     console.log(this.props.model.id);
-    let url = 'https://crave-scoop.herokuapp.com/increment-likes/' + '59765d2df60c01001198f3b5/' + this.props.model.id;
+    let url = 'https://crave-scoop.herokuapp.com/add-favorite/' + '59765d2df60c01001198f3b5/' + this.props.model.id;
     console.log('url ', url);
     axios.put(url).then(response => {
       this.state.active = !this.state.active;
