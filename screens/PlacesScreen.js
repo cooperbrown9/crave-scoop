@@ -41,24 +41,28 @@ class PlacesScreen extends React.Component {
   static places;
   componentDidMount() {
     this.getRestaurants();
-    // console.log(this.state);
-    // console.log(this.props);
+    this.getUser();
   }
 
+  getUser = () => {
+    axios.get('https://crave-scoop.herokuapp.com/get-user/59765d2df60c01001198f3b5').then(response => {
+      this.setState({user: response.data});
+    }).catch(error => {
+      console.log('couldnt get user from places screen');
+    });
+  }
 
   getRestaurants = () => {
     axios.get('https://crave-scoop.herokuapp.com/get-restaurants').then(response => {
       this.setState({restaurants: response.data, loading: false});
-      // console.log(this.state.restaurants);
     }).catch(error => {
-      // console.log('error fetching restaurants');
+
     });
   }
 
   handleKeyPress(item) {
     return function(e) {
       e.preventDefault();
-      // console.log(e);
 
       let model = { id: item._id, name: item.name, location: item.info.location, description: item.info.description, hours: item.info.hours, products: item.info.products }
       this.props.navigation.dispatch({type:'PlaceDetail', model: model});
@@ -67,7 +71,7 @@ class PlacesScreen extends React.Component {
 
   renderVendorItem(item) {
     return(
-      <VendorItem model={{name: item.name}} onTouch={this.handleKeyPress(item).bind(this)} key={item._id} />
+      <VendorItem model={{ id: item._id, name: item.name }} onTouch={this.handleKeyPress(item).bind(this)} key={item._id} />
     )
   }
 
@@ -105,7 +109,7 @@ class PlacesScreen extends React.Component {
         <ScrollView style={styles.scrollContainer}>
 
           <View style={styles.itemContainer} >
-            {this.state.restaurants.map(model => <VendorItem model={{name: model.name, like_count: model.like_count}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
+            {this.state.restaurants.map(model => <VendorItem userFavorites={this.state.user.favorites} model={{id: model._id, name: model.name, like_count: model.like_count}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
 
             </View>
 

@@ -7,23 +7,41 @@ import {
     TouchableOpacity
 } from 'react-native';
 import * as Colors from '../colors/colors.js';
+import axios from 'react-native-axios';
+import UserID from '../test-user/user.js';
 
 export default class VendorItem extends Component {
 
   static propTypes = {
     onTouch: React.PropTypes.func,
-    model: React.PropTypes.object
+    model: React.PropTypes.object,
+    userFavorites: React.PropTypes.array
   }
 
   state = {
-    text: 'Francescas Cakes',
     active: false
   };
 
+  componentDidMount() {
+    for(let i = 0; i < this.props.userFavorites.length; i++) {
+      if(this.props.userFavorites[i].restaurant_id === this.props.model.id) {
+        this.setState({active: true});
+      }
+    }
+  }
+
 
   _iconSwitch = () => {
-    this.state.active = !this.state.active;
-    this.setState(this.state);
+    console.log(this.props.model.id);
+    let url = 'https://crave-scoop.herokuapp.com/increment-likes/' + '59765d2df60c01001198f3b5/' + this.props.model.id;
+    console.log('url ', url);
+    axios.put(url).then(response => {
+      this.state.active = !this.state.active;
+      this.setState(this.state);
+    }).catch(error => {
+      console.log('couldnt update like count');
+    });
+
   }
 
   render() {
