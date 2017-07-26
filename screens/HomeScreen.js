@@ -15,6 +15,11 @@ import { connect } from 'react-redux';
 import RoundButton from '../ui-elements/round-button.js';
 import FilterModal from './FilterModal.js';
 import LinearGradient from 'react-native-linear-gradient';
+const FBSDK = require('react-native-fbsdk');
+const {
+  LoginButton,
+} = FBSDK;
+
 
 
 class HomeScreen extends React.Component {
@@ -57,7 +62,6 @@ class HomeScreen extends React.Component {
     this.setState(this.state);
   }
 
-
   render() {
     let {width, height} = Dimensions.get('window');
     let halfHeight = height / 2;
@@ -70,6 +74,7 @@ class HomeScreen extends React.Component {
           </View>
         </Modal>
         <View style={styles.welcomeContainer} >
+          <LoginButton publishPermissions={['publish_actions']} onLoginFinished={()=>{}} onLogoutFinished={() => {}} />
           <Image source={require('../assets/images/cupcake.png')} style={styles.image} />
           <Text color='white' style={styles.welcomeMessage} >
             Welcome to your Daily Crave. { this.props.text }
