@@ -51,7 +51,6 @@ export default class VendorItem extends Component {
 
     let url = this.state.active ? 'https://crave-scoop.herokuapp.com/remove-favorite/' + '59765d2df60c01001198f3b5/' + this.props.model.id : 'https://crave-scoop.herokuapp.com/add-favorite/' + '59765d2df60c01001198f3b5/' + this.props.model.id;
     console.log(url);
-
     axios.put(url).then(response => {
       this.state.active = !this.state.active;
       this.setState(this.state);
