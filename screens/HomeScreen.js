@@ -68,13 +68,12 @@ class HomeScreen extends React.Component {
     return (
       <View style={styles.mainContainer} >
 
-      <Modal animationType={"slide"} transparent={false} visible={this.state.clicked} >
+        <Modal animationType={"slide"} transparent={false} visible={this.state.clicked} >
           <View >
             <FilterModal dismissFunc={this._dismissModal.bind(this)} />
           </View>
         </Modal>
         <View style={styles.welcomeContainer} >
-          <LoginButton publishPermissions={['publish_actions']} onLoginFinished={()=>{}} onLogoutFinished={() => {}} />
           <Image source={require('../assets/images/cupcake.png')} style={styles.image} />
           <Text color='white' style={styles.welcomeMessage} >
             Welcome to your Daily Crave. { this.props.text }

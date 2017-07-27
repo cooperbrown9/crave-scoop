@@ -18,35 +18,56 @@ export default class VendorItem extends Component {
     userFavorites: React.PropTypes.array
   }
 
+
   state = {
-    active: false
+    active: false,
+    wasLiked: false
+
   };
 
   componentDidMount() {
     for(let i = 0; i < this.props.userFavorites.length; i++) {
-      if(this.props.userFavorites[i].restaurant_id === this.props.model.id) {
-        this.setState({active: true});
+      if(this.props.userFavorites[i].vendor_id === this.props.model.id) {
+        this.setState({active: true, wasLiked: true});
       }
+
     }
+
   }
 
+  _updateLikeCount = () => {
+    let realLikes = this.props.model.like_count;
+      if(this.state.active === true && this.state.wasLiked === false){
+        realLikes += 1;
+      }
+
+     else if(this.state.active === false && this.state.wasLiked === true){
+        realLikes -=1;
+      }
+      return realLikes;
+    }
 
   _iconSwitch = () => {
-    console.log(this.props.model.id);
-    let url = 'https://crave-scoop.herokuapp.com/add-favorite/' + '59765d2df60c01001198f3b5/' + this.props.model.id;
-    console.log('url ', url);
+
+    let url = this.state.active ? 'https://crave-scoop.herokuapp.com/remove-favorite/' + '59765d2df60c01001198f3b5/' + this.props.model.id : 'https://crave-scoop.herokuapp.com/add-favorite/' + '59765d2df60c01001198f3b5/' + this.props.model.id;
+    console.log(url);
+
     axios.put(url).then(response => {
       this.state.active = !this.state.active;
       this.setState(this.state);
     }).catch(error => {
       console.log('couldnt update like count');
     });
-
   }
+
+
+
+
 
   render() {
     const model = this.props.model;
     var icon = this.state.active ? require('../assets/images/black-heart.png') : require('../assets/images/heart.png');
+
     return(
       <View style={styles.container} >
 
@@ -58,7 +79,7 @@ export default class VendorItem extends Component {
           <View style={styles.bottomView}>
 
             <Text style={styles.text}>{model.name}</Text>
-            <Text style={styles.number}>{model.like_count}</Text>
+            <Text style={styles.number}>{this._updateLikeCount()}</Text>
 
             <TouchableOpacity onPress={this._iconSwitch}>
               <Image style={styles.heart} source={icon}/>
@@ -74,17 +95,17 @@ export default class VendorItem extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'transparent',
     flex: 1,
     flexDirection: 'column',
     height: 180,
-    backgroundColor: 'transparent',
     marginBottom: 16,
     marginLeft: 16,
     marginRight: 16,
     shadowColor: Colors.SHADOW_COLOR,
     shadowOffset: {width: 12, height: 12},
-    shadowRadius: 8,
     shadowOpacity: 1.0,
+    shadowRadius: 8,
   },
   wrapper: {
     overflow: 'hidden',

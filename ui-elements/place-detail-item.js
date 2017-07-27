@@ -17,9 +17,8 @@ const PlaceDetailItem = (props) => (
       <View style={styles.descriptionView}>
         <Text style={styles.descriptionText}>{props.description}</Text>
       </View>
-
+      
     </View>
-
   </View>
 );
 
