@@ -58,18 +58,33 @@ function nav (state = firstState(), action) {
 const initialAuthState = { isLoggedIn: false, userID: '', user: {} };
 
 function auth(state = initialAuthState, action) {
+
   switch (action.type) {
 
     case 'Login':
-      axios.get('https://crave-scoop.herokuapp.com/get-user/' + action.id).then(response => {
-        action.dispatcher.dispatch({type: 'Login_Complete', theUser: response.data});
-      }).catch(err => {
-        console.log('couldnt get user');
-      });
-      return { ...state, isLoggedIn: false, userID: action.id };
-
+      return {
+        type: action.type,
+        ...state,
+        user: action.user,
+      }
+    
     case 'Login_Complete':
-      return { ...state, isLoggedIn: true, theUser: action.theUser };
+      console.log('yuuuuup');
+      return { ...state, isLoggedIn: true, user: action.user };
+
+    case 'GetUser':
+      axios.get('https://crave-scoop.herokuapp.com/get-user/' + action.id).then(response => {
+        action.dispatcher.dispatch({type: 'GetUserComplete', user: response.data});
+      }).catch(error => {
+        action.dispatcher.dispatch({type: 'GetUserFail', id: action.id, error: error });
+      });
+      return { ...state, isLoggedIn: false };
+
+    case 'GetUserComplete':
+      return { ...state, isLoggedIn: true, user: action.user }
+
+    case 'GetUserFail':
+      return { ...state, isLoggedIn: false, userID: action.id, error: action.error };
 
     case 'Logout':
       return { ...state, isLoggedIn: false };
@@ -77,6 +92,10 @@ function auth(state = initialAuthState, action) {
       return state;
   }
 }
+
+// export function setUser (data) {
+//   return Object.assign({type: 'Login_Complete', user: data});
+// }
 
 const NavReducer = combineReducers({
   nav,

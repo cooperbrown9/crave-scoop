@@ -1,15 +1,15 @@
 import React from 'react';
 import { AppRegistry, Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { connect } from 'react-redux';
 import NavReducer from './redux-nav/nav-reducer.js';
 import AppNavigatorWithState from './redux-nav/app-navigator.js';
-
+import thunk from 'redux-thunk';
 
 class App extends React.Component {
 
-  store = createStore(NavReducer);
+  store = createStore(NavReducer, applyMiddleware(thunk));
 
   render() {
 

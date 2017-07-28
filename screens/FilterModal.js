@@ -14,7 +14,8 @@ export default class FilterModal extends React.Component {
 
   state = {
     favoriteChecked: false,
-    openNowChecked: false
+    openNowChecked: false,
+    nearMeChecked: false
   };
 
   _checkFavorite = () => {
@@ -25,12 +26,17 @@ export default class FilterModal extends React.Component {
     this.setState({openNowChecked: !this.state.openNowChecked});
   }
 
+  _checkNearMe = () => {
+    this.setState({nearMeChecked: !this.state.nearMeChecked});
+  }
+
   render() {
     var favCheck = this.state.favoriteChecked ? require('../assets/images/check-mark.png') : null;
     var openNowCheck = this.state.openNowChecked ? require('../assets/images/check-mark.png') : null;
-
+    var nearMeCheck = this.state.openNowChecked ? require('../assets/images/check-mark.png') : null;
+    
     return(
-      <View style={styles.container}  >
+      <View style={styles.container} >
 
 
         <CustomNavBar
@@ -52,6 +58,13 @@ export default class FilterModal extends React.Component {
         <View style={styles.optionsView} >
           <Text style={styles.text}>Open Now</Text>
             <TouchableOpacity onPress={this._checkOpenNow} style={{justifyContent: 'center', alignItems: 'center', backgroundColor: (this.state.openNowChecked) ? Colors.DARK_BLUE : 'transparent', width: 24, height: 24, borderRadius: 4, borderWidth: 2, borderColor: Colors.DARK_GREY}} >
+              <Image source={openNowCheck} style={{width: 18, height: 18}} />
+            </TouchableOpacity>
+        </View>
+
+        <View style={styles.optionsView} >
+          <Text style={styles.text}>Near Me</Text>
+            <TouchableOpacity onPress={this._checkNearMe} style={{justifyContent: 'center', alignItems: 'center', backgroundColor: (this.state.openNowChecked) ? Colors.DARK_BLUE : 'transparent', width: 24, height: 24, borderRadius: 4, borderWidth: 2, borderColor: Colors.DARK_GREY}} >
               <Image source={openNowCheck} style={{width: 18, height: 18}} />
             </TouchableOpacity>
         </View>

@@ -19,6 +19,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { GetUserByID } from '../rest/rest.js';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
 import axios from 'react-native-axios';
+import * as REST from '../rest/rest.js';
 
 class HomeScreen extends React.Component {
 
@@ -43,10 +44,21 @@ class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('https://crave-scoop.herokuapp.com/get-user/59765d2df60c01001198f3b5').then(response => {
-      this.setState({user: response.data});
-    }).catch(error => {console.log('couldnt get user')
-    });
+    // this.props.dispatch({type: 'Login', id: '59765d2df60c01001198f3b5', dispatcher: this.props });
+    this.props.dispatch(this.getUserFoReal('59765d2df60c01001198f3b5').bind(this));
+    // this.getUserFoReal('59765d2df60c01001198f3b5');
+  }
+
+  _getUserHelper = (id) => {
+    return axios.get('https://crave-scoop.herokuapp.com/get-user/' + id);
+  }
+
+  getUserFoReal(id) {
+    return function (dispatch) {
+      return this._getUserHelper(id).then(
+        user => dispatch({type: 'Login', user: user.data})
+      )
+    }
   }
 
   _presentController = () => {
@@ -146,10 +158,13 @@ const styles = StyleSheet.create({
   },
 });
 
+
 var mapStateToProps = (state) => {
   return {
     navigator: state.nav,
-    isLoggedIn: state.auth.isLoggedIn
+    isLoggedIn: state.auth.isLoggedIn,
+    user: state.auth.user,
+
   }
 }
 

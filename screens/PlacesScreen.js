@@ -27,8 +27,7 @@ class PlacesScreen extends React.Component {
   };
 
   static propTypes = {
-    model: React.PropTypes.object,
-    titleName: React.PropTypes.string.isRequired
+    model: React.PropTypes.object
   }
 
   state = {
@@ -253,10 +252,8 @@ const styles = StyleSheet.create({
 
 var mapStateToProps = (state) => {
   console.log(state);
-  debugger;
   return {
     navigator: state.nav,
-    titleName: state.nav.routes[state.nav.index].params.thename
   }
 }
 
