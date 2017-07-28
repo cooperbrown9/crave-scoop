@@ -14,10 +14,9 @@ class App extends React.Component {
   render() {
 
     return (
-      <Provider store={this.store}>
+      <Provider store={this.store} >
         <AppNavigatorWithState />
       </Provider>
-
     );
   }
 }

@@ -9,18 +9,16 @@ import {
   Text,
   View,
   Dimensions,
-  Modal
+  Modal,
+  AsyncStorage
 } from 'react-native';
 import { connect } from 'react-redux';
 import RoundButton from '../ui-elements/round-button.js';
 import FilterModal from './FilterModal.js';
 import LinearGradient from 'react-native-linear-gradient';
-const FBSDK = require('react-native-fbsdk');
-const {
-  LoginButton,
-} = FBSDK;
-
-
+import { GetUserByID } from '../rest/rest.js';
+import * as NavActionTypes from '../action-types/navigation-action-types.js';
+import axios from 'react-native-axios';
 
 class HomeScreen extends React.Component {
 
@@ -33,28 +31,35 @@ class HomeScreen extends React.Component {
     clicked: false
   }
 
-  changeText = () => {
-
-
+  getTestName = async() => {
+    await AsyncStorage.setItem('@test_username:key', 'cool dude');
+    const name = await AsyncStorage.getItem('@test_username:key');
+    console.log(name);
   }
 
+  async getName() {
+    const name = await AsyncStorage.getItem('@test_username:key');
+    console.log(name);
+  }
+
+  componentDidMount() {
+    axios.get('https://crave-scoop.herokuapp.com/get-user/59765d2df60c01001198f3b5').then(response => {
+      this.setState({user: response.data});
+    }).catch(error => {console.log('couldnt get user')
+    });
+  }
 
   _presentController = () => {
     this.state.clicked = true;
     this.setState(this.state);
   }
 
-  _nextController = () => {
-    this.props.navigation.navigate('Places', {model:{name: 'Cool Cakes', likeCount: '420' }});
-  };
-
-  _toProfileScreen = () => {
-    this.props.navigation.navigate('Profile');
+  _login = () => {
+    this.props.dispatch({type: NavActionTypes.LOGIN, id: '59765d2df60c01001198f3b5', dispatcher: this.props});
   }
 
   _goToPlacesScreen = () => {
-    this.props.navigation.dispatch({type: 'Places', name: 'Lunafghfg', description: 'its lit'});
-
+    this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES, name: '', description: 'its lit'});
   };
 
   _dismissModal = () => {
@@ -70,7 +75,7 @@ class HomeScreen extends React.Component {
 
         <Modal animationType={"slide"} transparent={false} visible={this.state.clicked} >
           <View >
-            <FilterModal dismissFunc={this._dismissModal.bind(this)} />
+            <FilterModal name={this.state.user} dismissFunc={this._dismissModal.bind(this)} />
           </View>
         </Modal>
         <View style={styles.welcomeContainer} >
@@ -90,6 +95,7 @@ class HomeScreen extends React.Component {
 
           </Text>
         </View>
+
       </View>
     );
   }
@@ -143,7 +149,7 @@ const styles = StyleSheet.create({
 var mapStateToProps = (state) => {
   return {
     navigator: state.nav,
-
+    isLoggedIn: state.auth.isLoggedIn
   }
 }
 

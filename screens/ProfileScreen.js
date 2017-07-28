@@ -52,7 +52,7 @@ export default class ProfileScreen extends React.Component {
     return(
       <View style={styles.container} >
         <CustomNavBar
-          title={'Settings'}
+          title={this.props.name}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/close.png')}/>}
           leftOnPress={this.props.dismissFunc}
           rightButton={<Text style={styles.navBarRightButton}>Log Out</Text>}/>

@@ -8,7 +8,8 @@ import CustomNavBar from '../ui-elements/custom-nav-bar.js';
 export default class FilterModal extends React.Component {
 
   static propTypes = {
-    dismissFunc: React.PropTypes.func.isRequired
+    dismissFunc: React.PropTypes.func.isRequired,
+    name: React.PropTypes.string
   };
 
   state = {
@@ -33,7 +34,7 @@ export default class FilterModal extends React.Component {
 
 
         <CustomNavBar
-          title={'Filters'}
+          title={this.props.name}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/close.png')}/>}
           rightButton={<Text style={styles.navBarRightButton}>Reset</Text>}
           leftOnPress={this.props.dismissFunc}/>

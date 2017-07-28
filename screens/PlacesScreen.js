@@ -27,7 +27,8 @@ class PlacesScreen extends React.Component {
   };
 
   static propTypes = {
-    model: React.PropTypes.object
+    model: React.PropTypes.object,
+    titleName: React.PropTypes.string.isRequired
   }
 
   state = {
@@ -94,7 +95,7 @@ class PlacesScreen extends React.Component {
       <View style={(this.state.loading) ? styles.loadingHider : styles.container } >
 
         <CustomNavBar
-          title={'My Places'}
+          title={this.props.titleName}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/search.png')}/>}
           rightButton={<Image style={styles.navBarRightButton} source={require('../assets/images/settings.png')}/>}
           leftOnPress={() => this.props.navigation.goBack()}
@@ -251,9 +252,11 @@ const styles = StyleSheet.create({
 
 
 var mapStateToProps = (state) => {
+  console.log(state);
+  debugger;
   return {
     navigator: state.nav,
-    name: state.nav.name
+    titleName: state.nav.routes[state.nav.index].params.thename
   }
 }
 
