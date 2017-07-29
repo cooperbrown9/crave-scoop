@@ -45,7 +45,7 @@ class PlacesScreen extends React.Component {
   componentDidMount() {
     this.getRestaurants();
     this.getUser();
-    
+
   }
 
   getUser = () => {
@@ -99,9 +99,11 @@ class PlacesScreen extends React.Component {
     this.setState(this.state);
   }
 
-  setVendorState = (rest) => {
-    this.state.restaurants = rest;
-    this.setState(this.state);
+  setVendorState(rest) {
+    console.log(rest);
+    // debugger;
+    // this.state.restaurants = rest;
+    // this.setState(this.state);
   }
 
   _vendorPicked = (props) => {
@@ -127,7 +129,7 @@ class PlacesScreen extends React.Component {
 
         <Modal animationType={"slide"} transparent={false} visible={this.state.filterPresented} >
 
-            <FilterModal dismissFunc={this._dismissFilterModal} />
+            <FilterModal filterFunc={this.setVendorState} dismissFunc={this._dismissFilterModal} />
 
         </Modal>
 

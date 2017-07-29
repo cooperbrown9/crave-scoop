@@ -24,16 +24,26 @@ export default class FilterModal extends React.Component {
   getVendor = () => {
 
     axios.get('https://crave-scoop.herokuapp.com/get-vendor/597ba3f69f94ee0011109e7f').then(response => {
-      this.setState({vendor: response.data, loading: false});
-    }).catch(error => {
 
+      this.props.filterFunc(response.data);
+
+      this.props.dismissFunc();
+    }).catch(error => {
+      console.log('naaahhhh');
+      debugger;
     });
   }
 
   componentDidMount() {
-    debugger;
+
+    // this.getVendor();
+    // console.log(this.state.vendor);
+  }
+
+  _dismissPrototype() {
     this.getVendor();
-    console.log(this.state.vendor);
+
+
   }
 
   _checkFavorite = () => {
@@ -58,7 +68,7 @@ export default class FilterModal extends React.Component {
 
 
         <CustomNavBar
-          title={this.props.name}
+          title={'Filter'}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/close.png')}/>}
           rightButton={<Text style={styles.navBarRightButton}>Reset</Text>}
           leftOnPress={this.props.dismissFunc}/>
@@ -91,7 +101,7 @@ export default class FilterModal extends React.Component {
 
 
         <View style={styles.buttonStyle} >
-          <RoundButton title='VIEW PLACES' bgColor={Colors.DARK_BLUE} borderOn={false} />
+          <RoundButton title='VIEW PLACES' onPress={this.getVendor} bgColor={Colors.DARK_BLUE} borderOn={false} />
         </View>
 
 
