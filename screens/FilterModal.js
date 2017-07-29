@@ -4,19 +4,37 @@ import CheckBox from 'react-native-check-box';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors.js';
 import CustomNavBar from '../ui-elements/custom-nav-bar.js';
+import axios from 'react-native-axios';
 
 export default class FilterModal extends React.Component {
 
   static propTypes = {
     dismissFunc: React.PropTypes.func.isRequired,
-    name: React.PropTypes.string
+    name: React.PropTypes.string,
+    filterFunc: React.PropTypes.func,
+
   };
 
   state = {
     favoriteChecked: false,
     openNowChecked: false,
-    nearMeChecked: false
+    nearMeChecked: false,
   };
+
+  getVendor = () => {
+
+    axios.get('https://crave-scoop.herokuapp.com/get-vendor/597ba3f69f94ee0011109e7f').then(response => {
+      this.setState({vendor: response.data, loading: false});
+    }).catch(error => {
+
+    });
+  }
+
+  componentDidMount() {
+    debugger;
+    this.getVendor();
+    console.log(this.state.vendor);
+  }
 
   _checkFavorite = () => {
     this.setState({favoriteChecked: !this.state.favoriteChecked});
@@ -34,7 +52,7 @@ export default class FilterModal extends React.Component {
     var favCheck = this.state.favoriteChecked ? require('../assets/images/check-mark.png') : null;
     var openNowCheck = this.state.openNowChecked ? require('../assets/images/check-mark.png') : null;
     var nearMeCheck = this.state.openNowChecked ? require('../assets/images/check-mark.png') : null;
-    
+
     return(
       <View style={styles.container} >
 
@@ -73,7 +91,7 @@ export default class FilterModal extends React.Component {
 
 
         <View style={styles.buttonStyle} >
-          <RoundButton title='VIEW PLACES' bgColor={Colors.DARK_BLUE} borderOn={false} onPress={this.props.dismissFunc}/>
+          <RoundButton title='VIEW PLACES' bgColor={Colors.DARK_BLUE} borderOn={false} />
         </View>
 
 

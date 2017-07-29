@@ -19,6 +19,8 @@ import * as Colors from '../colors/colors.js';
 import CustomNavBar from '../ui-elements/custom-nav-bar.js';
 import ProfileScreen from '../screens/ProfileScreen.js';
 import RoundButton from '../ui-elements/round-button.js';
+import FilterModal from './FilterModal.js';
+
 
 class PlacesScreen extends React.Component {
 
@@ -35,6 +37,7 @@ class PlacesScreen extends React.Component {
     loading: true,
     name: 'gfh',
     profilePresented: false,
+    filterPresented: false
 
   }
 
@@ -42,10 +45,11 @@ class PlacesScreen extends React.Component {
   componentDidMount() {
     this.getRestaurants();
     this.getUser();
+    
   }
 
   getUser = () => {
-    axios.get('https://crave-scoop.herokuapp.com/get-user/59765d2df60c01001198f3b5').then(response => {
+    axios.get('https://crave-scoop.herokuapp.com/get-user/59765d2df60c01001198f3b5/').then(response => {
       this.setState({user: response.data});
     }).catch(error => {
       console.log('couldnt get user from places screen');
@@ -53,7 +57,7 @@ class PlacesScreen extends React.Component {
   }
 
   getRestaurants = () => {
-    axios.get('https://crave-scoop.herokuapp.com/get-restaurants').then(response => {
+    axios.get('https://crave-scoop.herokuapp.com/get-vendors/').then(response => {
       this.setState({restaurants: response.data, loading: false});
     }).catch(error => {
 
@@ -75,13 +79,28 @@ class PlacesScreen extends React.Component {
     )
   }
 
-  _dismissModal = () => {
+  _dismissProfileModal = () => {
     this.state.profilePresented = false;
     this.setState(this.state);
   }
 
-  _presentModal = () => {
+  _presentProfileModal = () => {
     this.state.profilePresented = true;
+    this.setState(this.state);
+  }
+
+  _dismissFilterModal = () => {
+    this.state.filterPresented = false;
+    this.setState(this.state);
+  }
+
+  _presentFilterModal = () => {
+    this.state.filterPresented = true;
+    this.setState(this.state);
+  }
+
+  setVendorState = (rest) => {
+    this.state.restaurants = rest;
     this.setState(this.state);
   }
 
@@ -94,15 +113,21 @@ class PlacesScreen extends React.Component {
       <View style={(this.state.loading) ? styles.loadingHider : styles.container } >
 
         <CustomNavBar
-          title={this.props.titleName}
+          title={''}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/search.png')}/>}
           rightButton={<Image style={styles.navBarRightButton} source={require('../assets/images/settings.png')}/>}
           leftOnPress={() => this.props.navigation.goBack()}
-          rightOnPress={this._presentModal}/>
+          rightOnPress={this._presentProfileModal}/>
 
         <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} >
 
-            <ProfileScreen dismissFunc={this._dismissModal.bind(this)} />
+            <ProfileScreen dismissFunc={this._dismissProfileModal} />
+
+        </Modal>
+
+        <Modal animationType={"slide"} transparent={false} visible={this.state.filterPresented} >
+
+            <FilterModal dismissFunc={this._dismissFilterModal} />
 
         </Modal>
 
@@ -116,7 +141,7 @@ class PlacesScreen extends React.Component {
         </ScrollView>
 
         <View style={styles.filterButton}>
-          <RoundButton title='FILTERS' onPress={this.getRestaurants} bgColor={Colors.DARK_BLUE} borderOn={false}/>
+          <RoundButton title='FILTERS' onPress={this._presentFilterModal} bgColor={Colors.DARK_BLUE} borderOn={false}/>
         </View>
 
       </View>
