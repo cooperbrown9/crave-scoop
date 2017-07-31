@@ -18,7 +18,9 @@ class PlaceDetailScreen extends React.Component {
   };
 
   state = {
-    titty: 'cool dude'
+    titty: 'cool dude',
+    vendorItemModalPresented: false,
+
   };
 
 
@@ -38,6 +40,26 @@ class PlaceDetailScreen extends React.Component {
     // console.log(this.props);
   }
 
+  _presentVendorItemModal = () => {
+    this.state.profilePresented = true;
+    this.setState(this.state);
+  }
+
+  _dismissVendorItemModal = () => {
+    this.state.vendorItemModalPresented = false;
+    this.setState(this.state);
+  }
+
+  handleKeyPress(item) {
+    return function(e) {
+      e.preventDefault();
+
+      let product = {name: item.name, description: item.info.description, }
+      _presentVendorItemModal();
+
+    }
+  }
+
   render() {
 
     return(
@@ -46,6 +68,11 @@ class PlaceDetailScreen extends React.Component {
           title={''}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/back-arrow.png')}/>}
           leftOnPress={() => this.props.navigation.goBack()}/>
+        <Modal animationType={"slide"} transparent={false} visible={this.state.filterPresented} >
+
+          <FilterModal filterFunc={this.dismissAndFilter} dismissFunc={this._dismissFilterModal} />
+
+        </Modal>
         <View style={styles.topContainer} >
 
           <View style={styles.topView_Image} >
@@ -83,7 +110,7 @@ class PlaceDetailScreen extends React.Component {
 
         <View style={styles.menuContainer}>
 
-          {this.props.model.products.map(product => <PlaceDetailItem name={product.name} description={product.description} key={product.name} /> )}
+          {this.props.model.products.map(product => <PlaceDetailItem name={product.name} description={product.description} onTouch={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
 
         </View>
 

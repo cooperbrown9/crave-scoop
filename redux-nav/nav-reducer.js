@@ -37,7 +37,7 @@ function nav (state = firstState(), action) {
 
     case NavActionTypes.NAVIGATE_PLACES_DETAIL:
       nextState = AppNavigator.router.getStateForAction(
-        NavigationActions.navigate({routeName: NavActionTypes.NAVIGATE_PLACES_DETAIL}),
+        NavigationActions.navigate({routeName: 'PlaceDetail'}),
         state
       );
       nextState.model = action.model;
@@ -67,7 +67,7 @@ function auth(state = initialAuthState, action) {
         ...state,
         user: action.user,
       }
-    
+
     case 'Login_Complete':
       console.log('yuuuuup');
       return { ...state, isLoggedIn: true, user: action.user };

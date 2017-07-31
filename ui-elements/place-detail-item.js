@@ -2,29 +2,29 @@ import React from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 
 const PlaceDetailItem = (props) => (
-  <View style={styles.container} >
 
-    <View style={styles.imageContainer} >
-      <Image style={styles.image} source={require('../assets/images/cupcake-photo.png')} />
-    </View>
-
-    <View style={styles.itemInfoContainer} >
-
-      <View style={styles.nameView}>
-        <Text style={styles.nameText}>{props.name}</Text>
+  <TouchableOpacity style={styles.container} >
+      <View style={styles.imageContainer} >
+        <Image style={styles.image} source={require('../assets/images/cupcake-photo.png')} />
       </View>
 
-      <View style={styles.descriptionView}>
-        <Text style={styles.descriptionText}>{props.description}</Text>
+      <View style={styles.itemInfoContainer} >
+
+        <View style={styles.nameView}>
+          <Text style={styles.nameText}>{props.name}</Text>
+        </View>
+
+        <View style={styles.descriptionView}>
+          <Text style={styles.descriptionText}>{props.description}</Text>
+        </View>
+
       </View>
-      
-    </View>
-  </View>
+  </TouchableOpacity>
 );
 
 PlaceDetailItem.propTypes = {
   name: React.PropTypes.string.isRequired,
-  description: React.PropTypes.string.isRequired
+  description: React.PropTypes.string.isRequired,
 };
 
 PlaceDetailItem.defaultProps = {
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     height: 80,
     marginBottom: 16
   },
+
   imageContainer: {
     flex: 1,
     marginLeft: 16,
@@ -75,4 +76,5 @@ const styles = StyleSheet.create({
 
 });
 
-export default PlaceDetailItem;
+
+export default;

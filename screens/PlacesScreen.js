@@ -20,6 +20,7 @@ import CustomNavBar from '../ui-elements/custom-nav-bar.js';
 import ProfileScreen from '../screens/ProfileScreen.js';
 import RoundButton from '../ui-elements/round-button.js';
 import FilterModal from './FilterModal.js';
+import * as NavActionTypes from '../action-types/navigation-action-types.js';
 
 
 class PlacesScreen extends React.Component {
@@ -69,7 +70,8 @@ class PlacesScreen extends React.Component {
       e.preventDefault();
 
       let model = { id: item._id, name: item.name, location: item.info.location, description: item.info.description, hours: item.info.hours, products: item.info.products }
-      this.props.navigation.dispatch({type:'PlaceDetail', model: model});
+      this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: model});
+      
     }
   }
 
