@@ -99,8 +99,10 @@ class PlacesScreen extends React.Component {
     this.setState(this.state);
   }
 
-  setVendorState(rest) {
+  dismissAndFilter(vendors) {
     console.log(rest);
+    this.state.restaurants = vendors;
+    this.setState({filterPresented: false});
     // debugger;
     // this.state.restaurants = rest;
     // this.setState(this.state);
@@ -121,15 +123,9 @@ class PlacesScreen extends React.Component {
           leftOnPress={() => this.props.navigation.goBack()}
           rightOnPress={this._presentProfileModal}/>
 
-        <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} >
-
-            <ProfileScreen dismissFunc={this._dismissProfileModal} />
-
-        </Modal>
-
         <Modal animationType={"slide"} transparent={false} visible={this.state.filterPresented} >
 
-            <FilterModal filterFunc={this.setVendorState} dismissFunc={this._dismissFilterModal} />
+            <FilterModal filterFunc={this.dismissAndFilter} dismissFunc={this._dismissFilterModal} />
 
         </Modal>
 

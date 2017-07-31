@@ -21,16 +21,13 @@ export default class FilterModal extends React.Component {
     nearMeChecked: false,
   };
 
-  getVendor = () => {
+  filterVendors = () => {
 
     axios.get('https://crave-scoop.herokuapp.com/get-vendor/597ba3f69f94ee0011109e7f').then(response => {
-
       this.props.filterFunc(response.data);
-
       this.props.dismissFunc();
     }).catch(error => {
       console.log('naaahhhh');
-      debugger;
     });
   }
 
@@ -101,7 +98,7 @@ export default class FilterModal extends React.Component {
 
 
         <View style={styles.buttonStyle} >
-          <RoundButton title='VIEW PLACES' onPress={this.getVendor} bgColor={Colors.DARK_BLUE} borderOn={false} />
+          <RoundButton title='VIEW PLACES' onPress={this.filterVendors} bgColor={Colors.DARK_BLUE} borderOn={false} />
         </View>
 
 
