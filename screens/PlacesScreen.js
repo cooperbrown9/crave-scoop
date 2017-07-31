@@ -11,6 +11,7 @@ import {
   Button,
   Modal
 } from 'react-native';
+import { SearchBar } from 'react-native-elements';
 import axios from 'react-native-axios';
 import VendorItem from '../ui-elements/vendor-item.js';
 import { connect } from 'react-redux';
@@ -30,7 +31,7 @@ class PlacesScreen extends React.Component {
   };
 
   static propTypes = {
-    model: React.PropTypes.object
+    model: React.PropTypes.object,
   }
 
   state = {
@@ -38,8 +39,8 @@ class PlacesScreen extends React.Component {
     loading: true,
     name: 'gfh',
     profilePresented: false,
-    filterPresented: false
-
+    filterPresented: false,
+    searchOn: false
   }
 
   static places;
@@ -61,7 +62,7 @@ class PlacesScreen extends React.Component {
     axios.get('https://crave-scoop.herokuapp.com/get-vendors/').then(response => {
       this.setState({restaurants: response.data, loading: false});
     }).catch(error => {
-
+      console.log(error);
     });
   }
 
@@ -71,7 +72,6 @@ class PlacesScreen extends React.Component {
 
       let model = { id: item._id, name: item.name, location: item.info.location, description: item.info.description, hours: item.info.hours, products: item.info.products }
       this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: model});
-      
     }
   }
 
@@ -81,15 +81,7 @@ class PlacesScreen extends React.Component {
     )
   }
 
-  _dismissProfileModal = () => {
-    this.state.profilePresented = false;
-    this.setState(this.state);
-  }
 
-  _presentProfileModal = () => {
-    this.state.profilePresented = true;
-    this.setState(this.state);
-  }
 
   _dismissFilterModal = () => {
     this.state.filterPresented = false;
@@ -110,6 +102,36 @@ class PlacesScreen extends React.Component {
     // this.setState(this.state);
   }
 
+  _autocomplete(text) {
+
+    (text === '') ? this.getRestaurants() : null;
+
+    for(let i = 0; i < this.state.restaurants.length; i++) {
+
+      if(!this.state.restaurants[i].name.includes(text)) {
+        this.state.restaurants.splice(i, 1);
+        i--;
+      }
+    }
+    this.setState({restaurants: this.state.restaurants});
+  }
+
+  _startSearch() {
+    this.setState({searchOn: !this.state.searchOn });
+
+  }
+
+  _renderSearch() {
+
+    if (this.state.searchOn) {
+      return (
+        <SearchBar onChangeText={this._autocomplete.bind(this)} lightTheme={true} round={true} placeholder='Search' />
+      )
+    } else {
+      return null;
+    }
+  }
+
   _vendorPicked = (props) => {
     this.props.navigation.navigate('PlaceDetail', {model:{name: 'Cool Cakes'}});
   }
@@ -122,8 +144,10 @@ class PlacesScreen extends React.Component {
           title={''}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/search.png')}/>}
           rightButton={<Image style={styles.navBarRightButton} source={require('../assets/images/settings.png')}/>}
-          leftOnPress={() => this.props.navigation.goBack()}
-          rightOnPress={this._presentProfileModal}/>
+          leftOnPress={this._startSearch.bind(this)}
+          rightOnPress={() => this.props.navigation.goBack()} />
+
+        { this._renderSearch() }
 
         <Modal animationType={"slide"} transparent={false} visible={this.state.filterPresented} >
 
@@ -278,7 +302,7 @@ const styles = StyleSheet.create({
 var mapStateToProps = (state) => {
   console.log(state);
   return {
-    navigator: state.nav,
+    navigator: state.nav
   }
 }
 
