@@ -36,7 +36,6 @@ function nav (state = firstState(), action) {
       break;
 
     case NavActionTypes.NAVIGATE_PLACES_DETAIL:
-    debugger;
       nextState = AppNavigator.router.getStateForAction(
         NavigationActions.navigate({routeName: 'PlaceDetail', params: { model: action.model }}),
         state

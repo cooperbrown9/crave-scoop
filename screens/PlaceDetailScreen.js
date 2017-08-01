@@ -164,10 +164,7 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = (state) => {
-  debugger;
   return {
-    name: state.nav.name,
-    description: state.nav.description,
     model: state.nav.routes[state.nav.index].params.model
   }
 }

@@ -22,6 +22,7 @@ import ProfileScreen from '../screens/ProfileScreen.js';
 import RoundButton from '../ui-elements/round-button.js';
 import FilterModal from './FilterModal.js';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
+import SearchModal from './SearchModal.js';
 
 
 class PlacesScreen extends React.Component {
@@ -40,7 +41,8 @@ class PlacesScreen extends React.Component {
     name: 'gfh',
     profilePresented: false,
     filterPresented: false,
-    searchOn: false
+    searchOn: false,
+    searchPresented: false
   }
 
   static places;
@@ -82,6 +84,15 @@ class PlacesScreen extends React.Component {
   }
 
 
+  _dismissSearchModal(vendors) {
+    console.log(vendors);
+    
+    this.setState({searchPresented: false});
+  }
+
+  _presentSearchModal = () => {
+    this.setState({searchPresented: true});
+  }
 
   _dismissFilterModal = () => {
     this.state.filterPresented = false;
@@ -122,10 +133,14 @@ class PlacesScreen extends React.Component {
   }
 
   _renderSearch() {
-
     if (this.state.searchOn) {
       return (
-        <SearchBar onChangeText={this._autocomplete.bind(this)} lightTheme={true} round={true} placeholder='Search' />
+        <View>
+          <SearchBar onChangeText={this._autocomplete.bind(this)} lightTheme={true} round={true} placeholder='Search' />
+            <View>
+              {this.state.restaurants.map(vendor => <TouchableOpacity key={vendor._id}><Text style={{marginLeft: 16, fontSize: 24, marginBottom: 4}}>{vendor.name}</Text></TouchableOpacity>)}
+            </View>
+        </View>
       )
     } else {
       return null;
@@ -144,10 +159,15 @@ class PlacesScreen extends React.Component {
           title={''}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/search.png')}/>}
           rightButton={<Image style={styles.navBarRightButton} source={require('../assets/images/settings.png')}/>}
-          leftOnPress={this._startSearch.bind(this)}
+          leftOnPress={this._presentSearchModal}
           rightOnPress={() => this.props.navigation.goBack()} />
 
         { this._renderSearch() }
+
+        <Modal animationType={'slide'} transparent={false} visible={this.state.searchPresented} >
+          <SearchModal dismissModal={this._dismissSearchModal.bind(this)} />
+        </Modal>
+
 
         <Modal animationType={"slide"} transparent={false} visible={this.state.filterPresented} >
 
