@@ -72,8 +72,9 @@ class PlacesScreen extends React.Component {
     return function(e) {
       e.preventDefault();
 
-      let model = { id: item._id, name: item.name, location: item.info.location, description: item.info.description, hours: item.info.hours, products: item.info.products }
-      this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: model});
+      // let model = { id: item._id, name: item.name, location: item.location, description: item.info.description, hours: item.info.hours, products: item.info.products }
+      
+      this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: item});
     }
   }
 
@@ -84,10 +85,12 @@ class PlacesScreen extends React.Component {
   }
 
 
-  _dismissSearchModal(vendors) {
-    console.log(vendors);
-    
-    this.setState({searchPresented: false});
+  _dismissSearchModal(vendor) {
+    console.log(vendor);
+    debugger;
+    let newVendors = [];
+    newVendors.push(vendor);
+    this.setState({restaurants: newVendors, searchPresented: false});
   }
 
   _presentSearchModal = () => {
@@ -322,7 +325,7 @@ const styles = StyleSheet.create({
 var mapStateToProps = (state) => {
   console.log(state);
   return {
-    navigator: state.nav
+    // navigator: state.nav
   }
 }
 

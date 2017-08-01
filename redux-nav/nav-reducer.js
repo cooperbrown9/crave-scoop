@@ -60,7 +60,7 @@ function modal (state = initialModalState, action) {
   switch(action.type) {
 
     case 'VendorItemModal':
-    
+
       return { model: action.model }
       break;
 

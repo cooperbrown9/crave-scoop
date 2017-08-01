@@ -31,7 +31,7 @@ class PlaceDetailScreen extends React.Component {
  };
 
  _getHoursForDay() {
-   const today = todayHours = this.props.model.hours[new Date().getDay()];
+   const today = todayHours = this.props.model.info.hours[new Date().getDay()];
    let todayHours = today.open + today.open_tod + ' - ' + today.close + today.close_tod;
 
    return todayHours;
@@ -55,7 +55,7 @@ class PlaceDetailScreen extends React.Component {
    return function(e) {
      e.preventDefault();
      this.setState({vendorItemModalPresented: true});
-     let model = { name: item.name, description: item.description };
+     let model = { name: item.name, description: item.info.description };
      this.props.dispatch({type: 'VendorItemModal', model: model});
    }
  }
@@ -98,11 +98,11 @@ class PlaceDetailScreen extends React.Component {
 
                  <Image style={{marginRight: 8, height:16, width: 16}} source={require('../assets/images/pin.png')}></Image>
 
-               <Text style={{fontSize: 16, color: 'grey'}}>{this.props.model.location.address}</Text>
+               <Text style={{fontSize: 16, color: 'grey'}}>{this.props.model.info.location.address}</Text>
              </View>
            </View>
 
-           <Text style={styles.restaurantDescription}>{this.props.model.description}</Text>
+           <Text style={styles.restaurantDescription}>{this.props.model.info.description}</Text>
 
          </View>
 
@@ -110,7 +110,7 @@ class PlaceDetailScreen extends React.Component {
 
        <View style={styles.menuContainer}>
 
-         {this.props.model.products.map(product => <PlaceDetailItem name={product.name} description={product.description} onPress={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
+         {this.props.model.info.products.map(product => <PlaceDetailItem name={product.name} description={product.description} onPress={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
 
        </View>
 
@@ -191,6 +191,7 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = (state) => {
+  debugger;
   return {
     model: state.nav.routes[state.nav.index].params.model
   }
