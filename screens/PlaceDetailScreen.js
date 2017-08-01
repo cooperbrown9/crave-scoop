@@ -191,12 +191,9 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = (state) => {
- return {
-   name: state.nav.name,
-   description: state.nav.description,
-   model: state.nav.routes[state.nav.index].params.model,
-   vendorItemModel: {}
- }
+  return {
+    model: state.nav.routes[state.nav.index].params.model
+  }
 }
 
 export default connect(mapStateToProps)(PlaceDetailScreen);
