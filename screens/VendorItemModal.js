@@ -10,8 +10,11 @@ class VendorItemModal extends React.Component {
 
   static propTypes = {
     dismissFunc: React.PropTypes.func.isRequired,
+
   };
 
+ componentDidMount () {
+ }
 
 
 
@@ -40,6 +43,16 @@ class VendorItemModal extends React.Component {
               <Text style={styles.restaurantDescription}>{this.props.model.description}</Text>
 
             </View>
+            <View style={styles.nutritionFactsContainer}>
+              {this.props.nutritionFacts.map(fact =>
+                <View style={styles.nutritionFactStyle}>
+                  <View style={{justifyContent: 'center', backgroundColor: 'green', alignItems: 'center', width: 16, height: 16, borderRadius: 4, borderWidth: 2, borderColor: Colors.DARK_GREY}} >
+                    <Image source={require('../assets/images/check-mark.png')} style={{width: 10, height: 10, tintColor:'white'}} />
+                  </View>
+                  <Text style={{marginLeft: 16}}>{fact}</Text>
+                </View>
+              )}
+            </View>
 
           </View>
       </View>
@@ -52,6 +65,20 @@ class VendorItemModal extends React.Component {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
+    },
+    nutritionFactsContainer:{
+      flex:1,
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      alignItems: 'stretch',
+    },
+    nutritionFactStyle:{
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'stretch',
+      marginLeft: 16,
+      marginRight: 16,
+      backgroundColor: 'transparent'
     },
     navBarLeftButton:{
       height: 16,
@@ -86,7 +113,7 @@ class VendorItemModal extends React.Component {
 
     },
     infoContainer: {
-      flex: 2,
+      flex: 1,
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignItems: 'stretch',
@@ -95,28 +122,20 @@ class VendorItemModal extends React.Component {
     infoTitle: {
       fontSize: 20,
       marginTop: 16,
-      textAlign: 'center',
+      marginLeft: 16,
+      marginRight: 16,
+      textAlign: 'left',
       fontWeight: 'bold',
       backgroundColor: 'blue'
     },
     resturantInfoContainer: {
       flexDirection: 'row',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
       alignItems: 'center',
       height: 20,
       marginTop: 16,
       marginLeft: 16,
       marginRight: 16,
-    },
-    resturantInfoContainer_Hours: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      marginRight: 8
-    },
-    resturantInfoContainer_Addy: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      marginLeft: 8
     },
     restaurantDescription: {
       flex: 1,
@@ -124,7 +143,7 @@ class VendorItemModal extends React.Component {
       lineHeight: 0,
       marginLeft: 16,
       marginRight: 16,
-      textAlign: 'center',
+      textAlign: 'left',
       marginTop: 16,
       backgroundColor: 'yellow'
     },
@@ -139,7 +158,8 @@ class VendorItemModal extends React.Component {
   var mapStateToProps = (state) => {
    return {
 
-     model: state.modal.model
+     model: state.modal.model,
+     nutritionFacts: ['dairy free', 'vegans', 'gluten free', 'vegetarians'],
    }
   }
 

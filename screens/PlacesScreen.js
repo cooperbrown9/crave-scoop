@@ -53,7 +53,7 @@ class PlacesScreen extends React.Component {
   }
 
   getUser = () => {
-    axios.get('https://crave-scoop.herokuapp.com/get-user/59765d2df60c01001198f3b5/').then(response => {
+    axios.get('https://crave-scoop.herokuapp.com/get-user/59765b461a79980011c99d2c/').then(response => {
       this.setState({user: response.data});
     }).catch(error => {
       console.log('couldnt get user from places screen');
@@ -73,7 +73,7 @@ class PlacesScreen extends React.Component {
       e.preventDefault();
 
       // let model = { id: item._id, name: item.name, location: item.location, description: item.info.description, hours: item.info.hours, products: item.info.products }
-      
+
       this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: item});
     }
   }
@@ -87,7 +87,6 @@ class PlacesScreen extends React.Component {
 
   _dismissSearchModal(vendor) {
     console.log(vendor);
-    debugger;
     let newVendors = [];
     newVendors.push(vendor);
     this.setState({restaurants: newVendors, searchPresented: false});

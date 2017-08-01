@@ -11,11 +11,12 @@ import VendorItemModal from '../screens/VendorItemModal';
 
 class PlaceDetailScreen extends React.Component {
  static navigationOptions = {
-   header: null
+   header: null,
  };
 
  static propTypes = {
    model: React.PropTypes.object.isRequired,
+
 
  };
 
@@ -38,7 +39,7 @@ class PlaceDetailScreen extends React.Component {
  };
 
  componentDidMount() {
-   console.log(this.props.model);
+   console.log(this.props.model.info.products);
  }
 
  _dismissFilterModal = () => {
@@ -55,7 +56,7 @@ class PlaceDetailScreen extends React.Component {
    return function(e) {
      e.preventDefault();
      this.setState({vendorItemModalPresented: true});
-     let model = { name: item.name, description: item.info.description };
+     let model = { name: item.name, description: item.description };
      this.props.dispatch({type: 'VendorItemModal', model: model});
    }
  }
@@ -98,7 +99,7 @@ class PlaceDetailScreen extends React.Component {
 
                  <Image style={{marginRight: 8, height:16, width: 16}} source={require('../assets/images/pin.png')}></Image>
 
-               <Text style={{fontSize: 16, color: 'grey'}}>{this.props.model.info.location.address}</Text>
+               <Text style={{fontSize: 16, color: 'grey'}}>{this.props.model.location.address}</Text>
              </View>
            </View>
 
@@ -191,7 +192,6 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = (state) => {
-  debugger;
   return {
     model: state.nav.routes[state.nav.index].params.model
   }
