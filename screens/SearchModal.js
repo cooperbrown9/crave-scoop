@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import axios from 'react-native-axios';
+import RoundButton from '../ui-elements/round-button.js';
+import * as Colors from '../colors/colors.js';
 
 class SearchModal extends React.Component {
   state = {
@@ -21,7 +23,6 @@ class SearchModal extends React.Component {
   }
 
   queryVendors = (str) => {
-    debugger;
     axios.get('https://crave-scoop.herokuapp.com/search-vendors/' + str).then(response => {
       console.log(response.data);
       this.setState({vendors: response.data});
@@ -34,20 +35,27 @@ class SearchModal extends React.Component {
   render() {
 
     return (
-      <View>
-        <View style={styles.searchBarContainer} >
-          <Image style={styles.searchIcon} source={require('../assets/images/close.png')} />
-          <TextInput style={styles.searchBar} placeholder='Search...' editable={true} onChangeText={(text)=> {this._onChangeText(text)} }/>
-          <Image style={styles.resetIcon} source={require('../assets/images/close.png')} />
+      <View style={styles.container}>
+        <View style={styles.container}>
+          <View style={styles.searchBarContainer} >
+            <Image style={styles.searchIcon} source={require('../assets/images/close.png')} />
+            <TextInput style={styles.searchBar} placeholder='Search...' editable={true} onChangeText={(text)=> {this._onChangeText(text)} }/>
+            <Image style={styles.resetIcon} source={require('../assets/images/close.png')} />
+          </View>
+          <View style={{height: 64}}></View>
+
+          <View style={this.vendorView} >
+            {this.state.vendors.map(vendor =>
+              <TouchableOpacity onPress={() => this.props.dismissModal(vendor)} key={vendor.name}>
+                <Text style={{backgroundColor:'transparent', fontSize: 28, fontWeight: 'bold', height: 32, textAlign: 'center', marginTop: 32}} color='green'>{vendor.name}</Text>
+              </TouchableOpacity>
+          )}
+          </View>
         </View>
 
-          {this.state.vendors.map(vendor =>
-
-              <Text style={{backgroundColor:'green'}} color='green' >{vendor.name}</Text>
-
-          )}
-
-        <Button style={{marginTop: 100}}title='hit' onPress={() => this.props.dismissModal('bruuuuuh')}></Button>
+        <View style={styles.button}>
+          <RoundButton title='SEARCH' borderOn={false} bgColor={Colors.BLUE} onPress={() => this.props.dismissModal('bruuuuuh')} />
+        </View>
       </View>
     )
   }
@@ -57,29 +65,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'stretch'
+    alignItems: 'stretch',
+    justifyContent: 'flex-start'
   },
   vendorView: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'stretch',
     marginLeft: 32,
-    marginRight: 64
+    marginRight: 64,
+    marginTop: 32,
+    backgroundColor: 'red'
   },
   searchBarContainer: {
+    marginTop: 16,
     height: 64,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-
   },
   searchBar: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: 'gold',
+
+
     fontSize: 18,
-    backgroundColor: 'orange',
-    color: 'green',
+    color: 'black',
     marginLeft: 8,
     marginRight: 8
   },
@@ -87,13 +97,16 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     width: 24,
     height: 24,
-    backgroundColor: 'yellow'
   },
   resetIcon: {
     width: 24,
     height: 24,
-    backgroundColor: 'purple',
     marginRight: 16
+  },
+  button: {
+    marginLeft: 64,
+    marginRight: 64,
+    marginBottom: 16
   }
 });
 

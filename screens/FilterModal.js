@@ -32,7 +32,7 @@ export default class FilterModal extends React.Component {
   }
 
   componentDidMount() {
-    debugger;
+    
     // this.getVendor();
     // console.log(this.state.vendor);
   }
