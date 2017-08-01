@@ -3,7 +3,7 @@ import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 
 const PlaceDetailItem = (props) => (
 
-  <TouchableOpacity style={styles.container} >
+  <TouchableOpacity onPress={props.onPress} style={styles.container} >
       <View style={styles.imageContainer} >
         <Image style={styles.image} source={require('../assets/images/cupcake-photo.png')} />
       </View>
@@ -25,6 +25,7 @@ const PlaceDetailItem = (props) => (
 PlaceDetailItem.propTypes = {
   name: React.PropTypes.string.isRequired,
   description: React.PropTypes.string.isRequired,
+  onPress: React.PropTypes.func
 };
 
 PlaceDetailItem.defaultProps = {
@@ -75,6 +76,4 @@ const styles = StyleSheet.create({
   }
 
 });
-
-
-export default;
+ export default PlaceDetailItem;

@@ -36,7 +36,6 @@ function nav (state = firstState(), action) {
       break;
 
     case NavActionTypes.NAVIGATE_PLACES_DETAIL:
-    debugger;
       nextState = AppNavigator.router.getStateForAction(
         NavigationActions.navigate({routeName: 'PlaceDetail', params: { model: action.model }}),
         state
@@ -53,6 +52,23 @@ function nav (state = firstState(), action) {
       break;
   }
   return nextState || state;
+}
+
+const initialModalState = {};
+function modal (state = initialModalState, action) {
+  let nextState = state;
+  switch(action.type) {
+
+    case 'VendorItemModal':
+    
+      return { model: action.model }
+      break;
+
+    default:
+      console.log('yuuuuuuuh');
+      return { randomProp: '' }
+      break;
+  }
 }
 
 const initialAuthState = { isLoggedIn: false, userID: '', user: {} };
@@ -99,7 +115,8 @@ function auth(state = initialAuthState, action) {
 
 const NavReducer = combineReducers({
   nav,
-  auth
+  auth,
+  modal
 });
 
 export default NavReducer;
