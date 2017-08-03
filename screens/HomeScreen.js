@@ -10,7 +10,8 @@ import {
   View,
   Dimensions,
   Modal,
-  AsyncStorage
+  AsyncStorage,
+  Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import RoundButton from '../ui-elements/round-button.js';
@@ -20,6 +21,8 @@ import { GetUserByID } from '../rest/rest.js';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
 import axios from 'react-native-axios';
 import * as REST from '../rest/rest.js';
+import Expo from 'expo';
+
 
 class HomeScreen extends React.Component {
 
@@ -31,6 +34,7 @@ class HomeScreen extends React.Component {
   state = {
     clicked: false
   }
+
 
   getTestName = async() => {
     await AsyncStorage.setItem('@test_username:key', 'cool dude');
@@ -44,9 +48,42 @@ class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    // this.props.dispatch({type: 'Login', id: '59765d2df60c01001198f3b5', dispatcher: this.props });
-    this.props.dispatch(this.getUserFoReal('59765d2df60c01001198f3b5').bind(this));
-    // this.getUserFoReal('59765d2df60c01001198f3b5');
+    // FB App ID 1565112886889636 SECRET: 7765eef11057d8b0e03799d070856e73
+    // this.props.dispatch(this.getUserFoReal('59765d2df60c01001198f3b5').bind(this));
+    // this.checkLoginStatus();
+    
+  }
+
+
+  async checkLoginStatus() {
+    const id = await AsyncStorage.getItem('@fb_id:key');
+    const token = await AsyncStorage.getItem('@fb_access_token:key');
+
+    if (id == null || token == null) {
+      this.loginFBAsync();
+    } else {
+      // const longToken = await axios.get('https://graph.facebook.com/oauth/access_token?client_id=1565112886889636&client_secret=7765eef11057d8b0e03799d070856e73&grant_type=fb_exchange_token&fb_exchange_token=' + token);
+      this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
+    }
+  }
+
+  async loginFBAsync() {
+    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', {permissions:['public_profile'], behavior: 'web'});
+    if (type === 'success') {
+      const response = await axios.get('https://graph.facebook.com/me?access_token=' + token);
+
+      Alert.alert('Logged In!', response.data.name);
+
+      await AsyncStorage.setItem('@fb_id:key', response.data.id);
+      await AsyncStorage.setItem('@fb_access_token:key', token);
+    }
+  }
+
+  getTestUsername = async() => {
+    let g = await AsyncStorage.getItem('@user_id:key');
+    console.log(g);
+    g = await AsyncStorage.getItem('@user_name:key');
+    console.log(g);
   }
 
   _getUserHelper = (id) => {
@@ -57,7 +94,12 @@ class HomeScreen extends React.Component {
     return function (dispatch) {
       return this._getUserHelper(id).then(
         user => dispatch({type: 'Login', user: user.data})
-      )
+      ).then(async (user) => {
+        await AsyncStorage.setItem('@user_id:key', user.user._id);
+        await AsyncStorage.setItem('@user_name:key', user.user.last_name);
+      }).then(() => {
+        this.getTestUsername();
+      })
     }
   }
 

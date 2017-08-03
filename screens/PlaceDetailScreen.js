@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CustomNavBar from '../ui-elements/custom-nav-bar';
 import VendorItemModal from '../screens/VendorItemModal';
+import * as NavActionTypes from '../action-types/navigation-action-types.js';
 
 
 
@@ -58,6 +59,7 @@ class PlaceDetailScreen extends React.Component {
      this.setState({vendorItemModalPresented: true});
      let model = { name: item.name, description: item.description };
      this.props.dispatch({type: 'VendorItemModal', model: model});
+     debugger;
    }
  }
 
@@ -68,7 +70,7 @@ class PlaceDetailScreen extends React.Component {
        <CustomNavBar
          title={''}
          leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/back-arrow.png')}/>}
-         leftOnPress={() => this.props.navigation.goBack()}/>
+         leftOnPress={() => this.props.navigation.dispatch({type: NavActionTypes.GO_BACK})}/>
        <Modal animationType={"slide"} transparent={false} visible={this.state.vendorItemModalPresented} >
 
              <VendorItemModal dismissFunc={this._dismissFilterModal} />
@@ -111,7 +113,7 @@ class PlaceDetailScreen extends React.Component {
 
        <View style={styles.menuContainer}>
 
-         {this.props.model.info.products.map(product => <PlaceDetailItem name={product.name} description={product.description} onPress={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
+         {this.props.model.info.products.map(product => <PlaceDetailItem name={'bruh'} description={product.description} onPress={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
 
        </View>
 
@@ -192,6 +194,13 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = (state) => {
+<<<<<<< HEAD
+=======
+
+  if (state.nav.routes.length < 3) {
+    return {...state}
+  }
+>>>>>>> coop-dev
   return {
     model: state.nav.routes[state.nav.index].params.model
   }
