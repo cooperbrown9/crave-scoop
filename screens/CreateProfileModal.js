@@ -1,20 +1,29 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image,TextInput } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image,TextInput, AsyncStorage } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
 import DARK_BLUE from '../colors/colors.js';
 import UserID from '../test-user/user.js';
 import axios from 'react-native-axios';
 import CustomNavBar from '../ui-elements/custom-nav-bar';
+import * as Keys from '../local-storage/keys.js';
 
 export default class CreateProfileModal extends React.Component {
   state = {
     passwordVisible: false,
+    firstName: 'Tony',
 
   }
   static propTypes:{
     dismissFunc: React.PropTypes.func,
   }
 
+  _createUserAndDismiss = () => {
+    axios.put('https://crave-scoop.herokuapp.com/add-user/' + this.state.firstName + '/user/Spokane/').then(async (response) => {
+      await AsyncStorage.setItem(Keys.USER_ID, response.data);
+    }).then(() =>
+      this.props.dismissFunc()
+    )
+  }
 
 
   _passwordVisible = () => {
@@ -45,8 +54,8 @@ export default class CreateProfileModal extends React.Component {
               <TextInput style={{height: 40, flex:1,}}
                 placeholder={'john.doe@gmail.com'}
                 autoCapitalize = {'none'}
+                onChangeText={(username) => this.setState({firstName:username})}
               />
-
             </View>
 
             <View style={{ borderBottomColor: 'black', borderBottomWidth: 1, marginLeft: 32, marginRight: 32, flexDirection: 'row', }}>
@@ -60,7 +69,7 @@ export default class CreateProfileModal extends React.Component {
               </TouchableOpacity>
             </View>
             <View style={styles.button}>
-                <RoundButton title='Sign Up' onPress={this.props.dismissFunc} bgColor='#41d9f4' color='white' borderOn={false}/>
+                <RoundButton title='Sign Up' onPress={this._createUserAndDismiss.bind(this)} bgColor='#41d9f4' color='white' borderOn={false}/>
             </View>
             <View style={styles.loginContainer}>
               <Text >Already have an account?</Text>

@@ -156,6 +156,27 @@ function vendorHelper(state = initialVendorState, action) {
   }
 }
 
+const initialUserState = { success: false, user: {} }
+function user (state = initialUserState, action){
+
+  switch(action.type){
+
+    case NavActionTypes.GET_USER:
+      debugger;
+      return {
+        ...state,
+        success: true,
+        user: action.user
+      }
+      break;
+
+    default:
+      return initialUserState;
+      break;
+  }
+}
+
+
 // export function setUser (data) {
 //   return Object.assign({type: 'Login_Complete', user: data});
 // }
@@ -164,7 +185,8 @@ const NavReducer = combineReducers({
   nav,
   auth,
   modal,
-  vendorHelper
+  vendorHelper,
+  user
 });
 
 export default NavReducer;
