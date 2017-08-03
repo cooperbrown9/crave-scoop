@@ -16,6 +16,7 @@ import {
 import { connect } from 'react-redux';
 import RoundButton from '../ui-elements/round-button.js';
 import FilterModal from './FilterModal.js';
+import CreateProfileModal from './CreateProfileModal.js';
 import LinearGradient from 'react-native-linear-gradient';
 import { GetUserByID } from '../rest/rest.js';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
@@ -32,7 +33,8 @@ class HomeScreen extends React.Component {
   };
 
   state = {
-    clicked: false
+    clicked: false,
+    profilePresented: false
   }
 
 
@@ -51,7 +53,7 @@ class HomeScreen extends React.Component {
     // FB App ID 1565112886889636 SECRET: 7765eef11057d8b0e03799d070856e73
     // this.props.dispatch(this.getUserFoReal('59765d2df60c01001198f3b5').bind(this));
     // this.checkLoginStatus();
-      
+
   }
 
 
@@ -108,6 +110,15 @@ class HomeScreen extends React.Component {
     this.setState(this.state);
   }
 
+  _profileModalPresented = () => {
+    if(this.state.profilePresented === false){
+      this.state.profilePresented = true;
+    } else if(this.state.profilePresented === true){
+      this.state.profilePresented = false;
+    }
+    this.setState(this.state);
+  }
+
   _login = () => {
     this.props.dispatch({type: NavActionTypes.LOGIN, id: '59765d2df60c01001198f3b5', dispatcher: this.props});
   }
@@ -132,6 +143,9 @@ class HomeScreen extends React.Component {
             <FilterModal name={this.state.user} dismissFunc={this._dismissModal.bind(this)} />
           </View>
         </Modal>
+        <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} >
+            <CreateProfileModal dismissFunc={this._profileModalPresented} />
+        </Modal>
         <View style={styles.welcomeContainer} >
           <Image source={require('../assets/images/cupcake.png')} style={styles.image} />
           <Text color='white' style={styles.welcomeMessage} >
@@ -141,7 +155,7 @@ class HomeScreen extends React.Component {
 
         <View style={styles.buttonContainer} >
           <RoundButton title='Continue with Facebook' onPress={this._goToPlacesScreen} bgColor='white' textColor='#41d9f4' />
-          <RoundButton title='Create Account' onPress={this._presentController} />
+          <RoundButton title='Create Account' onPress={this._profileModalPresented} />
         </View>
         <Text style={styles.termsText}>Terms of Service</Text>
         <View>
