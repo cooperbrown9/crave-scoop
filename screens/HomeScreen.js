@@ -20,6 +20,7 @@ import { GetUserByID } from '../rest/rest.js';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
 import axios from 'react-native-axios';
 import * as REST from '../rest/rest.js';
+import CreateProfileModal from './CreateProfileModal.js';
 
 class HomeScreen extends React.Component {
 
@@ -29,7 +30,9 @@ class HomeScreen extends React.Component {
   };
 
   state = {
-    clicked: false
+    clicked: false,
+    profileModalPresented: false,
+
   }
 
   getTestName = async() => {
@@ -66,6 +69,11 @@ class HomeScreen extends React.Component {
     this.setState(this.state);
   }
 
+  _presentProfileModal = () => {
+    this.state.profileModalPresented = true;
+    this.setState(this.state);
+  }
+
   _login = () => {
     this.props.dispatch({type: NavActionTypes.LOGIN, id: '59765d2df60c01001198f3b5', dispatcher: this.props});
   }
@@ -78,6 +86,10 @@ class HomeScreen extends React.Component {
     this.state.clicked = false;
     this.setState(this.state);
   }
+  _dismissProfileModal = () => {
+    this.state.profileModalPresented = false;
+    this.setState(this.state);
+  }
 
   render() {
     let {width, height} = Dimensions.get('window');
@@ -87,9 +99,14 @@ class HomeScreen extends React.Component {
 
         <Modal animationType={"slide"} transparent={false} visible={this.state.clicked} >
           <View >
-            <FilterModal name={this.state.user} dismissFunc={this._dismissModal.bind(this)} />
+            <FilterModal name={this.state.user} dismissFunc={this._dismissModal} />
           </View>
         </Modal>
+
+        <Modal animationType={"slide"} transparent={false} visible={this.state.profileModalPresented} >
+              <CreateProfileModal dismissFunc={this._dismissProfileModal} />
+      </Modal>
+
         <View style={styles.welcomeContainer} >
           <Image source={require('../assets/images/cupcake.png')} style={styles.image} />
           <Text color='white' style={styles.welcomeMessage} >
@@ -99,7 +116,7 @@ class HomeScreen extends React.Component {
 
         <View style={styles.buttonContainer} >
           <RoundButton title='Continue with Facebook' onPress={this._goToPlacesScreen} bgColor='white' textColor='#41d9f4' />
-          <RoundButton title='Create Account' onPress={this._presentController} />
+          <RoundButton title='Create Account' onPress={this._presentProfileModal} />
         </View>
         <Text style={styles.termsText}>Terms of Service</Text>
         <View>

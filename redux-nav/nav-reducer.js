@@ -46,7 +46,6 @@ function nav (state = firstState(), action) {
       nextState.name = action.name;
 
       break;
-
     default:
       nextState = AppNavigator.router.getStateForAction(action, state);
       break;

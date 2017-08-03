@@ -41,18 +41,18 @@ class VendorItemModal extends React.Component {
                 <Text style={styles.infoTitle}>{this.props.model.name}</Text>
               </TouchableOpacity>
               <Text style={styles.restaurantDescription}>{this.props.model.description}</Text>
-
-            </View>
-            <View style={styles.nutritionFactsContainer}>
+              <View style={{marginTop: 16}}>
               {this.props.nutritionFacts.map(fact =>
-                <View style={styles.nutritionFactStyle}>
-                  <View style={{justifyContent: 'center', backgroundColor: 'green', alignItems: 'center', width: 16, height: 16, borderRadius: 4, borderWidth: 2, borderColor: Colors.DARK_GREY}} >
-                    <Image source={require('../assets/images/check-mark.png')} style={{width: 10, height: 10, tintColor:'white'}} />
+                  <View style={styles.nutritionFactStyle}>
+                    <View style={{justifyContent: 'center', backgroundColor: 'green', alignItems: 'center', width: 16, height: 16, borderRadius: 4, borderWidth: 2, borderColor: Colors.DARK_GREY}} >
+                      <Image source={require('../assets/images/check-mark.png')} style={{width: 10, height: 10, tintColor:'white'}} />
+                    </View>
+                    <Text style={{marginLeft: 16}}>Suitable for {fact} diets</Text>
                   </View>
-                  <Text style={{marginLeft: 16}}>{fact}</Text>
-                </View>
               )}
+              </View>
             </View>
+
 
           </View>
       </View>
@@ -68,6 +68,7 @@ class VendorItemModal extends React.Component {
     },
     nutritionFactsContainer:{
       flex:1,
+
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignItems: 'stretch',
@@ -76,7 +77,7 @@ class VendorItemModal extends React.Component {
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'stretch',
-      marginLeft: 16,
+      marginLeft: 26,
       marginRight: 16,
       backgroundColor: 'transparent'
     },
@@ -101,7 +102,6 @@ class VendorItemModal extends React.Component {
     },
     topView_Image: {
       flex: 1,
-      backgroundColor: 'green'
     },
     topImage: {
       height: 180
@@ -113,20 +113,18 @@ class VendorItemModal extends React.Component {
 
     },
     infoContainer: {
-      flex: 1,
+      flex: 2,
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignItems: 'stretch',
-      backgroundColor: 'orange'
     },
     infoTitle: {
       fontSize: 20,
       marginTop: 16,
       marginLeft: 16,
       marginRight: 16,
-      textAlign: 'left',
+      textAlign: 'center',
       fontWeight: 'bold',
-      backgroundColor: 'blue'
     },
     resturantInfoContainer: {
       flexDirection: 'row',
@@ -138,14 +136,13 @@ class VendorItemModal extends React.Component {
       marginRight: 16,
     },
     restaurantDescription: {
-      flex: 1,
+      flexShrink: 1,
       fontSize: 16,
       lineHeight: 0,
       marginLeft: 16,
       marginRight: 16,
-      textAlign: 'left',
-      marginTop: 16,
-      backgroundColor: 'yellow'
+      textAlign: 'center',
+      marginTop: 0,
     },
     menuContainer: {
       flex: 1,
@@ -159,7 +156,7 @@ class VendorItemModal extends React.Component {
    return {
 
      model: state.modal.model,
-     nutritionFacts: ['dairy free', 'vegans', 'gluten free', 'vegetarians'],
+     nutritionFacts: ['dairy free', 'vegan', 'gluten free', 'vegetarian'],
    }
   }
 

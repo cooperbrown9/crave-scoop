@@ -8,6 +8,7 @@ import PlacesScreen from '../screens/PlacesScreen';
 import PlaceDetailScreen from '../screens/PlaceDetailScreen';
 
 
+
 export const AppNavigator = StackNavigator({
   Home: { screen: HomeScreen },
   Places: { screen: PlacesScreen },
