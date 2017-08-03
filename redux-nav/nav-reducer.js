@@ -115,8 +115,8 @@ function auth(state = initialAuthState, action) {
   }
 }
 
-const initialVendorState = { vendors: [], success: false };
-function getVendors(state = initialVendorState, action) {
+const initialVendorState = { vendors: [], success: false, placeDetail: { vendor: {info: { hours: [] }, location: {}, description: '', name: '' } } };
+function vendorHelper(state = initialVendorState, action) {
 
   switch(action.type) {
 
@@ -127,18 +127,31 @@ function getVendors(state = initialVendorState, action) {
         vendors: action.vendors,
         success: true
       }
+      break;
 
-      case NavActionTypes.FAVORITES:
-        return {
-          type: action.type,
-          ...state,
-          vendors: action.vendors,
-          success: true
+    case NavActionTypes.FAVORITES:
+      return {
+        type: action.type,
+        ...state,
+        vendors: action.vendors,
+        success: true
+      }
+      break;
+
+    case NavActionTypes.GET_VENDOR:
+      return {
+        ...state,
+        placeDetail: {
+        type: action.type,
+        ...state,
+        vendor: action.vendor,
+        success: true
         }
+      }
+      break;
 
     default:
-      console.log('yuh');
-      return { type: action.type, success: false }
+      return state;
       break;
   }
 }
@@ -151,7 +164,7 @@ const NavReducer = combineReducers({
   nav,
   auth,
   modal,
-  getVendors
+  vendorHelper
 });
 
 export default NavReducer;

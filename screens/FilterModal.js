@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
 var mapStateToProps = (state) => {
 
   return {
-    vendors: state.getVendors.vendors
+    vendors: state.vendorHelper.vendors
   }
 }
 

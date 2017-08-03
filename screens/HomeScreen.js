@@ -51,7 +51,7 @@ class HomeScreen extends React.Component {
     // FB App ID 1565112886889636 SECRET: 7765eef11057d8b0e03799d070856e73
     // this.props.dispatch(this.getUserFoReal('59765d2df60c01001198f3b5').bind(this));
     // this.checkLoginStatus();
-      
+
   }
 
 
@@ -78,6 +78,7 @@ class HomeScreen extends React.Component {
       await AsyncStorage.setItem('@fb_access_token:key', token);
     }
   }
+
 
   getTestUsername = async() => {
     let g = await AsyncStorage.getItem('@user_id:key');

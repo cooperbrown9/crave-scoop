@@ -45,11 +45,9 @@ class PlacesScreen extends React.Component {
     searchPresented: false
   }
 
-  static places;
   componentDidMount() {
-    this.getRestaurants();
+    this.getVendors();
     this.getUser();
-
   }
 
   getUser = () => {
@@ -60,21 +58,32 @@ class PlacesScreen extends React.Component {
     });
   }
 
-  getRestaurants = () => {
-    axios.get('https://crave-scoop.herokuapp.com/get-vendors/').then(response => {
+  getVendors = () => {
+    axios.get('https://crave-scoop.herokuapp.com/get-all-vendors-for-places/').then(response => {
       this.setState({restaurants: response.data, loading: false});
     }).catch(error => {
       console.log(error);
     });
   }
 
+  loadVendorDetail(id) {
+    return function (dispatch) {
+      return axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + id).then(
+        response => {
+          dispatch({type: NavActionTypes.GET_VENDOR, vendor: response.data});
+          this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, id: id});
+      })
+    }
+  }
+
   handleKeyPress(item) {
     return function(e) {
       e.preventDefault();
-
-      // let model = { id: item._id, name: item.name, location: item.location, description: item.info.description, hours: item.info.hours, products: item.info.products }
-
-      this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: item});
+      // this.loadVendorDetail();
+      // this.props.dispatch(this.loadVendorDetail(item._id).bind(this));
+      axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + item._id).then(
+        response => this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
+      )
     }
   }
 
@@ -86,16 +95,8 @@ class PlacesScreen extends React.Component {
 
 
   _dismissSearchModal(vendor) {
-
     this.setState({searchPresented: false});
-    this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: vendor});
-
-    // console.log(vendor);
-    // debugger;
-    // let newVendors = [];
-    // newVendors.push(vendor);
-    // this.setState({restaurants: newVendors, searchPresented: false});
-
+    this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, id: item._id});
   }
 
   _presentSearchModal = () => {
@@ -113,12 +114,7 @@ class PlacesScreen extends React.Component {
   }
 
   dismissAndFilter(vendors) {
-    console.log(vendors);
-    // this.state.restaurants = vendors;
     this.setState({filterPresented: false, restaurants: vendors});
-    // debugger;
-    // this.state.restaurants = rest;
-    // this.setState(this.state);
   }
 
   _autocomplete(text) {
@@ -140,20 +136,20 @@ class PlacesScreen extends React.Component {
 
   }
 
-  _renderSearch() {
-    if (this.state.searchOn) {
-      return (
-        <View>
-          <SearchBar onChangeText={this._autocomplete.bind(this)} lightTheme={true} round={true} placeholder='Search' />
-            <View>
-              {this.state.restaurants.map(vendor => <TouchableOpacity key={vendor._id}><Text style={{marginLeft: 16, fontSize: 24, marginBottom: 4}}>{vendor.name}</Text></TouchableOpacity>)}
-            </View>
-        </View>
-      )
-    } else {
-      return null;
-    }
-  }
+  // _renderSearch() {
+  //   if (this.state.searchOn) {
+  //     return (
+  //       <View>
+  //         <SearchBar onChangeText={this._autocomplete.bind(this)} lightTheme={true} round={true} placeholder='Search' />
+  //           <View>
+  //             {this.state.restaurants.map(vendor => <TouchableOpacity key={vendor._id}><Text style={{marginLeft: 16, fontSize: 24, marginBottom: 4}}>{vendor.name}</Text></TouchableOpacity>)}
+  //           </View>
+  //       </View>
+  //     )
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   // _vendorPicked = (props) => {
   //   this.props.navigation.navigate('PlaceDetail', {model:{name: 'Cool Cakes'}});
