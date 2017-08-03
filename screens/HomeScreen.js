@@ -21,12 +21,8 @@ import { GetUserByID } from '../rest/rest.js';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
 import axios from 'react-native-axios';
 import * as REST from '../rest/rest.js';
-<<<<<<< HEAD
-import CreateProfileModal from './CreateProfileModal.js';
-=======
 import Expo from 'expo';
 
->>>>>>> d935a76dbf3a3e07e773b00aecafd3e243cb8229
 
 class HomeScreen extends React.Component {
 
@@ -36,9 +32,7 @@ class HomeScreen extends React.Component {
   };
 
   state = {
-    clicked: false,
-    profileModalPresented: false,
-
+    clicked: false
   }
 
 
@@ -57,7 +51,7 @@ class HomeScreen extends React.Component {
     // FB App ID 1565112886889636 SECRET: 7765eef11057d8b0e03799d070856e73
     // this.props.dispatch(this.getUserFoReal('59765d2df60c01001198f3b5').bind(this));
     // this.checkLoginStatus();
-    
+      
   }
 
 
@@ -114,11 +108,6 @@ class HomeScreen extends React.Component {
     this.setState(this.state);
   }
 
-  _presentProfileModal = () => {
-    this.state.profileModalPresented = true;
-    this.setState(this.state);
-  }
-
   _login = () => {
     this.props.dispatch({type: NavActionTypes.LOGIN, id: '59765d2df60c01001198f3b5', dispatcher: this.props});
   }
@@ -131,10 +120,6 @@ class HomeScreen extends React.Component {
     this.state.clicked = false;
     this.setState(this.state);
   }
-  _dismissProfileModal = () => {
-    this.state.profileModalPresented = false;
-    this.setState(this.state);
-  }
 
   render() {
     let {width, height} = Dimensions.get('window');
@@ -144,14 +129,9 @@ class HomeScreen extends React.Component {
 
         <Modal animationType={"slide"} transparent={false} visible={this.state.clicked} >
           <View >
-            <FilterModal name={this.state.user} dismissFunc={this._dismissModal} />
+            <FilterModal name={this.state.user} dismissFunc={this._dismissModal.bind(this)} />
           </View>
         </Modal>
-
-        <Modal animationType={"slide"} transparent={false} visible={this.state.profileModalPresented} >
-              <CreateProfileModal dismissFunc={this._dismissProfileModal} />
-      </Modal>
-
         <View style={styles.welcomeContainer} >
           <Image source={require('../assets/images/cupcake.png')} style={styles.image} />
           <Text color='white' style={styles.welcomeMessage} >
@@ -161,7 +141,7 @@ class HomeScreen extends React.Component {
 
         <View style={styles.buttonContainer} >
           <RoundButton title='Continue with Facebook' onPress={this._goToPlacesScreen} bgColor='white' textColor='#41d9f4' />
-          <RoundButton title='Create Account' onPress={this._presentProfileModal} />
+          <RoundButton title='Create Account' onPress={this._presentController} />
         </View>
         <Text style={styles.termsText}>Terms of Service</Text>
         <View>

@@ -86,12 +86,6 @@ class PlacesScreen extends React.Component {
 
 
   _dismissSearchModal(vendor) {
-<<<<<<< HEAD
-    console.log(vendor);
-    let newVendors = [];
-    newVendors.push(vendor);
-    this.setState({restaurants: newVendors, searchPresented: false});
-=======
 
     this.setState({searchPresented: false});
     this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: vendor});
@@ -102,7 +96,6 @@ class PlacesScreen extends React.Component {
     // newVendors.push(vendor);
     // this.setState({restaurants: newVendors, searchPresented: false});
 
->>>>>>> coop-dev
   }
 
   _presentSearchModal = () => {
@@ -177,7 +170,7 @@ class PlacesScreen extends React.Component {
           leftOnPress={this._presentSearchModal}
           rightOnPress={() => this.props.navigation.goBack()} />
 
-        
+
 
         <Modal animationType={'slide'} transparent={false} visible={this.state.searchPresented} >
           <SearchModal dismissModal={this._dismissSearchModal.bind(this)} />

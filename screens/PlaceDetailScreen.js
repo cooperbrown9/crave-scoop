@@ -194,13 +194,11 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = (state) => {
-<<<<<<< HEAD
-=======
 
   if (state.nav.routes.length < 3) {
     return {...state}
   }
->>>>>>> coop-dev
+
   return {
     model: state.nav.routes[state.nav.index].params.model
   }
