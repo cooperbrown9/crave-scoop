@@ -21,7 +21,10 @@
       "assetExts": ["ttf"]
     },
     "ios": {
-      "supportsTablet": true
-    }
+      "bundleIdentifier": "com.crave.scoop"
+    },
+    "android": {
+      "package": "com.crave.scoop"
+    },
   }
 }

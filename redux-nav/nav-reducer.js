@@ -29,7 +29,7 @@ function nav (state = firstState(), action) {
 
     case NavActionTypes.NAVIGATE_PLACES:
       nextState = AppNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'Places', params: { titleName: action.name, thescrip: action.description} }),
+        NavigationActions.navigate({ routeName: 'Places' }),
         state
       );
 
@@ -38,6 +38,13 @@ function nav (state = firstState(), action) {
     case NavActionTypes.NAVIGATE_PLACES_DETAIL:
       nextState = AppNavigator.router.getStateForAction(
         NavigationActions.navigate({routeName: 'PlaceDetail', params: { model: action.model }}),
+        state
+      );
+      break;
+
+    case NavActionTypes.GO_BACK:
+      nextState = AppNavigator.router.getStateForAction(
+        NavigationActions.back(),
         state
       );
       break;
@@ -108,6 +115,34 @@ function auth(state = initialAuthState, action) {
   }
 }
 
+const initialVendorState = { vendors: [], success: false };
+function getVendors(state = initialVendorState, action) {
+
+  switch(action.type) {
+
+    case NavActionTypes.NEARBY:
+      return {
+        type: action.type,
+        ...state,
+        vendors: action.vendors,
+        success: true
+      }
+
+      case NavActionTypes.FAVORITES:
+        return {
+          type: action.type,
+          ...state,
+          vendors: action.vendors,
+          success: true
+        }
+
+    default:
+      console.log('yuh');
+      return { type: action.type, success: false }
+      break;
+  }
+}
+
 // export function setUser (data) {
 //   return Object.assign({type: 'Login_Complete', user: data});
 // }
@@ -115,7 +150,8 @@ function auth(state = initialAuthState, action) {
 const NavReducer = combineReducers({
   nav,
   auth,
-  modal
+  modal,
+  getVendors
 });
 
 export default NavReducer;
