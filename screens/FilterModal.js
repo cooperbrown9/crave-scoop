@@ -5,8 +5,10 @@ import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors.js';
 import CustomNavBar from '../ui-elements/custom-nav-bar.js';
 import axios from 'react-native-axios';
+import { connect } from 'react-redux';
+import * as NavActionTypes from '../action-types/navigation-action-types.js';
 
-export default class FilterModal extends React.Component {
+class FilterModal extends React.Component {
 
   static propTypes = {
     dismissFunc: React.PropTypes.func.isRequired,
@@ -31,8 +33,43 @@ export default class FilterModal extends React.Component {
     });
   }
 
+
+
+  filterVendorss = () => {
+    let base = 'https://crave-scoop.herokuapp.com/';
+    let url = 'get-vendor/';
+    if (this.state.nearMeChecked) {
+      this.props.dispatch(this._getVendorsNearby().bind(this)).then(() => {
+        this.props.filterFunc(this.props.vendors);
+      });
+    } else if (this.state.favoriteChecked) {
+      this.props.dispatch(this._getFavoriteVendors().bind(this)).then(() => {
+        this.props.filterFunc(this.props.vendors);
+      })
+    }
+  }
+
+  _getVendorsNearby() {
+    return function(dispatch) {
+      return axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/47.659195/117.4208805/10').then(
+        vendors => dispatch({type: NavActionTypes.NEARBY, vendors: vendors.data})
+      )
+    }
+  }
+
+  _getFavoriteVendors() {
+    return function(dispatch) {
+      return axios.get('https://crave-scoop.herokuapp.com/get-favorite-vendors/59765d2df60c01001198f3b5').then(
+        vendors => dispatch({type: NavActionTypes.FAVORITES, vendors: vendors.data})
+      )
+    }
+  }
+
   componentDidMount() {
-    
+    // this.props.dispatch(this._getVendorsNearby().bind(this)).then(() => {
+    //   debugger;
+    //   this.props.filterFunc(this.props.vendors);
+    // });
     // this.getVendor();
     // console.log(this.state.vendor);
   }
@@ -86,11 +123,13 @@ export default class FilterModal extends React.Component {
               <Image source={openNowCheck} style={{width: 18, height: 18}} />
             </TouchableOpacity>
         </View>
+        <View style={styles.underline}></View>
+
 
         <View style={styles.optionsView} >
           <Text style={styles.text}>Near Me</Text>
-            <TouchableOpacity onPress={this._checkNearMe} style={{justifyContent: 'center', alignItems: 'center', backgroundColor: (this.state.openNowChecked) ? Colors.DARK_BLUE : 'transparent', width: 24, height: 24, borderRadius: 4, borderWidth: 2, borderColor: Colors.DARK_GREY}} >
-              <Image source={openNowCheck} style={{width: 18, height: 18}} />
+            <TouchableOpacity onPress={this._checkNearMe} style={{justifyContent: 'center', alignItems: 'center', backgroundColor: (this.state.nearMeChecked) ? Colors.DARK_BLUE : 'transparent', width: 24, height: 24, borderRadius: 4, borderWidth: 2, borderColor: Colors.DARK_GREY}} >
+              <Image source={nearMeCheck} style={{width: 18, height: 18}} />
             </TouchableOpacity>
         </View>
         <View style={styles.underline}></View>
@@ -98,7 +137,7 @@ export default class FilterModal extends React.Component {
 
 
         <View style={styles.buttonStyle} >
-          <RoundButton title='VIEW PLACES' onPress={this.filterVendors} bgColor={Colors.DARK_BLUE} borderOn={false} />
+          <RoundButton title='VIEW PLACES' onPress={this.filterVendorss} bgColor={Colors.DARK_BLUE} borderOn={false} />
         </View>
 
 
@@ -154,14 +193,13 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   optionsView: {
-    flex: 1,
+    height: 40,
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     marginTop: 20,
     marginLeft: 16,
-    marginRight: 16,
-    marginBottom: 24,
+    marginRight: 16
   },
   checkbox: {
     backgroundColor: 'blue',
@@ -176,8 +214,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.LIGHT_GREY,
     height: 2,
     marginLeft: 16,
-    marginTop: 16,
-    marginRight: 16
+    marginTop: 12,
+    marginRight: 16,
+    marginBottom: 16
   },
   buttonStyle: {
     flex: 1,
@@ -186,4 +225,13 @@ const styles = StyleSheet.create({
     marginLeft: 64,
     marginTop: 128
   }
-})
+});
+
+var mapStateToProps = (state) => {
+
+  return {
+    vendors: state.getVendors.vendors
+  }
+}
+
+export default connect(mapStateToProps)(FilterModal);

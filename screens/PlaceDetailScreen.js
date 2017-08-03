@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CustomNavBar from '../ui-elements/custom-nav-bar';
 import VendorItemModal from '../screens/VendorItemModal';
+import * as NavActionTypes from '../action-types/navigation-action-types.js';
 
 
 
@@ -57,6 +58,7 @@ class PlaceDetailScreen extends React.Component {
      this.setState({vendorItemModalPresented: true});
      let model = { name: item.name, description: item.info.description };
      this.props.dispatch({type: 'VendorItemModal', model: model});
+     debugger;
    }
  }
 
@@ -67,7 +69,7 @@ class PlaceDetailScreen extends React.Component {
        <CustomNavBar
          title={''}
          leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/back-arrow.png')}/>}
-         leftOnPress={() => this.props.navigation.goBack()}/>
+         leftOnPress={() => this.props.navigation.dispatch({type: NavActionTypes.GO_BACK})}/>
        <Modal animationType={"slide"} transparent={false} visible={this.state.vendorItemModalPresented} >
 
              <VendorItemModal dismissFunc={this._dismissFilterModal} />
@@ -98,7 +100,7 @@ class PlaceDetailScreen extends React.Component {
 
                  <Image style={{marginRight: 8, height:16, width: 16}} source={require('../assets/images/pin.png')}></Image>
 
-               <Text style={{fontSize: 16, color: 'grey'}}>{this.props.model.info.location.address}</Text>
+               <Text style={{fontSize: 16, color: 'grey'}}>{this.props.model.location.address}</Text>
              </View>
            </View>
 
@@ -110,7 +112,7 @@ class PlaceDetailScreen extends React.Component {
 
        <View style={styles.menuContainer}>
 
-         {this.props.model.info.products.map(product => <PlaceDetailItem name={product.name} description={product.description} onPress={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
+         {this.props.model.info.products.map(product => <PlaceDetailItem name={'bruh'} description={product.description} onPress={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
 
        </View>
 
@@ -191,7 +193,10 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = (state) => {
-  debugger;
+
+  if (state.nav.routes.length < 3) {
+    return {...state}
+  }
   return {
     model: state.nav.routes[state.nav.index].params.model
   }

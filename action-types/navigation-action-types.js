@@ -1,5 +1,9 @@
 export const NAVIGATE_PLACES = 'navigation/places';
 export const NAVIGATE_PLACES_DETAIL = 'navigation/places_detail';
+export const GO_BACK = 'navigation/go_back';
 
 export const LOGIN = 'auth/login';
 export const LOGOUT = 'auth/logout';
+
+export const NEARBY = 'get_vendors/nearby';
+export const FAVORITES = 'get_vendors/favorites';

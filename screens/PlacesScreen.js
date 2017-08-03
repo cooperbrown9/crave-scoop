@@ -73,7 +73,7 @@ class PlacesScreen extends React.Component {
       e.preventDefault();
 
       // let model = { id: item._id, name: item.name, location: item.location, description: item.info.description, hours: item.info.hours, products: item.info.products }
-      
+
       this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: item});
     }
   }
@@ -86,11 +86,16 @@ class PlacesScreen extends React.Component {
 
 
   _dismissSearchModal(vendor) {
-    console.log(vendor);
-    debugger;
-    let newVendors = [];
-    newVendors.push(vendor);
-    this.setState({restaurants: newVendors, searchPresented: false});
+
+    this.setState({searchPresented: false});
+    this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: vendor});
+
+    // console.log(vendor);
+    // debugger;
+    // let newVendors = [];
+    // newVendors.push(vendor);
+    // this.setState({restaurants: newVendors, searchPresented: false});
+
   }
 
   _presentSearchModal = () => {
@@ -108,9 +113,9 @@ class PlacesScreen extends React.Component {
   }
 
   dismissAndFilter(vendors) {
-    console.log(rest);
-    this.state.restaurants = vendors;
-    this.setState({filterPresented: false});
+    console.log(vendors);
+    // this.state.restaurants = vendors;
+    this.setState({filterPresented: false, restaurants: vendors});
     // debugger;
     // this.state.restaurants = rest;
     // this.setState(this.state);
@@ -150,22 +155,22 @@ class PlacesScreen extends React.Component {
     }
   }
 
-  _vendorPicked = (props) => {
-    this.props.navigation.navigate('PlaceDetail', {model:{name: 'Cool Cakes'}});
-  }
+  // _vendorPicked = (props) => {
+  //   this.props.navigation.navigate('PlaceDetail', {model:{name: 'Cool Cakes'}});
+  // }
 
   render() {
     return (
       <View style={(this.state.loading) ? styles.loadingHider : styles.container } >
 
         <CustomNavBar
-          title={''}
+          title={'PLACES'}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/search.png')}/>}
           rightButton={<Image style={styles.navBarRightButton} source={require('../assets/images/settings.png')}/>}
           leftOnPress={this._presentSearchModal}
           rightOnPress={() => this.props.navigation.goBack()} />
 
-        { this._renderSearch() }
+        
 
         <Modal animationType={'slide'} transparent={false} visible={this.state.searchPresented} >
           <SearchModal dismissModal={this._dismissSearchModal.bind(this)} />
@@ -174,7 +179,7 @@ class PlacesScreen extends React.Component {
 
         <Modal animationType={"slide"} transparent={false} visible={this.state.filterPresented} >
 
-            <FilterModal filterFunc={this.dismissAndFilter} dismissFunc={this._dismissFilterModal} />
+            <FilterModal filterFunc={this.dismissAndFilter.bind(this)} dismissFunc={this._dismissFilterModal.bind(this)} />
 
         </Modal>
 
@@ -324,6 +329,7 @@ const styles = StyleSheet.create({
 
 var mapStateToProps = (state) => {
   console.log(state);
+
   return {
     // navigator: state.nav
   }
