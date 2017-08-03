@@ -66,21 +66,10 @@ class PlacesScreen extends React.Component {
     });
   }
 
-  loadVendorDetail(id) {
-    return function (dispatch) {
-      return axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + id).then(
-        response => {
-          dispatch({type: NavActionTypes.GET_VENDOR, vendor: response.data});
-          this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, id: id});
-      })
-    }
-  }
-
   handleKeyPress(item) {
     return function(e) {
       e.preventDefault();
-      // this.loadVendorDetail();
-      // this.props.dispatch(this.loadVendorDetail(item._id).bind(this));
+      
       axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + item._id).then(
         response => this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
       )

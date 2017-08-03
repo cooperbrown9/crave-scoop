@@ -11,12 +11,13 @@ import axios from 'react-native-axios';
 
 
 class PlaceDetailScreen extends React.Component {
- static navigationOptions = {
+
+  static navigationOptions = {
    header: null,
- };
+  };
 
  static propTypes = {
-   vendorID: React.PropTypes.string.isRequired
+
  };
 
  state = {
@@ -24,12 +25,6 @@ class PlaceDetailScreen extends React.Component {
    model: {},
    vendorItemModalPresented: false,
    vendorLoaded: false
- };
-
-
- _onPress = () => {
-   // console.log(this.props);
-   this.setState({titty: ''})
  };
 
  _getHoursForDay() {
@@ -40,13 +35,6 @@ class PlaceDetailScreen extends React.Component {
  };
 
  componentDidMount() {
-  //  console.log(this.state.model.info.products);
-  // this.props.dispatch(this.loadVendor().bind(this));
-  // this.loadVendor_();
- }
-
- componentWillMount() {
-
 
  }
 
@@ -92,7 +80,7 @@ class PlaceDetailScreen extends React.Component {
 
          <View style={styles.infoContainer} >
 
-           <TouchableOpacity onPress={this._onPress} >
+           <TouchableOpacity >
            <Text style={styles.infoTitle}>{this.props.model.name}</Text>
            </TouchableOpacity>
 
@@ -208,7 +196,6 @@ var mapStateToProps = (state) => {
   }
 
   return {
-    vendorID: state.nav.routes[state.nav.index].params.id,
     model: state.nav.routes[state.nav.index].params.model
   }
 }

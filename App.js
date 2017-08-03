@@ -10,9 +10,16 @@ import Expo from 'expo';
 import axios from 'react-native-axios';
 import * as NavActionTypes from './action-types/navigation-action-types.js';
 
+
 class App extends React.Component {
 
   store = createStore(NavReducer, applyMiddleware(thunk));
+
+
+  async checkForID() {
+    // const userID = await AsyncStorage.getItem()
+  }
+
 
   async loginFBAsync() {
     const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', {permissions:['public_profile'], behavior: 'web'});
