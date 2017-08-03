@@ -14,6 +14,11 @@ class App extends React.Component {
 
   store = createStore(NavReducer, applyMiddleware(thunk));
 
+
+  async checkForID() {
+    
+  }
+
   async loginFBAsync() {
     const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', {permissions:['public_profile'], behavior: 'web'});
     if (type === 'success') {

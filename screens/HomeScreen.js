@@ -23,7 +23,7 @@ import * as NavActionTypes from '../action-types/navigation-action-types.js';
 import axios from 'react-native-axios';
 import * as REST from '../rest/rest.js';
 import Expo from 'expo';
-
+import * as Keys from '../local-storage/keys.js';
 
 class HomeScreen extends React.Component {
 
@@ -53,7 +53,26 @@ class HomeScreen extends React.Component {
     // FB App ID 1565112886889636 SECRET: 7765eef11057d8b0e03799d070856e73
     // this.props.dispatch(this.getUserFoReal('59765d2df60c01001198f3b5').bind(this));
     // this.checkLoginStatus();
+    this.getUser();
 
+
+  }
+
+  async getUser() {
+
+    const id = await AsyncStorage.getItem(Keys.USER_ID);
+    this.setState({userID: id}, () => {
+      this.props.dispatch(this.getUserHelper(this.state.userID).bind(this));
+    });
+  }
+
+  getUserHelper(id) {
+    return function(dispatch) {
+      return axios.get('https://crave-scoop.herokuapp.com/get-user/' + id).then(
+        response => {
+          dispatch({type: NavActionTypes.GET_USER, user: response.data});
+      })
+    }
   }
 
 
@@ -217,10 +236,11 @@ const styles = StyleSheet.create({
 
 
 var mapStateToProps = (state) => {
+  debugger;
   return {
     navigator: state.nav,
     isLoggedIn: state.auth.isLoggedIn,
-    user: state.auth.user,
+    user: state.user.user,
 
   }
 }
