@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import CustomNavBar from '../ui-elements/custom-nav-bar';
 import VendorItemModal from '../screens/VendorItemModal';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
-
+import axios from 'react-native-axios';
 
 
 class PlaceDetailScreen extends React.Component {
@@ -16,14 +16,14 @@ class PlaceDetailScreen extends React.Component {
  };
 
  static propTypes = {
-   model: React.PropTypes.object.isRequired,
-
-
+   vendorID: React.PropTypes.string.isRequired
  };
 
  state = {
    titty: 'cool dude',
-   vendorItemModalPresented: false
+   model: {},
+   vendorItemModalPresented: false,
+   vendorLoaded: false
  };
 
 
@@ -40,7 +40,14 @@ class PlaceDetailScreen extends React.Component {
  };
 
  componentDidMount() {
-   console.log(this.props.model.info.products);
+  //  console.log(this.state.model.info.products);
+  // this.props.dispatch(this.loadVendor().bind(this));
+  // this.loadVendor_();
+ }
+
+ componentWillMount() {
+
+
  }
 
  _dismissFilterModal = () => {
@@ -56,10 +63,11 @@ class PlaceDetailScreen extends React.Component {
  handleKeyPress(item) {
    return function(e) {
      e.preventDefault();
+
      this.setState({vendorItemModalPresented: true});
      let model = { name: item.name, description: item.description };
+
      this.props.dispatch({type: 'VendorItemModal', model: model});
-     debugger;
    }
  }
 
@@ -200,6 +208,7 @@ var mapStateToProps = (state) => {
   }
 
   return {
+    vendorID: state.nav.routes[state.nav.index].params.id,
     model: state.nav.routes[state.nav.index].params.model
   }
 }

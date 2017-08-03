@@ -81,6 +81,7 @@ class HomeScreen extends React.Component {
     }
   }
 
+
   getTestUsername = async() => {
     let g = await AsyncStorage.getItem('@user_id:key');
     console.log(g);

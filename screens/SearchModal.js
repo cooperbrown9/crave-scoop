@@ -38,7 +38,7 @@ class SearchModal extends React.Component {
       <View style={styles.container}>
         <View style={styles.container}>
           <View style={styles.searchBarContainer} >
-            <Image style={styles.searchIcon} source={require('../assets/images/close.png')} />
+            <Image style={styles.searchIcon} source={require('../assets/images/search.png')} />
             <TextInput style={styles.searchBar} placeholder='Search...' editable={true} onChangeText={(text)=> {this._onChangeText(text)} }/>
             <Image style={styles.resetIcon} source={require('../assets/images/close.png')} />
           </View>
@@ -54,7 +54,7 @@ class SearchModal extends React.Component {
         </View>
 
         <View style={styles.button}>
-          <RoundButton title='SEARCH' borderOn={false} bgColor={Colors.BLUE} onPress={() => this.props.dismissModal('bruuuuuh')} />
+          <RoundButton title='SEARCH' borderOn={false} bgColor={Colors.DARK_BLUE} onPress={() => this.props.dismissModal('bruuuuuh')} />
         </View>
       </View>
     )
@@ -82,26 +82,25 @@ const styles = StyleSheet.create({
     height: 64,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-around'
   },
   searchBar: {
     flex: 1,
-
-
     fontSize: 18,
     color: 'black',
-    marginLeft: 8,
+    marginLeft: 16,
     marginRight: 8
   },
   searchIcon: {
     marginLeft: 16,
-    width: 24,
-    height: 24,
+    width: 16,
+    height: 16,
   },
   resetIcon: {
-    width: 24,
-    height: 24,
-    marginRight: 16
+    width: 16,
+    height: 16,
+    marginRight: 16,
+    tintColor: Colors.LIGHT_GREY
   },
   button: {
     marginLeft: 64,
