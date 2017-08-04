@@ -9,6 +9,7 @@ import thunk from 'redux-thunk';
 import Expo from 'expo';
 import axios from 'react-native-axios';
 import * as NavActionTypes from './action-types/navigation-action-types.js';
+import * as Keys from './local-storage/keys.js';
 
 class App extends React.Component {
 
@@ -16,7 +17,21 @@ class App extends React.Component {
 
 
   async checkForID() {
-    
+    const userID = await AsyncStorage.getItem(Keys.USER_ID);
+    const fbID = await AsyncStorage.getItem(Keys.FACEBOOK_ID);
+    console.log(fbID, 'id');
+    console.log(userID, 'uid');
+    if((userID == 'null') && (fbID == 'null')){
+      this.store.dispatch({type: 'Home'});
+    } else {
+      this.store.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
+    }
+  }
+
+  async resetUser() {
+    await AsyncStorage.setItem(Keys.USER_ID, 'null');
+    await AsyncStorage.setItem(Keys.FACEBOOK_ID, 'null');
+
   }
 
   async loginFBAsync() {
@@ -28,6 +43,8 @@ class App extends React.Component {
 
       await AsyncStorage.setItem('@fb_id:key', response.data.id);
       await AsyncStorage.setItem('@fb_access_token:key', token);
+
+
     }
   }
 
@@ -41,7 +58,8 @@ class App extends React.Component {
 
   componentDidMount() {
     // this.checkLogin();
-
+    // this.resetUser();
+    this.checkForID();
 
   }
 
