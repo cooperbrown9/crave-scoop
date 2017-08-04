@@ -7,6 +7,7 @@ import NavReducer from './redux-nav/nav-reducer.js';
 import AppNavigatorWithState from './redux-nav/app-navigator.js';
 import thunk from 'redux-thunk';
 import Expo from 'expo';
+import { Font } from 'expo';
 import axios from 'react-native-axios';
 import * as NavActionTypes from './action-types/navigation-action-types.js';
 import * as Keys from './local-storage/keys.js';
@@ -60,8 +61,11 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // this.checkLogin();
-    // this.resetUser();
+    Font.loadAsync({
+      'varela-regular': require('./assets/fonts/Varela-Regular.ttf'),
+      'varela-round': require('./assets/fonts/VarelaRound-Regular.ttf'),
+    });
+
     this.checkForID();
 
   }

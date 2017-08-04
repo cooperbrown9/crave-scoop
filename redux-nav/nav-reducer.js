@@ -10,6 +10,28 @@ const tempNavState = AppNavigator.router.getStateForAction(firstAction);
 const secondAction = AppNavigator.router.getActionForPathAndParams('Places');
 const initialNavState = AppNavigator.router.getStateForAction(firstAction, tempNavState);
 
+function getDatState () {
+
+  AsyncStorage.getItem('name', (err, result) => {
+    if(err) {
+      console.log(err + ' error');
+    } else {
+      console.log('result ' + result);
+
+      let firstAct;
+
+      if(result != null) {
+        firstAct = AppNavigator.router.getActionForPathAndParams('Places');
+        return AppNavigator.router.getStateForAction(firstAct);
+
+      } else {
+        firstAct = AppNavigator.router.getActionForPathAndParams('Home');
+        return AppNavigator.router.getStateForAction(firstAct);
+      }
+
+    }
+  });
+}
 
 async function getFirstState() {
   await AsyncStorage.setItem('@LOGGEDIN:key', 'yes');
@@ -27,7 +49,7 @@ async function getFirstState() {
 
 function initState() {
   // AsyncStorage.setItem('datkey', 'bruuuh').then((value) => {
-  //
+
   // })
 
 }
@@ -42,7 +64,7 @@ function firstState () {
 };
 
 
-function nav (state = firstState(), action) {
+function nav (state = getDatState(), action) {
   let nextState;
   switch (action.type) {
 
