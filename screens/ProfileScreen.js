@@ -13,22 +13,42 @@ export default class ProfileScreen extends React.Component {
 
   });
   state = {
-    user: {},
-
+    user: {
+      first_name: '',
+      last_name: '',
+      location: ''
+    },
   }
+
   static propTypes = {
     name: React.PropTypes.string,
     location: React.PropTypes.string,
-    dismissFunc: React.PropTypes.func
+    dismissFunc: React.PropTypes.func,
+    logOutFunc: React.PropTypes.func
   };
+
+  async logOutReset() {
+    await AsyncStorage.setItem(Keys.USER_ID, 'null');
+    await AsyncStorage.setItem(Keys.FACEBOOK_ID, 'null');
+
+    this.props.logOutFunc();
+    this.props.dismissFunc(); 
+
+  }
 
   componentDidMount(){
     this.getProfiles();
+    console.log(this.state.user);
   }
   async getProfiles() {
+
     const id = await AsyncStorage.getItem('@user_id:key');
-    axios.get('https://crave-scoop.herokuapp.com/get-user/' + id).then(response => {
-      this.setState({user: response.data});
+
+    axios.get('https://crave-scoop.herokuapp.com/get-user/' + id + '/').then(async(response) =>{
+
+      await this.setState({user: response.data});
+      console.log(this.state.user);
+
     }).catch(error => {
       console.log('error fetching restaurants');
     });
@@ -44,22 +64,23 @@ export default class ProfileScreen extends React.Component {
   };
 
   render() {
-
+    const { user } = this.state;
     return(
       <View style={styles.container} >
         <CustomNavBar
           title={''}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/close.png')}/>}
           leftOnPress={this.props.dismissFunc}
-          rightButton={<Text style={styles.navBarRightButton}>Log Out</Text>}/>
+          rightButton={<Text style={styles.navBarRightButton}>Log Out</Text>}
+          rightOnPress={() => this.logOutReset()}
+          />
         <View style={styles.infoView} >
-
           <View style={styles.imageView}>
 
-              <Image style={styles.image} source={require('../assets/images/cupcake.png')}/>
+              <Image style={styles.image} source={require('../assets/images/Emma-Watson.png')}/>
           </View>
 
-          <Text style={styles.name} textColor='black'>{this.state.user.name}</Text>
+          <Text style={styles.name} textColor='black'>{this.state.user.first_name + ' ' + this.state.user.last_name}</Text>
           <Text style={styles.location} textColor='grey'>{this.state.user.location}</Text>
 
           <View style={styles.button}>
@@ -68,47 +89,45 @@ export default class ProfileScreen extends React.Component {
 
         </View>
 
-        <View style={styles.settingOptionsContainer} >
 
           <View style={styles.optionsContainer}>
 
-            <View style={styles.optionView}>
+            <View style={styles.favoritesView}>
+                <View >
+                  <Image style={styles.options_Image} source={require('../assets/images/heart.png')} ></Image>
+                </View>
 
-              <View >
-                <Image style={styles.options_Image} source={require('../assets/images/heart.png')} color='red'></Image>
-              </View>
+                <TouchableOpacity style={styles.optionsView_Text} >
+                  <Text style={styles.options_Text} >Favorites</Text>
+                </TouchableOpacity>
 
-              <View style={styles.optionsView_Text} >
-                <Text style={styles.options_Text} color='grey'>Favorites</Text>
-              </View>
+                <View style={{marginTop: 7}}>
+                  <Image style={styles.options_Arrow} source={require('../assets/images/right-arrow.png')} ></Image>
+                </View>
 
-              <View >
-                <Image style={styles.options_Arrow} source={require('../assets/images/right-arrow.png')} ></Image>
-              </View>
             </View>
-            <View style={styles.underline} backgroundColor='grey'></View>
 
 
-            <View style={styles.optionView}>
+
+
+            <View style={styles.notificationsView}>
 
               <View >
                 <Image style={styles.options_Image} source={require('../assets/images/heart.png')} ></Image>
               </View>
 
-              <View style={styles.optionsView_Text} >
-                <Text style={styles.options_Text} color='grey'>Notifications</Text>
-              </View>
+              <TouchableOpacity style={styles.optionsView_Text} >
+                <Text style={styles.options_Text} >Notifications</Text>
+              </TouchableOpacity>
 
-              <View >
+              <View style={{marginTop: 7}}>
                 <Image style={styles.options_Arrow} source={require('../assets/images/right-arrow.png')} ></Image>
               </View>
 
             </View>
-            <View style={styles.underline} backgroundColor='grey'></View>
           </View>
 
         </View>
-      </View>
 
     );
   }
@@ -125,6 +144,22 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'stretch'
+  },
+  favoritesView:{
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 24,
+    borderBottomColor: 'grey',
+    borderBottomWidth: 1,
+    height: 36
+
+  },
+  notificationsView: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    borderBottomColor: 'grey',
+    borderBottomWidth: 1,
+    height: 36
   },
   imageView: {
     alignItems: 'center'
@@ -143,7 +178,8 @@ const styles = StyleSheet.create({
   image: {
     height: 72,
     width: 72,
-    marginTop: 32
+    marginTop: 32,
+    borderRadius: 36,
   },
   name: {
     fontSize: 18,
@@ -154,7 +190,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 12,
     marginTop: 4,
-    marginBottom: 16
+    marginBottom: 16,
+    color: 'gray'
   },
   button: {
     alignItems: 'stretch',
@@ -174,11 +211,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     marginLeft: 32,
     marginRight: 32
-  },
-  optionView: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 16
   },
   options_Image: {
     height: 20,
@@ -201,7 +233,8 @@ const styles = StyleSheet.create({
   underline: {
     marginBottom: 20,
     height: 1,
-    marginLeft: 32
+    marginLeft: 32,
+    backgroundColor: 'gray'
   },
 });
 

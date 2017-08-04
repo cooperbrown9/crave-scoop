@@ -55,7 +55,7 @@ class HomeScreen extends React.Component {
     // this.checkLoginStatus();
     // this.getUser();
     // this.somethin();
-
+    
   }
 
   somethin() {

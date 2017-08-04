@@ -81,6 +81,9 @@ class PlacesScreen extends React.Component {
       <VendorItem model={{ id: item._id, name: item.name }} onTouch={this.handleKeyPress(item).bind(this)} key={item._id} />
     )
   }
+  _navigateHome = () =>{
+    this.props.navigation.dispatch({type: 'Home'});
+  }
 
   _presentProfileModal = () => {
     this.setState({profilePresented: true});
@@ -146,7 +149,7 @@ class PlacesScreen extends React.Component {
 
 
         <Modal animationType={'slide'} transparent={false} visible={this.state.profilePresented} >
-          <ProfileScreen dismissFunc={this._dismissProfileModal.bind(this)} />
+          <ProfileScreen dismissFunc={this._dismissProfileModal.bind(this)} logOutFunc={this._navigateHome.bind(this)}/>
         </Modal>
 
         <Modal animationType={"slide"} transparent={false} visible={this.state.filterPresented} >
