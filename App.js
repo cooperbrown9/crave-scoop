@@ -9,7 +9,7 @@ import thunk from 'redux-thunk';
 import Expo from 'expo';
 import axios from 'react-native-axios';
 import * as NavActionTypes from './action-types/navigation-action-types.js';
-
+import * as Keys from './local-storage/keys.js';
 
 class App extends React.Component {
 
@@ -17,16 +17,12 @@ class App extends React.Component {
 
 
   async checkForID() {
-<<<<<<< HEAD
-    // const userID = await AsyncStorage.getItem()
+    const userID = await AsyncStorage.getItem(Keys.USER_ID);
+    const fbID = await AsyncStorage.getItem(Keys.FACEBOOK_ID);
+
+
   }
 
-
-=======
-    
-  }
-
->>>>>>> da18e5624f6c35617e432e0e70848726079e3c1a
   async loginFBAsync() {
     const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', {permissions:['public_profile'], behavior: 'web'});
     if (type === 'success') {
@@ -40,8 +36,9 @@ class App extends React.Component {
   }
 
   async checkLogin() {
+    await AsyncStorage.setItem(Keys.FACEBOOK_ID, 'abc');
     const id = await AsyncStorage.getItem('@fb_id:key');
-
+    console.log('fbid', id);
     if (id != null) {
       this.store.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
     }
@@ -51,6 +48,10 @@ class App extends React.Component {
     // this.checkLogin();
 
 
+  }
+
+  componentWillMount() {
+    // this.checkLogin();
   }
 
   render() {

@@ -9,6 +9,32 @@ const firstAction = AppNavigator.router.getActionForPathAndParams('Home');
 const tempNavState = AppNavigator.router.getStateForAction(firstAction);
 const secondAction = AppNavigator.router.getActionForPathAndParams('Places');
 const initialNavState = AppNavigator.router.getStateForAction(firstAction, tempNavState);
+
+
+async function getFirstState() {
+  await AsyncStorage.setItem('@LOGGEDIN:key', 'yes');
+  const isLoggedIn = await AsyncStorage.getItem('@LOGGEDIN:key');
+
+  let fa = AppNavigator.router.getActionForPathAndParams('Home');
+  let tempNav = AppNavigator.router.getStateForAction(fa);
+
+  if (isLoggedIn === 'yes') {
+    fa = AppNavigator.router.getActionForPathAndParams('Places');
+    tempNav = AppNavigator.router.getStateForAction(fa);
+  }
+  return {...tempNav};
+}
+
+function initState() {
+  // AsyncStorage.setItem('datkey', 'bruuuh').then((value) => {
+  //
+  // })
+
+}
+
+const fa = AppNavigator.router.getActionForPathAndParams((initState() == 'null' ? 'Home' : 'Places'));
+const temp = AppNavigator.router.getStateForAction(fa);
+
 function firstState () {
   return {
     ...tempNavState
@@ -62,6 +88,7 @@ function nav (state = firstState(), action) {
 
 const initialModalState = {};
 function modal (state = initialModalState, action) {
+
   let nextState = state;
   switch(action.type) {
 
@@ -162,7 +189,6 @@ function user (state = initialUserState, action){
   switch(action.type){
 
     case NavActionTypes.GET_USER:
-      debugger;
       return {
         ...state,
         success: true,

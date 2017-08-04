@@ -39,13 +39,11 @@ class PlaceDetailScreen extends React.Component {
  }
 
  _dismissFilterModal = () => {
-   this.state.vendorItemModalPresented = false;
-   this.setState(this.state);
+   this.setState({vendorItemModalPresented: false});
  }
 
  _presentFilterModal = () => {
-   this.state.vendorItemModalPresented = true;
-   this.setState(this.state);
+   this.setState({vendorItemModalPresented: true});
  }
 
  handleKeyPress(item) {
@@ -53,9 +51,9 @@ class PlaceDetailScreen extends React.Component {
      e.preventDefault();
 
      this.setState({vendorItemModalPresented: true});
-     let model = { name: item.name, description: item.description };
+    //  let model = { name: item.name, description: item.description };
 
-     this.props.dispatch({type: 'VendorItemModal', model: model});
+     this.props.dispatch({type: 'VendorItemModal', model: { name: item.name, description: item.description }});
    }
  }
 
@@ -190,7 +188,7 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = (state) => {
-
+  debugger;
   if (state.nav.routes.length < 3) {
     return {...state}
   }

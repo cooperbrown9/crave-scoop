@@ -32,9 +32,8 @@ export default class ProfileScreen extends React.Component {
   getProfiles = () => {
     axios.get('https://crave-scoop.herokuapp.com/get-user/' + UserID).then(response => {
       this.setState({user: response.data});
-      // console.log(this.state.restaurants);
     }).catch(error => {
-      // console.log('error fetching restaurants');
+      console.log('error fetching restaurants');
     });
   }
 
@@ -207,6 +206,6 @@ const styles = StyleSheet.create({
     height: 1,
     marginLeft: 32
   },
-
-
 });
+
+// mapStateToProps

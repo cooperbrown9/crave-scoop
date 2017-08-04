@@ -9,15 +9,11 @@ import { bindActionCreators } from 'redux';
 class VendorItemModal extends React.Component {
 
   static propTypes = {
-    dismissFunc: React.PropTypes.func.isRequired,
-
+    dismissFunc: React.PropTypes.func.isRequired
   };
 
  componentDidMount () {
  }
-
-
-
 
   render() {
 
@@ -53,12 +49,8 @@ class VendorItemModal extends React.Component {
               </View>
             </View>
 
-
           </View>
       </View>
-
-
-
     );
   }
 }
@@ -154,7 +146,6 @@ class VendorItemModal extends React.Component {
 
   var mapStateToProps = (state) => {
    return {
-
      model: state.modal.model,
      nutritionFacts: ['dairy free', 'vegan', 'gluten free', 'vegetarian'],
    }

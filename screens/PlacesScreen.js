@@ -69,7 +69,7 @@ class PlacesScreen extends React.Component {
   handleKeyPress(item) {
     return function(e) {
       e.preventDefault();
-      
+
       axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + item._id).then(
         response => this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
       )
@@ -125,26 +125,8 @@ class PlacesScreen extends React.Component {
 
   }
 
-  // _renderSearch() {
-  //   if (this.state.searchOn) {
-  //     return (
-  //       <View>
-  //         <SearchBar onChangeText={this._autocomplete.bind(this)} lightTheme={true} round={true} placeholder='Search' />
-  //           <View>
-  //             {this.state.restaurants.map(vendor => <TouchableOpacity key={vendor._id}><Text style={{marginLeft: 16, fontSize: 24, marginBottom: 4}}>{vendor.name}</Text></TouchableOpacity>)}
-  //           </View>
-  //       </View>
-  //     )
-  //   } else {
-  //     return null;
-  //   }
-  // }
-
-  // _vendorPicked = (props) => {
-  //   this.props.navigation.navigate('PlaceDetail', {model:{name: 'Cool Cakes'}});
-  // }
-
   render() {
+
     return (
       <View style={(this.state.loading) ? styles.loadingHider : styles.container } >
 
@@ -311,13 +293,14 @@ const styles = StyleSheet.create({
   }
 });
 
+export default PlacesScreen;
 
-var mapStateToProps = (state) => {
-  console.log(state);
+// var mapStateToProps = (state) => {
+//   console.log(state);
+//
+//   return {
+//     navigator: state.nav
+//   }
+// }
 
-  return {
-    // navigator: state.nav
-  }
-}
-
-export default connect(mapStateToProps)(PlacesScreen);
+// export default connect(mapStateToProps)(PlacesScreen);

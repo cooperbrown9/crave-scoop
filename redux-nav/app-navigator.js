@@ -6,15 +6,23 @@ import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import PlacesScreen from '../screens/PlacesScreen';
 import PlaceDetailScreen from '../screens/PlaceDetailScreen';
+import { AsyncStorage } from 'react-native';
+import * as NavActionTypes from '../action-types/navigation-action-types.js';
 
-
+function getLoginState() {
+  const id = AsyncStorage.getItem('@abcbruh');
+  // debugger;
+  return 'g';
+}
 
 export const AppNavigator = StackNavigator({
   Home: { screen: HomeScreen },
   Places: { screen: PlacesScreen },
   PlaceDetail: { screen: PlaceDetailScreen },
+},
 
-});
+  { initialRouteName: (getLoginState() == null) ? NavActionTypes.NAVIGATE_PLACES : NavActionTypes.NAVIGATE_PLACES }
+);
 
 const AppNavigatorWithState = ({ dispatch, nav }) => (
   <AppNavigator navigation={addNavigationHelpers({dispatch, state: nav})} />

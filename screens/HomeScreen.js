@@ -53,14 +53,37 @@ class HomeScreen extends React.Component {
     // FB App ID 1565112886889636 SECRET: 7765eef11057d8b0e03799d070856e73
     // this.props.dispatch(this.getUserFoReal('59765d2df60c01001198f3b5').bind(this));
     // this.checkLoginStatus();
-    this.getUser();
+    // this.getUser();
+    // this.somethin();
+
+  }
+
+  somethin() {
+  AsyncStorage.setItem('@bc123:key', 'bruuuh').then(g => {
+      console.log(g);
+    });
+
 
 
   }
 
-  async getUser() {
+  componentWillMount() {
+    this.getUser();
+  }
 
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if(this.state.skipRender) {
+  //     this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
+
+  async getUser() {
+    await AsyncStorage.setItem(Keys.USER_ID, '59765d2df60c01001198f3b5')
     const id = await AsyncStorage.getItem(Keys.USER_ID);
+    console.log(id, 'yuuuh');
     this.setState({userID: id}, () => {
       this.props.dispatch(this.getUserHelper(this.state.userID).bind(this));
     });
@@ -132,11 +155,10 @@ class HomeScreen extends React.Component {
 
   _profileModalPresented = () => {
     if(this.state.profilePresented === false){
-      this.state.profilePresented = true;
+      this.setState({ profilePresented: true });
     } else if(this.state.profilePresented === true){
-      this.state.profilePresented = false;
+      this.setState({profilePresented: false });
     }
-    this.setState(this.state);
   }
 
   _login = () => {
@@ -144,7 +166,7 @@ class HomeScreen extends React.Component {
   }
 
   _goToPlacesScreen = () => {
-    this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES, name: '', description: 'its lit'});
+    this.props.navigation.dispatch({ type: NavActionTypes.NAVIGATE_PLACES });
   };
 
   _dismissModal = () => {
@@ -228,15 +250,13 @@ const styles = StyleSheet.create({
     textDecorationStyle: 'solid',
     bottom: 32
   },
-  heart:{
+  heart: {
     height: 16,
     width: 16,
   },
 });
 
-
 var mapStateToProps = (state) => {
-  debugger;
   return {
     navigator: state.nav,
     isLoggedIn: state.auth.isLoggedIn,

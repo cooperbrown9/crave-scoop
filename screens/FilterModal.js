@@ -66,18 +66,11 @@ class FilterModal extends React.Component {
   }
 
   componentDidMount() {
-    // this.props.dispatch(this._getVendorsNearby().bind(this)).then(() => {
-    //   debugger;
-    //   this.props.filterFunc(this.props.vendors);
-    // });
-    // this.getVendor();
-    // console.log(this.state.vendor);
+
   }
 
   _dismissPrototype() {
     this.getVendor();
-
-
   }
 
   _checkFavorite = () => {
@@ -99,7 +92,6 @@ class FilterModal extends React.Component {
 
     return(
       <View style={styles.container} >
-
 
         <CustomNavBar
           title={'Filter'}
@@ -139,7 +131,6 @@ class FilterModal extends React.Component {
         <View style={styles.buttonStyle} >
           <RoundButton title='VIEW PLACES' onPress={this.filterVendorss} bgColor={Colors.DARK_BLUE} borderOn={false} />
         </View>
-
 
       </View>
     )
