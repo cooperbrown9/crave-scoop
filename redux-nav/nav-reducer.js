@@ -70,10 +70,10 @@ function nav (state = getDatState(), action) {
 
     case 'Home':
       nextState = AppNavigator.router.getStateForAction(
-        NavigationActions.navigate.goBack(),
+        NavigationActions.navigate({routeName: 'Home'}),
         state
       );
-      nextState.nav.routes[nextState.nav.index].params.userID = '1234';
+      
       break;
 
     case NavActionTypes.NAVIGATE_PLACES:
