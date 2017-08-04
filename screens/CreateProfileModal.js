@@ -11,6 +11,7 @@ export default class CreateProfileModal extends React.Component {
   state = {
     passwordVisible: false,
     firstName: 'Tony',
+    user: {}
 
   }
   static propTypes:{
@@ -18,8 +19,15 @@ export default class CreateProfileModal extends React.Component {
   }
 
   _createUserAndDismiss = () => {
+    const id = '';
     axios.put('https://crave-scoop.herokuapp.com/add-user/' + this.state.firstName + '/user/Spokane/').then(async (response) => {
       await AsyncStorage.setItem(Keys.USER_ID, response.data);
+      return response.data;
+    }).then((id) => {
+      debugger;
+      axios.get('https://crave-scoop.herokuapp.com/get-user/' + id + '/').then(async (response) =>{
+        await this.setState({user: response.data});
+      })
     }).then(() =>
       this.props.dismissFunc()
     )
