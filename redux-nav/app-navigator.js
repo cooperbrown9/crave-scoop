@@ -8,6 +8,7 @@ import PlacesScreen from '../screens/PlacesScreen';
 import PlaceDetailScreen from '../screens/PlaceDetailScreen';
 import { AsyncStorage } from 'react-native';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
+import ProfileScreen from '../screens/ProfileScreen';
 
 function getLoginState() {
   const id = AsyncStorage.getItem('@abcbruh');
