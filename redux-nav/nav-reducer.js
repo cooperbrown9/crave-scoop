@@ -41,6 +41,7 @@ function firstState () {
   }
 };
 
+
 function nav (state = firstState(), action) {
   let nextState;
   switch (action.type) {
@@ -61,12 +62,12 @@ function nav (state = firstState(), action) {
 
       break;
 
-    case NavActionTypes.NAVIGATE_PLACES_DETAIL:
-      nextState = AppNavigator.router.getStateForAction(
-        NavigationActions.navigate({routeName: 'PlaceDetail', params: { model: action.model }}),
-        state
-      );
-      break;
+      case NavActionTypes.NAVIGATE_PLACES_DETAIL:
+        nextState = AppNavigator.router.getStateForAction(
+          NavigationActions.navigate({routeName: 'PlaceDetail', params: { model: action.model }}),
+          state
+        );
+        break;
 
     case NavActionTypes.GO_BACK:
       nextState = AppNavigator.router.getStateForAction(
@@ -76,7 +77,10 @@ function nav (state = firstState(), action) {
       break;
 
     case 'Profile':
-      nextState.name = action.name;
+    nextState = AppNavigator.router.getStateForAction(
+      NavigationActions.navigate({routeName: 'Profile'}),
+      state
+    );
 
       break;
     default:

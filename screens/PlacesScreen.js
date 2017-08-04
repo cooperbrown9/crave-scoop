@@ -135,7 +135,7 @@ class PlacesScreen extends React.Component {
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/search.png')}/>}
           rightButton={<Image style={styles.navBarRightButton} source={require('../assets/images/settings.png')}/>}
           leftOnPress={this._presentSearchModal}
-          rightOnPress={() => this.props.navigation.goBack()} />
+          rightOnPress={() => this.props.navigation.dispatch({type: 'Profile'})} />
 
 
 

@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, AsyncStorage } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
 import DARK_BLUE from '../colors/colors.js';
 import UserID from '../test-user/user.js';
 import axios from 'react-native-axios';
 import CustomNavBar from '../ui-elements/custom-nav-bar';
+import * as Keys from '../local-storage/keys.js';
 // import ProfileModel from '../models/profile-model.js';
 
 export default class ProfileScreen extends React.Component {
@@ -19,18 +20,15 @@ export default class ProfileScreen extends React.Component {
   static propTypes = {
     name: React.PropTypes.string,
     location: React.PropTypes.string,
-    person: React.PropTypes.shape({
-      name: React.PropTypes.string.isRequired,
-      location: React.PropTypes.string.isRequired
-    }),
-    dismissFunc: React.PropTypes.func.isRequired
+    dismissFunc: React.PropTypes.func
   };
 
   componentDidMount(){
     this.getProfiles();
   }
-  getProfiles = () => {
-    axios.get('https://crave-scoop.herokuapp.com/get-user/' + UserID).then(response => {
+  async getProfiles() {
+    const id = await AsyncStorage.getItem('@user_id:key');
+    axios.get('https://crave-scoop.herokuapp.com/get-user/' + id).then(response => {
       this.setState({user: response.data});
     }).catch(error => {
       console.log('error fetching restaurants');
@@ -51,7 +49,7 @@ export default class ProfileScreen extends React.Component {
     return(
       <View style={styles.container} >
         <CustomNavBar
-          title={this.props.name}
+          title={''}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/close.png')}/>}
           leftOnPress={this.props.dismissFunc}
           rightButton={<Text style={styles.navBarRightButton}>Log Out</Text>}/>

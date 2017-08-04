@@ -103,13 +103,14 @@ class HomeScreen extends React.Component {
     const id = await AsyncStorage.getItem('@fb_id:key');
     const token = await AsyncStorage.getItem('@fb_access_token:key');
 
-    if (id == null || token == null) {
-      this.loginFBAsync();
+    if (id == 'null' || token == 'null') {
+      await this.loginFBAsync();
     } else {
       // const longToken = await axios.get('https://graph.facebook.com/oauth/access_token?client_id=1565112886889636&client_secret=7765eef11057d8b0e03799d070856e73&grant_type=fb_exchange_token&fb_exchange_token=' + token);
       this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
     }
   }
+
 
   async loginFBAsync() {
     const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', {permissions:['public_profile'], behavior: 'web'});
@@ -120,6 +121,12 @@ class HomeScreen extends React.Component {
 
       await AsyncStorage.setItem('@fb_id:key', response.data.id);
       await AsyncStorage.setItem('@fb_access_token:key', token);
+
+      axios.put('https://crave-scoop.herokuapp.com/add-user/' + response.data.name + '/LastName/Spokane/').then(async (response) => {
+        await AsyncStorage.setItem(Keys.USER_ID, response.data);
+      });
+
+
     }
   }
 
@@ -174,6 +181,7 @@ class HomeScreen extends React.Component {
     this.setState(this.state);
   }
 
+
   render() {
     let {width, height} = Dimensions.get('window');
     let halfHeight = height / 2;
@@ -196,7 +204,7 @@ class HomeScreen extends React.Component {
         </View>
 
         <View style={styles.buttonContainer} >
-          <RoundButton title='Continue with Facebook' onPress={this._goToPlacesScreen} bgColor='white' textColor='#41d9f4' />
+          <RoundButton title='Continue with Facebook' onPress={this.checkLoginStatus.bind(this)} bgColor='white' textColor='#41d9f4' />
           <RoundButton title='Create Account' onPress={this._profileModalPresented} />
         </View>
         <Text style={styles.termsText}>Terms of Service</Text>
