@@ -4,13 +4,15 @@ import {
     Text,
     Image,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    AsyncStorage
 } from 'react-native';
 import * as Colors from '../colors/colors.js';
+import * as Keys from '../local-storage/keys.js';
 import axios from 'react-native-axios';
 import UserID from '../test-user/user.js';
 
-export default class VendorItem extends Component {
+export default class VendorView extends Component {
 
   static propTypes = {
     onTouch: React.PropTypes.func,
@@ -18,11 +20,9 @@ export default class VendorItem extends Component {
     userFavorites: React.PropTypes.array
   }
 
-
   state = {
     active: false,
     wasLiked: false
-
   };
 
   componentDidMount() {
@@ -30,26 +30,26 @@ export default class VendorItem extends Component {
       if(this.props.userFavorites[i].vendor_id === this.props.model.id) {
         this.setState({active: true, wasLiked: true});
       }
-
     }
-
   }
 
   _updateLikeCount = () => {
     let realLikes = this.props.model.like_count;
-      if(this.state.active === true && this.state.wasLiked === false){
-        realLikes += 1;
-      }
-
-     else if(this.state.active === false && this.state.wasLiked === true){
-        realLikes -=1;
-      }
-      return realLikes;
+    if(this.state.active === true && this.state.wasLiked === false){
+      realLikes += 1;
     }
+
+   else if(this.state.active === false && this.state.wasLiked === true){
+      realLikes -=1;
+    }
+    return realLikes;
+  }
 
   _iconSwitch = () => {
 
-    let url = this.state.active ? 'https://crave-scoop.herokuapp.com/remove-favorite/' + '59765d2df60c01001198f3b5/' + this.props.model.id : 'https://crave-scoop.herokuapp.com/add-favorite/' + '59765d2df60c01001198f3b5/' + this.props.model.id;
+    AsyncStorage.getItem(Keys.USER_ID, (err, id) => {
+      console.log(id);
+    let url = this.state.active ? 'https://crave-scoop.herokuapp.com/remove-favorite/' + id + '/' + this.props.model.id : 'https://crave-scoop.herokuapp.com/add-favorite/' + '59765d2df60c01001198f3b5/' + this.props.model.id;
     console.log(url);
     axios.put(url).then(response => {
       this.state.active = !this.state.active;
@@ -57,11 +57,8 @@ export default class VendorItem extends Component {
     }).catch(error => {
       console.log('couldnt update like count');
     });
+  });
   }
-
-
-
-
 
   render() {
     const model = this.props.model;
@@ -90,7 +87,6 @@ export default class VendorItem extends Component {
     )
   }
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -129,20 +125,25 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginTop: 10
   },
-  text:{
+  text: {
     flex: 3,
     marginLeft: 16,
-    fontWeight: 'bold',
-    fontSize: 18
+    fontWeight: '400',
+    fontSize: 18,
+    color: 'black',
+    fontFamily: 'varela-round'
   },
-  number:{
-    fontSize: 12,
-    width: 32
+  number: {
+    fontSize: 14,
+    width: 28,
+    marginRight: 8,
+    color: Colors.LIGHT_GREY,
+    textAlign: 'right'
   },
-  heart:{
+  heart: {
     marginRight: 16,
     height: 24,
     width: 24,
-    tintColor: '#41d9f4'
+    tintColor: Colors.DARK_BLUE
   },
 });

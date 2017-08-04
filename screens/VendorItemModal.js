@@ -23,7 +23,7 @@ class VendorItemModal extends React.Component {
         <CustomNavBar
           title={''}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/back-arrow.png')}/>}
-          leftOnPress={() => this.props.dismissFunc()}/>
+          leftOnPress={() => this.props.dismissFunc()} />
 
           <View style={styles.topContainer} >
 
@@ -39,7 +39,7 @@ class VendorItemModal extends React.Component {
               <Text style={styles.restaurantDescription}>{this.props.model.description}</Text>
               <View style={{marginTop: 16}}>
               {this.props.nutritionFacts.map(fact =>
-                  <View style={styles.nutritionFactStyle}>
+                  <View style={styles.nutritionFactStyle} key={fact} >
                     <View style={{justifyContent: 'center', backgroundColor: 'green', alignItems: 'center', width: 16, height: 16, borderRadius: 4, borderWidth: 2, borderColor: Colors.DARK_GREY}} >
                       <Image source={require('../assets/images/check-mark.png')} style={{width: 10, height: 10, tintColor:'white'}} />
                     </View>

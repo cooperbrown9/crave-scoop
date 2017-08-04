@@ -37,48 +37,14 @@ class HomeScreen extends React.Component {
     profilePresented: false
   }
 
-
-  getTestName = async() => {
-    await AsyncStorage.setItem('@test_username:key', 'cool dude');
-    const name = await AsyncStorage.getItem('@test_username:key');
-    console.log(name);
-  }
-
-  async getName() {
-    const name = await AsyncStorage.getItem('@test_username:key');
-    console.log(name);
-  }
-
   componentDidMount() {
     // FB App ID 1565112886889636 SECRET: 7765eef11057d8b0e03799d070856e73
-    // this.props.dispatch(this.getUserFoReal('59765d2df60c01001198f3b5').bind(this));
-    // this.checkLoginStatus();
-    // this.getUser();
-    // this.somethin();
-
-  }
-
-  somethin() {
-  AsyncStorage.setItem('@bc123:key', 'bruuuh').then(g => {
-      console.log(g);
-    });
-
-
-
+    AsyncStorage.setItem(Keys.USER_ID, '59765d2df60c01001198f3b5');
   }
 
   componentWillMount() {
     this.getUser();
   }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if(this.state.skipRender) {
-  //     this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }
 
   async getUser() {
     await AsyncStorage.setItem(Keys.USER_ID, '59765d2df60c01001198f3b5')

@@ -10,9 +10,14 @@ import { AsyncStorage } from 'react-native';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
 
 function getLoginState() {
-  const id = AsyncStorage.getItem('@abcbruh');
-  // debugger;
-  return 'g';
+  AsyncStorage.getItem('name', (err, result) => {
+    if(err) {
+      console.log(err);
+    } else {
+      console.log('result ' + result);
+      return result;
+    }
+  })
 }
 
 export const AppNavigator = StackNavigator({
@@ -20,8 +25,8 @@ export const AppNavigator = StackNavigator({
   Places: { screen: PlacesScreen },
   PlaceDetail: { screen: PlaceDetailScreen },
 },
-
-  { initialRouteName: (getLoginState() == null) ? NavActionTypes.NAVIGATE_PLACES : NavActionTypes.NAVIGATE_PLACES }
+// { initialRouteName: 'Places' }
+  { initialRouteName: (getLoginState() == null) ? 'Home' : 'Places' }
 );
 
 const AppNavigatorWithState = ({ dispatch, nav }) => (

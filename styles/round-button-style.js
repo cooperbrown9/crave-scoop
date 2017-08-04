@@ -6,8 +6,8 @@ export default class RoundButtonStyle {
     return StyleSheet.create({
       style: {
         backgroundColor: bgColor,
-        height: 64,
-        borderRadius: 32,
+        height: 54,
+        borderRadius: 27,
         borderColor: 'white',
         borderWidth: borderOn ? 2 : 0,
         marginBottom: 16,
@@ -26,7 +26,7 @@ export default class RoundButtonStyle {
         justifyContent: 'center',
         textAlign: 'center',
         height: 22,
-        marginTop: 20,
+        marginTop: 16,
         fontSize: 16,
         backgroundColor: 'transparent',
         fontWeight: 'bold',

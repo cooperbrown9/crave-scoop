@@ -9,11 +9,12 @@ import {
   TouchableOpacity,
   View,
   Button,
-  Modal
+  Modal,
+  ActivityIndicator
 } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import axios from 'react-native-axios';
-import VendorItem from '../ui-elements/vendor-item.js';
+import VendorView from '../ui-elements/vendor-view.js';
 import { connect } from 'react-redux';
 import NavBar from '../ui-elements/nav-bar.js';
 import * as Colors from '../colors/colors.js';
@@ -38,7 +39,6 @@ class PlacesScreen extends React.Component {
   state = {
     restaurants: [],
     loading: true,
-    name: 'gfh',
     profilePresented: false,
     filterPresented: false,
     searchOn: false,
@@ -76,16 +76,20 @@ class PlacesScreen extends React.Component {
     }
   }
 
-  renderVendorItem(item) {
+  renderVendorView(item) {
     return(
-      <VendorItem model={{ id: item._id, name: item.name }} onTouch={this.handleKeyPress(item).bind(this)} key={item._id} />
+      <VendorView model={{ id: item._id, name: item.name }} onTouch={this.handleKeyPress(item).bind(this)} key={item._id} />
     )
   }
 
 
-  _dismissSearchModal(vendor) {
-    this.setState({searchPresented: false});
-    this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, id: item._id});
+  _dismissSearchModal = (vendor) => {
+    axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + vendor._id).then(
+      response => this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
+    ).then(() => {
+      this.setState({searchPresented: false});
+    });
+    // this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, id: item._id});
   }
 
   _presentSearchModal = () => {
@@ -153,13 +157,13 @@ class PlacesScreen extends React.Component {
         <ScrollView style={styles.scrollContainer}>
 
           <View style={styles.itemContainer} >
-            {this.state.restaurants.map(model => <VendorItem userFavorites={this.state.user.favorites} model={{id: model._id, name: model.name, like_count: model.like_count}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
+            {this.state.restaurants.map(model => <VendorView userFavorites={this.state.user.favorites} model={{id: model._id, name: model.name, like_count: model.like_count}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
 
             </View>
 
         </ScrollView>
 
-        <View style={styles.filterButton}>
+        <View style={styles.button}>
           <RoundButton title='FILTERS' onPress={this._presentFilterModal} bgColor={Colors.DARK_BLUE} borderOn={false}/>
         </View>
 
@@ -290,6 +294,14 @@ const styles = StyleSheet.create({
     marginLeft: 64,
     marginRight: 64,
     backgroundColor: 'transparent'
+  },
+  button: {
+    position: 'absolute',
+    right: 0,
+    left: 0,
+    marginLeft: 100,
+    marginRight: 100,
+    bottom: 0
   }
 });
 

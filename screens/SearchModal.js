@@ -31,7 +31,6 @@ class SearchModal extends React.Component {
     });
   }
 
-
   render() {
 
     return (
@@ -40,7 +39,9 @@ class SearchModal extends React.Component {
           <View style={styles.searchBarContainer} >
             <Image style={styles.searchIcon} source={require('../assets/images/search.png')} />
             <TextInput style={styles.searchBar} placeholder='Search...' editable={true} onChangeText={(text)=> {this._onChangeText(text)} }/>
-            <Image style={styles.resetIcon} source={require('../assets/images/close.png')} />
+            <TouchableOpacity onPress={() => this.props.dismissModal()}>
+              <Image style={styles.resetIcon} source={require('../assets/images/close.png')} />
+            </TouchableOpacity>
           </View>
           <View style={{height: 64}}></View>
 
