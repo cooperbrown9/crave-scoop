@@ -37,7 +37,6 @@ class App extends React.Component {
 
   }
 
->>>>>>> da18e5624f6c35617e432e0e70848726079e3c1a
   async loginFBAsync() {
     const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', {permissions:['public_profile'], behavior: 'web'});
     if (type === 'success') {

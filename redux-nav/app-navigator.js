@@ -6,7 +6,6 @@ import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import PlacesScreen from '../screens/PlacesScreen';
 import PlaceDetailScreen from '../screens/PlaceDetailScreen';
-import PlaceDetailScreen from '../screens/PlaceDetailScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 
 

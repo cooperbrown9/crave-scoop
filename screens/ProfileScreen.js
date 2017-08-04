@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, AsyncStorage } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
-import DARK_BLUE from '../colors/colors.js';
-import UserID from '../test-user/user.js';
+import * as Colors from '../colors/colors.js';import UserID from '../test-user/user.js';
 import axios from 'react-native-axios';
 import CustomNavBar from '../ui-elements/custom-nav-bar';
 import * as Keys from '../local-storage/keys.js';
@@ -65,7 +64,7 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.location} textColor='grey'>{this.state.user.location}</Text>
 
           <View style={styles.button}>
-            <RoundButton title='EDIT PROFILE' onPress={this._editProfile} bgColor='blue' textColor='white' borderOn={false}/>
+            <RoundButton title='EDIT PROFILE' onPress={this._editProfile} bgColor={Colors.DARK_BLUE} textColor='white' borderOn={false}/>
           </View>
 
         </View>

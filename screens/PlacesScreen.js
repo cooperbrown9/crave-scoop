@@ -69,7 +69,7 @@ class PlacesScreen extends React.Component {
   handleKeyPress(item) {
     return function(e) {
       e.preventDefault();
-      
+
       axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + item._id).then(
         response => this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
       )
@@ -82,6 +82,13 @@ class PlacesScreen extends React.Component {
     )
   }
 
+  _presentProfileModal = () => {
+    this.setState({profilePresented: true});
+  }
+
+  _dismissProfileModal = () => {
+    this.setState({profilePresented: false});
+  }
 
   _dismissSearchModal(vendor) {
     this.setState({searchPresented: false});
@@ -153,19 +160,15 @@ class PlacesScreen extends React.Component {
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/search.png')}/>}
           rightButton={<Image style={styles.navBarRightButton} source={require('../assets/images/settings.png')}/>}
           leftOnPress={this._presentSearchModal}
-          rightOnPress={() => this.props.navigation.dispatch({type: 'Profile'})} />
+          rightOnPress={this._presentProfileModal} />
 
 
-
-        <Modal animationType={'slide'} transparent={false} visible={this.state.searchPresented} >
-          <SearchModal dismissModal={this._dismissSearchModal.bind(this)} />
+        <Modal animationType={'slide'} transparent={false} visible={this.state.profilePresented} >
+          <ProfileScreen dismissFunc={this._dismissProfileModal.bind(this)} />
         </Modal>
 
-
         <Modal animationType={"slide"} transparent={false} visible={this.state.filterPresented} >
-
             <FilterModal filterFunc={this.dismissAndFilter.bind(this)} dismissFunc={this._dismissFilterModal.bind(this)} />
-
         </Modal>
 
         <ScrollView style={styles.scrollContainer}>
