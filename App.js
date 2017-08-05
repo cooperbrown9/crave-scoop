@@ -61,17 +61,16 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    Font.loadAsync({
-      'varela-regular': require('./assets/fonts/Varela-Regular.ttf'),
-      'varela-round': require('./assets/fonts/VarelaRound-Regular.ttf'),
-    });
 
     this.checkForID();
 
   }
 
   componentWillMount() {
-    // this.checkLogin();
+    Font.loadAsync({
+      'varela-regular': require('./assets/fonts/Varela-Regular.ttf'),
+      'varela-round': require('./assets/fonts/VarelaRound-Regular.ttf'),
+    });
   }
 
   render() {

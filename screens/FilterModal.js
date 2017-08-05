@@ -33,8 +33,6 @@ class FilterModal extends React.Component {
     });
   }
 
-
-
   filterVendorss = () => {
     let base = 'https://crave-scoop.herokuapp.com/';
     let url = 'get-vendor/';
@@ -88,44 +86,44 @@ class FilterModal extends React.Component {
   render() {
     var favCheck = this.state.favoriteChecked ? require('../assets/images/check-mark.png') : null;
     var openNowCheck = this.state.openNowChecked ? require('../assets/images/check-mark.png') : null;
-    var nearMeCheck = this.state.openNowChecked ? require('../assets/images/check-mark.png') : null;
+    var nearMeCheck = this.state.nearMeChecked ? require('../assets/images/check-mark.png') : null;
 
     return(
       <View style={styles.container} >
 
         <CustomNavBar
-          title={'Filter'}
+          title={'FILTER'}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/close.png')}/>}
           rightButton={<Text style={styles.navBarRightButton}>Reset</Text>}
           leftOnPress={this.props.dismissFunc}/>
 
-        <Text style={{height: 24, width: 120, fontSize: 20, fontWeight: 'bold', marginTop: 16, marginLeft: 16, }} textColor='black' >My Crave</Text>
+        <Text style={{height: 24, width: 120, fontSize: 20, fontWeight: 'bold', marginTop: 16, marginLeft: 16, marginBottom: 16 }} textColor='black' >My Crave</Text>
 
-        <View style={styles.optionsView} >
+        <TouchableOpacity onPress={() => this._checkFavorite()} style={styles.optionsView} >
           <Text style={styles.text}>Favorites</Text>
-            <TouchableOpacity onPress={this._checkFavorite} style={{justifyContent: 'center', alignItems: 'center', backgroundColor: (this.state.favoriteChecked) ? Colors.DARK_BLUE : 'transparent', width: 24, height: 24, borderRadius: 4, borderWidth: 2, borderColor: Colors.DARK_GREY}} >
-              <Image source={favCheck} style={{width: 18, height: 18}} />
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity onPress={this._checkFavorite} style={{justifyContent: 'center', alignItems: 'center', backgroundColor: (this.state.favoriteChecked) ? Colors.DARK_BLUE : 'transparent', width: 26, height: 26, borderRadius: 4, borderWidth: 1, borderColor: Colors.DARK_GREY}} >
+            <Image source={favCheck} style={{width: 16, height: 16}} />
+          </TouchableOpacity>
+        </TouchableOpacity>
         <View style={styles.underline}></View>
 
-        <View style={styles.optionsView} >
+        <TouchableOpacity onPress={() => this._checkOpenNow()} style={styles.optionsView} >
           <Text style={styles.text}>Open Now</Text>
-            <TouchableOpacity onPress={this._checkOpenNow} style={{justifyContent: 'center', alignItems: 'center', backgroundColor: (this.state.openNowChecked) ? Colors.DARK_BLUE : 'transparent', width: 24, height: 24, borderRadius: 4, borderWidth: 2, borderColor: Colors.DARK_GREY}} >
-              <Image source={openNowCheck} style={{width: 18, height: 18}} />
-            </TouchableOpacity>
-        </View>
+          <TouchableOpacity onPress={this._checkOpenNow} style={{justifyContent: 'center', alignItems: 'center', backgroundColor: (this.state.openNowChecked) ? Colors.DARK_BLUE : 'transparent', width: 24, height: 24, borderRadius: 4, borderWidth: 1, borderColor: Colors.DARK_GREY}} >
+            <Image source={openNowCheck} style={{width: 16, height: 16}} />
+          </TouchableOpacity>
+        </TouchableOpacity>
         <View style={styles.underline}></View>
 
 
-        <View style={styles.optionsView} >
+        <TouchableOpacity onPress={() => this._checkNearMe()} style={styles.optionsView} >
           <Text style={styles.text}>Near Me</Text>
-            <TouchableOpacity onPress={this._checkNearMe} style={{justifyContent: 'center', alignItems: 'center', backgroundColor: (this.state.nearMeChecked) ? Colors.DARK_BLUE : 'transparent', width: 24, height: 24, borderRadius: 4, borderWidth: 2, borderColor: Colors.DARK_GREY}} >
-              <Image source={nearMeCheck} style={{width: 18, height: 18}} />
-            </TouchableOpacity>
-        </View>
+          <TouchableOpacity onPress={this._checkNearMe} style={{justifyContent: 'center', alignItems: 'center', backgroundColor: (this.state.nearMeChecked) ? Colors.DARK_BLUE : 'transparent', width: 24, height: 24, borderRadius: 4, borderWidth: 1, borderColor: Colors.DARK_GREY}} >
+            <Image source={nearMeCheck} style={{width: 16, height: 16}} />
+          </TouchableOpacity>
+        </TouchableOpacity>
         <View style={styles.underline}></View>
-        <Text style={{height: 24, width: 120, fontSize: 20, fontWeight: 'bold', marginTop: 42, marginLeft: 16, }} textColor='black' >Dietary</Text>
+        <Text style={{height: 24, width: 120, fontSize: 20, fontWeight: 'bold', marginTop: 42, marginLeft: 16, }} textColor='black' ></Text>
 
 
         <View style={styles.buttonStyle} >
@@ -152,7 +150,8 @@ const styles = StyleSheet.create({
     height: 16,
     width: 64,
     marginLeft: 36,
-    color: 'red'
+    color: 'red',
+    fontFamily: 'varela-round'
   },
   leftButton: {
     height: 16,
@@ -174,7 +173,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 8,
     color: Colors.CREAM,
-    marginLeft: 32
+    marginLeft: 32,
+    fontFamily: 'varela-round'
   },
   rightButton: {
     height: 16,
@@ -199,13 +199,15 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   text: {
-    fontSize: 18,
+    marginTop: 4,
+    fontSize: 16,
+    fontFamily: 'varela-round'
   },
   underline: {
     backgroundColor: Colors.LIGHT_GREY,
     height: 2,
     marginLeft: 16,
-    marginTop: 12,
+    marginTop: 8,
     marginRight: 16,
     marginBottom: 16
   },

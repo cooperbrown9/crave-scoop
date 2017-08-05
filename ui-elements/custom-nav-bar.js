@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     alignItems: 'center',
     marginTop: 8,
-    color: Colors.DARK_GREY,
+    color: Colors.DARK_GREY
   },
   rightButton: {
     height: 40,
