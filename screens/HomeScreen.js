@@ -39,24 +39,7 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     // FB App ID 1565112886889636 SECRET: 7765eef11057d8b0e03799d070856e73
-<<<<<<< HEAD
     AsyncStorage.setItem(Keys.USER_ID, '59765d2df60c01001198f3b5');
-=======
-    // this.props.dispatch(this.getUserFoReal('59765d2df60c01001198f3b5').bind(this));
-    // this.checkLoginStatus();
-    // this.getUser();
-    // this.somethin();
-    
-  }
-
-  somethin() {
-  AsyncStorage.setItem('@bc123:key', 'bruuuh').then(g => {
-      console.log(g);
-    });
-
-
-
->>>>>>> 98f711e3cba51aaf0b27297a21cda224f4cd60bb
   }
 
   componentWillMount() {
@@ -64,7 +47,6 @@ class HomeScreen extends React.Component {
   }
 
   async getUser() {
-    await AsyncStorage.setItem(Keys.USER_ID, '59765d2df60c01001198f3b5')
     const id = await AsyncStorage.getItem(Keys.USER_ID);
     console.log(id, 'yuuuh');
     this.setState({userID: id}, () => {
