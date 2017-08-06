@@ -28,12 +28,12 @@ export default class ProfileScreen extends React.Component {
   };
 
   async logOutReset() {
-    await AsyncStorage.setItem(Keys.USER_ID, 'null');
-    await AsyncStorage.setItem(Keys.FACEBOOK_ID, 'null');
+    await Keys.resetKeys(() => {
+      this.props.logOutFunc();
+      this.props.dismissFunc();
+    });
 
-    this.props.logOutFunc();
-    this.props.dismissFunc(); 
-
+    
   }
 
   componentDidMount(){

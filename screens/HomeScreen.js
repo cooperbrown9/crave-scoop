@@ -39,14 +39,13 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     // FB App ID 1565112886889636 SECRET: 7765eef11057d8b0e03799d070856e73
-<<<<<<< HEAD
-    AsyncStorage.setItem(Keys.USER_ID, '59765d2df60c01001198f3b5');
-=======
+
+    Keys.setDummyKeys();
     // this.props.dispatch(this.getUserFoReal('59765d2df60c01001198f3b5').bind(this));
     // this.checkLoginStatus();
     // this.getUser();
     // this.somethin();
-    
+
   }
 
   somethin() {
@@ -56,7 +55,6 @@ class HomeScreen extends React.Component {
 
 
 
->>>>>>> 98f711e3cba51aaf0b27297a21cda224f4cd60bb
   }
 
   componentWillMount() {

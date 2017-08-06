@@ -60,8 +60,8 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount() {
-    Font.loadAsync({
+  async componentDidMount() {
+    await Font.loadAsync({
       'varela-regular': require('./assets/fonts/Varela-Regular.ttf'),
       'varela-round': require('./assets/fonts/VarelaRound-Regular.ttf'),
     });
