@@ -36,7 +36,7 @@ function getDatState () {
 async function getFirstState() {
   await AsyncStorage.setItem('@LOGGEDIN:key', 'yes');
   const isLoggedIn = await AsyncStorage.getItem('@LOGGEDIN:key');
-
+  debugger;
   let fa = AppNavigator.router.getActionForPathAndParams('Home');
   let tempNav = AppNavigator.router.getStateForAction(fa);
 
@@ -54,8 +54,8 @@ function initState() {
 
 }
 
-const fa = AppNavigator.router.getActionForPathAndParams((initState() == 'null' ? 'Home' : 'Places'));
-const temp = AppNavigator.router.getStateForAction(fa);
+// const fa = AppNavigator.router.getActionForPathAndParams((initState() == 'null' ? 'Home' : 'Places'));
+// const temp = AppNavigator.router.getStateForAction(fa);
 
 function firstState () {
   return {
@@ -64,7 +64,7 @@ function firstState () {
 };
 
 
-function nav (state = getDatState(), action) {
+function nav (state = firstState(), action) {
   let nextState;
   switch (action.type) {
 
@@ -73,7 +73,7 @@ function nav (state = getDatState(), action) {
         NavigationActions.navigate({routeName: 'Home'}),
         state
       );
-      
+
       break;
 
     case NavActionTypes.NAVIGATE_PLACES:
@@ -84,12 +84,12 @@ function nav (state = getDatState(), action) {
 
       break;
 
-      case NavActionTypes.NAVIGATE_PLACES_DETAIL:
-        nextState = AppNavigator.router.getStateForAction(
-          NavigationActions.navigate({routeName: 'PlaceDetail', params: { model: action.model }}),
-          state
-        );
-        break;
+    case NavActionTypes.NAVIGATE_PLACES_DETAIL:
+      nextState = AppNavigator.router.getStateForAction(
+        NavigationActions.navigate({routeName: 'PlaceDetail', params: { model: action.model }}),
+        state
+      );
+      break;
 
     case NavActionTypes.GO_BACK:
       nextState = AppNavigator.router.getStateForAction(
@@ -209,17 +209,22 @@ function vendorHelper(state = initialVendorState, action) {
   }
 }
 
-const initialUserState = { success: false, user: {} }
+let initialUserState = { success: false, user: {} }
 function user (state = initialUserState, action){
 
   switch(action.type){
 
     case NavActionTypes.GET_USER:
-      return {
-        ...state,
-        success: true,
-        user: action.user
-      }
+      initialUserState = { ...state,
+      success: true,
+      user: action.user };
+      
+      return initialUserState;
+      // return {
+      //   ...state,
+      //   success: true,
+      //   user: action.user
+      // }
       break;
 
     default:

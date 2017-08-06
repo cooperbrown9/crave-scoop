@@ -32,7 +32,7 @@ export default class ProfileScreen extends React.Component {
     await AsyncStorage.setItem(Keys.FACEBOOK_ID, 'null');
 
     this.props.logOutFunc();
-    this.props.dismissFunc(); 
+    this.props.dismissFunc();
 
   }
 
@@ -68,7 +68,7 @@ export default class ProfileScreen extends React.Component {
     return(
       <View style={styles.container} >
         <CustomNavBar
-          title={''}
+          title={'SETTINGS'}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/close.png')}/>}
           leftOnPress={this.props.dismissFunc}
           rightButton={<Text style={styles.navBarRightButton}>Log Out</Text>}
@@ -89,7 +89,6 @@ export default class ProfileScreen extends React.Component {
 
         </View>
 
-
           <View style={styles.optionsContainer}>
 
             <View style={styles.favoritesView}>
@@ -101,14 +100,12 @@ export default class ProfileScreen extends React.Component {
                   <Text style={styles.options_Text} >Favorites</Text>
                 </TouchableOpacity>
 
-                <View style={{marginTop: 7}}>
+                <View style={{marginTop: 12}}>
                   <Image style={styles.options_Arrow} source={require('../assets/images/right-arrow.png')} ></Image>
                 </View>
 
             </View>
-
-
-
+            <View style={styles.underline}></View>
 
             <View style={styles.notificationsView}>
 
@@ -120,11 +117,13 @@ export default class ProfileScreen extends React.Component {
                 <Text style={styles.options_Text} >Notifications</Text>
               </TouchableOpacity>
 
-              <View style={{marginTop: 7}}>
+              <View style={{marginTop: 12}}>
                 <Image style={styles.options_Arrow} source={require('../assets/images/right-arrow.png')} ></Image>
               </View>
 
             </View>
+            <View style={styles.underline}></View>
+
           </View>
 
         </View>
@@ -148,17 +147,13 @@ const styles = StyleSheet.create({
   favoritesView:{
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 24,
-    borderBottomColor: 'grey',
-    borderBottomWidth: 1,
+    marginBottom: 8,
     height: 36
-
   },
   notificationsView: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    borderBottomColor: 'grey',
-    borderBottomWidth: 1,
+    marginBottom: 8,
     height: 36
   },
   imageView: {
@@ -173,7 +168,8 @@ const styles = StyleSheet.create({
     height: 16,
     width: 64,
     marginLeft: 36,
-    color: 'red'
+    color: 'red',
+    fontFamily: 'varela-round'
   },
   image: {
     height: 72,
@@ -184,14 +180,16 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 18,
     textAlign: 'center',
-    marginTop: 16
+    marginTop: 16,
+    fontFamily: 'varela-round'
   },
   location: {
     textAlign: 'center',
     fontSize: 12,
     marginTop: 4,
     marginBottom: 16,
-    color: 'gray'
+    color: 'gray',
+    fontFamily: 'varela-round'
   },
   button: {
     alignItems: 'stretch',
@@ -223,7 +221,9 @@ const styles = StyleSheet.create({
     marginLeft: 12
   },
   options_Text: {
-    fontSize: 18
+    fontSize: 18,
+    fontFamily: 'varela-round',
+    color: Colors.DARK_GREY
   },
   options_Arrow: {
     height: 12,
@@ -231,10 +231,10 @@ const styles = StyleSheet.create({
     tintColor: 'red'
   },
   underline: {
-    marginBottom: 20,
-    height: 1,
+    marginBottom: 32,
+    height: 2,
     marginLeft: 32,
-    backgroundColor: 'gray'
+    backgroundColor: Colors.LIGHT_GREY
   },
 });
 

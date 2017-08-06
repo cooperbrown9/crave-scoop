@@ -144,14 +144,16 @@ const styles = StyleSheet.create({
   navBarLeftButton:{
     height: 12,
     width: 12,
-    marginRight: 36
+    marginRight: 36,
+    color: Colors.DARK_BLUE
   },
   navBarRightButton:{
     height: 16,
     width: 64,
     marginLeft: 36,
     color: 'red',
-    fontFamily: 'varela-round'
+    fontFamily: 'varela-round',
+    color: Colors.DARK_BLUE
   },
   leftButton: {
     height: 16,

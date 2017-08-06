@@ -10,7 +10,8 @@ import {
   View,
   Button,
   Modal,
-  ActivityIndicator
+  ActivityIndicator,
+  AsyncStorage
 } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import axios from 'react-native-axios';
@@ -24,6 +25,7 @@ import RoundButton from '../ui-elements/round-button.js';
 import FilterModal from './FilterModal.js';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
 import SearchModal from './SearchModal.js';
+import * as Keys from '../local-storage/keys.js';
 
 
 class PlacesScreen extends React.Component {
@@ -45,17 +47,27 @@ class PlacesScreen extends React.Component {
     searchPresented: false
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const id = await AsyncStorage.getItem(Keys.USER_ID);
+
     this.getVendors();
-    this.getUser();
+    this.props.dispatch(this.getUser(id).bind(this));
   }
 
-  getUser = () => {
-    axios.get('https://crave-scoop.herokuapp.com/get-user/59765b461a79980011c99d2c/').then(response => {
-      this.setState({user: response.data});
-    }).catch(error => {
-      console.log('couldnt get user from places screen');
-    });
+  // getUser = () => {
+  //   axios.get('https://crave-scoop.herokuapp.com/get-user/59765b461a79980011c99d2c/').then(response => {
+  //     this.setState({user: response.data});
+  //   }).catch(error => {
+  //     console.log('couldnt get user from places screen');
+  //   });
+  // }
+
+  getUser(userID) {
+    return function (dispatch) {
+      return axios.get('https://crave-scoop.herokuapp.com/get-user/' + userID).then(
+        user => this.props.dispatch({type: NavActionTypes.GET_USER, user: user.data })
+      )
+    }
   }
 
   getVendors = () => {
@@ -163,7 +175,7 @@ class PlacesScreen extends React.Component {
         <ScrollView style={styles.scrollContainer}>
 
           <View style={styles.itemContainer} >
-            {this.state.restaurants.map(model => <VendorView userFavorites={this.state.user.favorites} model={{id: model._id, name: model.name, like_count: model.like_count}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
+            {this.state.restaurants.map(model => <VendorView userFavorites={this.props.user.favorites} model={{id: model._id, name: model.name, like_count: model.like_count}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
 
             </View>
 
@@ -191,13 +203,13 @@ const styles = StyleSheet.create({
     height: 16,
     width: 16,
     marginRight: 36,
-    tintColor: '#41d9f4'
+    tintColor: Colors.DARK_BLUE
   },
   navBarRightButton:{
     height: 16,
     width: 16,
     marginLeft: 36,
-    tintColor: '#41d9f4'
+    tintColor: Colors.DARK_BLUE
 
   },
   scrollContainer: {
@@ -311,14 +323,14 @@ const styles = StyleSheet.create({
   }
 });
 
-export default PlacesScreen;
+// export default PlacesScreen;
+var mapStateToProps = (state) => {
+  console.log(state);
 
-// var mapStateToProps = (state) => {
-//   console.log(state);
-//
-//   return {
-//     navigator: state.nav
-//   }
-// }
+  return {
+    navigator: state.nav,
+    user: state.user.user
+  }
+}
 
-// export default connect(mapStateToProps)(PlacesScreen);
+export default connect(mapStateToProps)(PlacesScreen);

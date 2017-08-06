@@ -17,16 +17,16 @@ class App extends React.Component {
   store = createStore(NavReducer, applyMiddleware(thunk));
 
 
+
   async checkForID() {
-
-
     const userID = await AsyncStorage.getItem(Keys.USER_ID);
     const fbID = await AsyncStorage.getItem(Keys.FACEBOOK_ID);
     console.log(fbID, 'id');
     console.log(userID, 'uid');
-    if((userID == 'null') && (fbID == 'null')){
+    if((userID === 'null') || (fbID === 'null')){
       this.store.dispatch({type: 'Home'});
     } else {
+      
       this.store.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
     }
   }
@@ -60,25 +60,24 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount() {
-
-    this.checkForID();
-
-  }
-
-  componentWillMount() {
-    Font.loadAsync({
+  async componentWillMount() {
+    await Font.loadAsync({
       'varela-regular': require('./assets/fonts/Varela-Regular.ttf'),
       'varela-round': require('./assets/fonts/VarelaRound-Regular.ttf'),
     });
+    await this.checkForID();
   }
 
   render() {
 
     return (
+
       <Provider store={this.store} >
+
         <AppNavigatorWithState />
+
       </Provider>
+
     );
   }
 }

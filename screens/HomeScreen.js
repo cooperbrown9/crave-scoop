@@ -40,6 +40,7 @@ class HomeScreen extends React.Component {
   componentDidMount() {
     // FB App ID 1565112886889636 SECRET: 7765eef11057d8b0e03799d070856e73
     AsyncStorage.setItem(Keys.USER_ID, '59765d2df60c01001198f3b5');
+    
   }
 
   componentWillMount() {

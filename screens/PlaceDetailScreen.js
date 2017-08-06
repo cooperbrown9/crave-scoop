@@ -24,7 +24,8 @@ class PlaceDetailScreen extends React.Component {
    titty: 'cool dude',
    model: {},
    vendorItemModalPresented: false,
-   vendorLoaded: false
+   vendorLoaded: false,
+   goingBack: false
  };
 
  _getHoursForDay() {
@@ -60,16 +61,20 @@ class PlaceDetailScreen extends React.Component {
  render() {
 
    return(
+     !this.state.goingBack ? (
      <ScrollView style={styles.ScrollContainer} >
        <CustomNavBar
          title={''}
          leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/back-arrow.png')}/>}
-         leftOnPress={() => this.props.navigation.dispatch({type: NavActionTypes.GO_BACK})}/>
+         leftOnPress={() => { this.props.navigation.goBack(); this.setState({goingBack: true}); } } />
+
        <Modal animationType={"slide"} transparent={false} visible={this.state.vendorItemModalPresented} >
 
-             <VendorItemModal dismissFunc={this._dismissFilterModal} />
+         <VendorItemModal dismissFunc={this._dismissFilterModal} />
 
-         </Modal>
+       </Modal>
+
+
        <View style={styles.topContainer} >
 
          <View style={styles.topView_Image} >
@@ -79,14 +84,14 @@ class PlaceDetailScreen extends React.Component {
          <View style={styles.infoContainer} >
 
            <TouchableOpacity >
-           <Text style={styles.infoTitle}>{this.props.model.name}</Text>
+             <Text style={styles.infoTitle}>{this.props.model.name || ''}</Text>
            </TouchableOpacity>
 
            <View style={styles.resturantInfoContainer} >
 
              <View style={styles.resturantInfoContainer_Hours}>
 
-                 <Image style={{marginRight: 8, height:16, width: 16}} source={require('../assets/images/clock.png')}></Image>
+               <Image style={{marginRight: 8, height:16, width: 16}} source={require('../assets/images/clock.png')}></Image>
 
                <Text style={{fontSize: 16, color: 'grey'}}>{this._getHoursForDay()}</Text>
              </View>
@@ -105,13 +110,14 @@ class PlaceDetailScreen extends React.Component {
 
        </View>
 
-       <View style={styles.menuContainer}>
+       <View style={styles.menuContainer} >
 
          {this.props.model.info.products.map(product => <PlaceDetailItem name={'bruh'} description={product.description} onPress={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
 
        </View>
 
      </ScrollView>
+     ) : null
    );
  }
 }
@@ -188,13 +194,9 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = (state) => {
-  debugger;
-  if (state.nav.routes.length < 3) {
-    return {...state}
-  }
 
   return {
-    model: state.nav.routes[state.nav.index].params.model
+    model: (state.nav.index == 2) ? state.nav.routes[state.nav.index].params.model : { name: '', hours: [{}] }
   }
 }
 

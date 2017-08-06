@@ -27,7 +27,7 @@ export const AppNavigator = StackNavigator({
   PlaceDetail: { screen: PlaceDetailScreen },
 },
 // { initialRouteName: 'Places' }
-  { initialRouteName: (getLoginState() == null) ? 'Home' : 'Places' }
+  // { initialRouteName: (getLoginState() == null) ? 'Home' : 'Places' }
 );
 
 const AppNavigatorWithState = ({ dispatch, nav }) => (
