@@ -37,16 +37,18 @@ class VendorItemModal extends React.Component {
                 <Text style={styles.infoTitle}>{this.props.model.name}</Text>
               </TouchableOpacity>
               <Text style={styles.restaurantDescription}>{this.props.model.description}</Text>
-              <View style={{marginTop: 16}}>
-              {this.props.nutritionFacts.map(fact =>
-                  <View style={styles.nutritionFactStyle} key={fact} >
-                    <View style={{justifyContent: 'center', backgroundColor: 'green', alignItems: 'center', width: 16, height: 16, borderRadius: 4, borderWidth: 2, borderColor: Colors.DARK_GREY}} >
-                      <Image source={require('../assets/images/check-mark.png')} style={{width: 10, height: 10, tintColor:'white'}} />
-                    </View>
-                    <Text style={{marginLeft: 16}}>Suitable for {fact} diets</Text>
-                  </View>
-              )}
+
+              <View style={{marginTop: 32}}>
+                  {this.props.nutritionFacts.map(fact =>
+                      <View style={styles.nutritionFactStyle} key={fact} >
+                        <View style={{justifyContent: 'center', backgroundColor: 'transparent', alignItems: 'center', width: 24, height: 24, borderRadius: 4, marginBottom: 8}} >
+                          <Image source={require('../assets/images/check-mark.png')} style={{width: 10, height: 10, tintColor: Colors.LIGHT_GREY}} />
+                        </View>
+                        <Text style={{marginLeft: 16, color: Colors.DARK_GREY, fontFamily: 'varela-round'}}>Suitable for {fact} diets</Text>
+                      </View>
+                  )}
               </View>
+
             </View>
 
           </View>
@@ -59,8 +61,7 @@ class VendorItemModal extends React.Component {
       flex: 1,
     },
     nutritionFactsContainer:{
-      flex:1,
-
+      flex: 1,
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignItems: 'stretch',
@@ -69,7 +70,7 @@ class VendorItemModal extends React.Component {
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'stretch',
-      marginLeft: 26,
+      marginLeft: 16,
       marginRight: 16,
       backgroundColor: 'transparent'
     },
@@ -94,9 +95,13 @@ class VendorItemModal extends React.Component {
     },
     topView_Image: {
       flex: 1,
+      alignSelf: 'stretch',
+      overflow: 'hidden'
     },
     topImage: {
-      height: 180
+      height: 180,
+      alignSelf: 'stretch'
+
     },
     navBarLeftButton: {
       height: 16,
