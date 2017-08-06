@@ -26,7 +26,7 @@ class App extends React.Component {
     if((userID === 'null') || (fbID === 'null')){
       this.store.dispatch({type: 'Home'});
     } else {
-      
+
       this.store.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
     }
   }
@@ -60,7 +60,7 @@ class App extends React.Component {
     }
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     await Font.loadAsync({
       'varela-regular': require('./assets/fonts/Varela-Regular.ttf'),
       'varela-round': require('./assets/fonts/VarelaRound-Regular.ttf'),
