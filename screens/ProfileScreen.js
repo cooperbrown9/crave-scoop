@@ -110,7 +110,7 @@ export default class ProfileScreen extends React.Component {
             <View style={styles.notificationsView}>
 
               <View >
-                <Image style={styles.options_Image} source={require('../assets/images/heart.png')} ></Image>
+                <Image style={styles.options_Image} source={require('../assets/images/interface.png')} ></Image>
               </View>
 
               <TouchableOpacity style={styles.optionsView_Text} >

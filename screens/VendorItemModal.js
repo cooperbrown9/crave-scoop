@@ -95,13 +95,13 @@ class VendorItemModal extends React.Component {
     },
     topView_Image: {
       flex: 1,
-      alignSelf: 'stretch',
-      overflow: 'hidden'
+      alignItems: 'center',
+
     },
     topImage: {
       height: 180,
-      alignSelf: 'stretch'
-
+      width: 250,
+      marginTop: 20
     },
     navBarLeftButton: {
       height: 16,
