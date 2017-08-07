@@ -52,10 +52,11 @@ class PlaceDetailScreen extends React.Component {
    return function(e) {
      e.preventDefault();
 
-     this.setState({vendorItemModalPresented: true});
     //  let model = { name: item.name, description: item.description };
 
      this.props.dispatch({type: 'VendorItemModal', model: { name: item.name, description: item.description }});
+
+     this.setState({vendorItemModalPresented: true});
    }
  }
 
@@ -113,7 +114,7 @@ class PlaceDetailScreen extends React.Component {
 
        <View style={styles.menuContainer} >
 
-         {this.props.model.info.products.map(product => <PlaceDetailItem name={'bruh'} description={product.description} onPress={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
+         {this.props.model.info.products.map(product => <PlaceDetailItem name={product.name} description={product.description} onPress={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
 
        </View>
 

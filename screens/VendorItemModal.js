@@ -59,6 +59,7 @@ class VendorItemModal extends React.Component {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
+      backgroundColor: 'transparent',
     },
     nutritionFactsContainer:{
       flex: 1,
@@ -95,14 +96,10 @@ class VendorItemModal extends React.Component {
     },
     topView_Image: {
       flex: 1,
-      alignItems: 'center',
 
     },
     topImage: {
       height: 180,
-      width: 250,
-      marginTop: 20,
-      borderRadius: 20
     },
     navBarLeftButton: {
       height: 16,
@@ -118,7 +115,6 @@ class VendorItemModal extends React.Component {
     },
     infoTitle: {
       fontSize: 20,
-      marginTop: 16,
       marginLeft: 16,
       marginRight: 16,
       textAlign: 'center',
@@ -140,7 +136,7 @@ class VendorItemModal extends React.Component {
       marginLeft: 16,
       marginRight: 16,
       textAlign: 'center',
-      marginTop: 0,
+      marginTop: 10,
     },
     menuContainer: {
       flex: 1,
@@ -150,7 +146,7 @@ class VendorItemModal extends React.Component {
     },
   });
 
-  var mapStateToProps = (state) => {
+  var mapStateToProps = (state) => {  
    return {
      model: state.modal.model,
      nutritionFacts: ['dairy free', 'vegan', 'gluten free', 'vegetarian'],
