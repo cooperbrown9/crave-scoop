@@ -70,6 +70,7 @@ class PlacesScreen extends React.Component {
     }
   }
 
+
   getVendors = () => {
     axios.get('https://crave-scoop.herokuapp.com/get-all-vendors-for-places/').then(response => {
       this.setState({restaurants: response.data, loading: false});
@@ -119,8 +120,7 @@ class PlacesScreen extends React.Component {
   }
 
   _dismissFilterModal = () => {
-    this.state.filterPresented = false;
-    this.setState(this.state);
+    this.setState({searchPresented: false});
   }
 
   _presentFilterModal = () => {
@@ -148,7 +148,6 @@ class PlacesScreen extends React.Component {
 
   _startSearch() {
     this.setState({searchOn: !this.state.searchOn });
-
   }
 
   render() {
@@ -166,6 +165,10 @@ class PlacesScreen extends React.Component {
 
         <Modal animationType={'slide'} transparent={false} visible={this.state.profilePresented} >
           <ProfileScreen dismissFunc={this._dismissProfileModal.bind(this)} logOutFunc={this._navigateHome.bind(this)}/>
+        </Modal>
+
+        <Modal animationType={'slide'} transparent={false} visible={this.state.searchPresented} >
+          <SearchModal dismissModal={this._dismissSearchModal.bind(this)}/>
         </Modal>
 
         <Modal animationType={"slide"} transparent={false} visible={this.state.filterPresented} >

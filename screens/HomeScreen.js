@@ -48,14 +48,6 @@ class HomeScreen extends React.Component {
 
   }
 
-  somethin() {
-  AsyncStorage.setItem('@bc123:key', 'bruuuh').then(g => {
-      console.log(g);
-    });
-
-
-
-  }
 
   componentWillMount() {
     this.getUser();
