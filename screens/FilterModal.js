@@ -71,6 +71,12 @@ class FilterModal extends React.Component {
     this.getVendor();
   }
 
+  _resetFilters = () => {
+    this.setState({favoriteChecked: false});
+    this.setState({nearMeChecked: false});
+    this.setState({openNowChecked: false});
+  }
+
   _checkFavorite = () => {
     this.setState({favoriteChecked: !this.state.favoriteChecked});
   }
@@ -92,10 +98,12 @@ class FilterModal extends React.Component {
       <View style={styles.container} >
 
         <CustomNavBar
-          title={'FILTER'}
+          title={'Filter'}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/close.png')}/>}
           rightButton={<Text style={styles.navBarRightButton}>Reset</Text>}
-          leftOnPress={this.props.dismissFunc}/>
+          leftOnPress={this.props.dismissFunc}
+          rightOnPress={() => this._resetFilters()}
+          />
 
         <Text style={{height: 24, width: 120, fontSize: 20, fontWeight: 'bold', marginTop: 16, marginLeft: 16, marginBottom: 16 }} textColor='black' >My Crave</Text>
 

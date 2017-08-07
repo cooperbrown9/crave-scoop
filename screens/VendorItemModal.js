@@ -42,7 +42,7 @@ class VendorItemModal extends React.Component {
                   {this.props.nutritionFacts.map(fact =>
                       <View style={styles.nutritionFactStyle} key={fact} >
                         <View style={{justifyContent: 'center', backgroundColor: 'transparent', alignItems: 'center', width: 24, height: 24, borderRadius: 4, marginBottom: 8}} >
-                          <Image source={require('../assets/images/check-mark.png')} style={{width: 10, height: 10, tintColor: Colors.LIGHT_GREY}} />
+                          <Image source={require('../assets/images/check-mark.png')} style={{width: 10, height: 10, tintColor: Colors.LIGHT_GREY,  marginBottom: 6}} />
                         </View>
                         <Text style={{marginLeft: 16, color: Colors.DARK_GREY, fontFamily: 'varela-round'}}>Suitable for {fact} diets</Text>
                       </View>
@@ -101,7 +101,8 @@ class VendorItemModal extends React.Component {
     topImage: {
       height: 180,
       width: 250,
-      marginTop: 20
+      marginTop: 20,
+      borderRadius: 20
     },
     navBarLeftButton: {
       height: 16,
