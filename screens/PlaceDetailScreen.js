@@ -36,7 +36,8 @@ class PlaceDetailScreen extends React.Component {
  };
 
  componentDidMount() {
-
+   console.log(this.props.model.info);
+   console.log("this one");
  }
 
  _dismissFilterModal = () => {
@@ -196,7 +197,7 @@ const styles = StyleSheet.create({
 var mapStateToProps = (state) => {
 
   return {
-    model: (state.nav.index == 2) ? state.nav.routes[state.nav.index].params.model : { name: '', hours: [{}] }
+    model: (state.nav.index == 2) ? state.nav.routes[state.nav.index].params.model : { name: '' }
   }
 }
 
