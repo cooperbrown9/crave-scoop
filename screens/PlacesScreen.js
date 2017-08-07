@@ -79,16 +79,6 @@ class PlacesScreen extends React.Component {
     });
   }
 
-  handleKeyPress(item) {
-    return function(e) {
-      e.preventDefault();
-
-      axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + item._id).then(
-        response => this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
-      )
-    }
-  }
-
   renderVendorView(item) {
     return(
       <VendorView model={{ id: item._id, name: item.name }} onTouch={this.handleKeyPress(item).bind(this)} key={item._id} />
@@ -96,14 +86,6 @@ class PlacesScreen extends React.Component {
   }
   _navigateHome = () =>{
     this.props.navigation.dispatch({type: 'Home'});
-  }
-
-  _presentProfileModal = () => {
-    this.setState({profilePresented: true});
-  }
-
-  _dismissProfileModal = () => {
-    this.setState({profilePresented: false});
   }
 
   _dismissSearchModal = (vendor) => {
@@ -119,17 +101,24 @@ class PlacesScreen extends React.Component {
     this.setState({searchPresented: true});
   }
 
+  _dismissProfileModal = () => {
+    this.setState({profilePresented: false});
+  }
+
+  _presentProfileModal = () => {
+    this.setState({profilePresented: true});
+  }
+
   _dismissFilterModal = () => {
-    this.setState({searchPresented: false});
+    this.setState({filterPresented: false});
+  }
+
+  _dismissAndFilter(vendors) {
+    this.setState({filterPresented: false, restaurants: vendors});
   }
 
   _presentFilterModal = () => {
-    this.state.filterPresented = true;
-    this.setState(this.state);
-  }
-
-  dismissAndFilter(vendors) {
-    this.setState({filterPresented: false, restaurants: vendors});
+    this.setState({filterPresented: true});
   }
 
   _autocomplete(text) {
@@ -148,6 +137,16 @@ class PlacesScreen extends React.Component {
 
   _startSearch() {
     this.setState({searchOn: !this.state.searchOn });
+  }
+
+  handleKeyPress(item) {
+    return function(e) {
+      e.preventDefault();
+
+      axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + item._id).then(
+        response => this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
+      )
+    }
   }
 
   render() {
@@ -185,7 +184,7 @@ class PlacesScreen extends React.Component {
         </ScrollView>
 
         <View style={styles.button}>
-          <RoundButton title='FILTERS' onPress={this._presentFilterModal} bgColor={Colors.DARK_BLUE} borderOn={false}/>
+          <RoundButton title='Filters' onPress={this._presentFilterModal} bgColor={Colors.DARK_BLUE} borderOn={false}/>
         </View>
 
       </View>

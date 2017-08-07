@@ -50,7 +50,7 @@ class SearchModal extends React.Component {
               <TouchableOpacity onPress={() => this.props.dismissModal(vendor)} key={vendor.name}>
                 <Text style={{backgroundColor:'transparent', fontSize: 28, fontWeight: 'bold', height: 32, textAlign: 'center', marginTop: 32}} color='green'>{vendor.name}</Text>
               </TouchableOpacity>
-          )}
+            )}
           </View>
         </View>
 

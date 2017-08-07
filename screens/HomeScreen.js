@@ -127,12 +127,7 @@ class HomeScreen extends React.Component {
     }
   }
 
-  _presentController = () => {
-    this.state.clicked = true;
-    this.setState(this.state);
-  }
-
-  _profileModalPresented = () => {
+  _createProfileModalPresented = () => {
     if(this.state.profilePresented === false){
       this.setState({ profilePresented: true });
     } else if(this.state.profilePresented === true){
@@ -148,25 +143,13 @@ class HomeScreen extends React.Component {
     this.props.navigation.dispatch({ type: NavActionTypes.NAVIGATE_PLACES });
   };
 
-  _dismissModal = () => {
-    this.state.clicked = false;
-    this.setState(this.state);
-  }
-
-
   render() {
     let {width, height} = Dimensions.get('window');
     let halfHeight = height / 2;
     return (
       <View style={styles.mainContainer} >
-
-        <Modal animationType={"slide"} transparent={false} visible={this.state.clicked} >
-          <View >
-            <FilterModal name={this.state.user} dismissFunc={this._dismissModal.bind(this)} />
-          </View>
-        </Modal>
         <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} >
-            <CreateProfileModal dismissFunc={this._profileModalPresented} />
+            <CreateProfileModal dismissFunc={this._createProfileModalPresented} />
         </Modal>
         <View style={styles.welcomeContainer} >
           <Image source={require('../assets/images/cupcake.png')} style={styles.image} />
@@ -177,7 +160,7 @@ class HomeScreen extends React.Component {
 
         <View style={styles.buttonContainer} >
           <RoundButton title='Continue with Facebook' onPress={this.checkLoginStatus.bind(this)} bgColor='white' textColor='#41d9f4' />
-          <RoundButton title='Create Account' onPress={this._profileModalPresented} />
+          <RoundButton title='Create Account' onPress={this._createProfileModalPresented} />
         </View>
         <Text style={styles.termsText}>Terms of Service</Text>
         <View>

@@ -10,7 +10,6 @@ import * as Keys from '../local-storage/keys.js';
 export default class ProfileScreen extends React.Component {
   static navigationOptions = ({
     header: null,
-
   });
   state = {
     user: {
@@ -27,19 +26,19 @@ export default class ProfileScreen extends React.Component {
     logOutFunc: React.PropTypes.func
   };
 
-  async logOutReset() {
-    await Keys.resetKeys(() => {
-      this.props.logOutFunc();
-      this.props.dismissFunc();
-    });
-
-
-  }
-
   componentDidMount(){
     this.getProfiles();
     console.log(this.state.user);
   }
+
+  async logOutReset() {
+    //Also navigates to home screen after log-out
+    await Keys.resetKeys(() => {
+      this.props.logOutFunc();
+      this.props.dismissFunc();
+    });
+  }
+
   async getProfiles() {
 
     const id = await AsyncStorage.getItem('@user_id:key');
@@ -56,11 +55,6 @@ export default class ProfileScreen extends React.Component {
 
   _editProfile = () => {
     console.log('yuh');
-
-    for (var i = 0; i < 10; i++) {
-      console.log(i);
-    }
-
   };
 
   render() {

@@ -9,7 +9,6 @@ import * as Keys from '../local-storage/keys.js';
 
 export default class CreateProfileModal extends React.Component {
   state = {
-    passwordVisible: false,
     firstName: 'Tony',
     user: {}
 
@@ -18,7 +17,7 @@ export default class CreateProfileModal extends React.Component {
     dismissFunc: React.PropTypes.func,
   }
 
-  _createUserAndDismiss = () => {
+  _createUserAndDismissModal = () => {
     const id = '';
     axios.put('https://crave-scoop.herokuapp.com/add-user/' + this.state.firstName + '/user/Spokane/').then(async (response) => {
       await AsyncStorage.setItem(Keys.USER_ID, response.data);
@@ -34,14 +33,6 @@ export default class CreateProfileModal extends React.Component {
   }
 
 
-  _passwordVisible = () => {
-    if(this.state.passwordVisible === true){
-      this.state.passwordVisible = false;
-    } else if(this.state.passwordVisible === false){
-      this.state.passwordVisible = true;
-    }
-    this.setState(this.state);
-  }
 
   render () {
     var icon = this.state.passwordVisible ? require('../assets/images/eye-close.png') : require('../assets/images/eye-open.png');
@@ -77,7 +68,7 @@ export default class CreateProfileModal extends React.Component {
               </TouchableOpacity>
             </View>
             <View style={styles.button}>
-                <RoundButton title='Sign Up' onPress={this._createUserAndDismiss.bind(this)} bgColor='#41d9f4' color='white' borderOn={false}/>
+                <RoundButton title='Sign Up' onPress={this._createUserAndDismissModal.bind(this)} bgColor='#41d9f4' color='white' borderOn={false}/>
             </View>
             <View style={styles.loginContainer}>
               <Text >Already have an account?</Text>

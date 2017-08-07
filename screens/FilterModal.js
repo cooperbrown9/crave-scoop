@@ -45,6 +45,8 @@ class FilterModal extends React.Component {
         this.props.filterFunc(this.props.vendors);
       })
     }
+
+    this.props.dismissFunc(); 
   }
 
   _getVendorsNearby() {

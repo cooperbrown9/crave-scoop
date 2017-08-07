@@ -1,5 +1,12 @@
 import React from 'react';
-import { StyleSheet, ScrollView, View, Text, Image, TouchableOpacity, Modal } from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Modal } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
 import PlaceDetailItem from '../ui-elements/place-detail-item.js';
 import { connect } from 'react-redux';
@@ -28,17 +35,17 @@ class PlaceDetailScreen extends React.Component {
    goingBack: false
  };
 
+ componentDidMount() {
+   console.log(this.props.model.info);
+   console.log("this one");
+ }
+
  _getHoursForDay() {
    const today = todayHours = this.props.model.info.hours[new Date().getDay()];
    let todayHours = today.open + today.open_tod + ' - ' + today.close + today.close_tod;
 
    return todayHours;
  };
-
- componentDidMount() {
-   console.log(this.props.model.info);
-   console.log("this one");
- }
 
  _dismissFilterModal = () => {
    this.setState({vendorItemModalPresented: false});

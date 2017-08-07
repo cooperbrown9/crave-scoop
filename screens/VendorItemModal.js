@@ -13,6 +13,7 @@ class VendorItemModal extends React.Component {
   };
 
  componentDidMount () {
+   
  }
 
   render() {
@@ -146,7 +147,7 @@ class VendorItemModal extends React.Component {
     },
   });
 
-  var mapStateToProps = (state) => {  
+  var mapStateToProps = (state) => {
    return {
      model: state.modal.model,
      nutritionFacts: ['dairy free', 'vegan', 'gluten free', 'vegetarian'],

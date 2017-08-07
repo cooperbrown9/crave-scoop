@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 import HomeScreen from '../screens/HomeScreen';
-import SettingsScreen from '../screens/SettingsScreen';
 import PlacesScreen from '../screens/PlacesScreen';
 import PlaceDetailScreen from '../screens/PlaceDetailScreen';
 import { AsyncStorage } from 'react-native';
