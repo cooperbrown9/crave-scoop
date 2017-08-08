@@ -86,7 +86,6 @@ class HomeScreen extends React.Component {
     await axios.put('https://crave-scoop.herokuapp.com/add-user/' + firstname + '/' + lastname + '/' + location).then(async(response) => {
       await AsyncStorage.setItem(Keys.USER_ID, response.data);
       console.log(response);
-      debugger;
     }).catch(error => {
       console.log(error);
     });
