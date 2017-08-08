@@ -39,25 +39,33 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     // FB App ID 1565112886889636 SECRET: 7765eef11057d8b0e03799d070856e73
+    // Keys.setDummyKeys();
+    // Keys.resetKeys(() => {
+      console.log('skeddit');
+      this.checkLogin();
+    // });
 
-    Keys.setDummyKeys();
-    // this.props.dispatch(this.getUserFoReal('59765d2df60c01001198f3b5').bind(this));
-    // this.checkLoginStatus();
-    // this.getUser();
-    // this.somethin();
+  }
 
+  checkLogin = () => {
+    AsyncStorage.getItem(Keys.USER_ID, (err, id) => {
+      if (id == null) {
+        return;
+      } else {
+        this.getUser();
+      }
+    })
   }
 
 
   componentWillMount() {
-    this.getUser();
+    // this.getUser();
   }
 
-  async getUser() {
-    const id = await AsyncStorage.getItem(Keys.USER_ID);
-    console.log(id, 'yuuuh');
-    this.setState({userID: id}, () => {
-      this.props.dispatch(this.getUserHelper(this.state.userID).bind(this));
+  getUser() {
+    AsyncStorage.getItem(Keys.USER_ID, (err, result) => {
+      this.setState({userID: result});
+      this.props.dispatch(this.getUserHelper(result));
     });
   }
 
@@ -66,40 +74,56 @@ class HomeScreen extends React.Component {
       return axios.get('https://crave-scoop.herokuapp.com/get-user/' + id).then(
         response => {
           dispatch({type: NavActionTypes.GET_USER, user: response.data});
+      }).then(() => {
+        dispatch({type: NavActionTypes.NAVIGATE_PLACES});
+      }).catch(error => {
+        console.log(error);
       })
     }
   }
 
-
-  async checkLoginStatus() {
-    const id = await AsyncStorage.getItem('@fb_id:key');
-    const token = await AsyncStorage.getItem('@fb_access_token:key');
-
-    if (id == 'null' || token == 'null') {
-      await this.loginFBAsync();
-    } else {
-      // const longToken = await axios.get('https://graph.facebook.com/oauth/access_token?client_id=1565112886889636&client_secret=7765eef11057d8b0e03799d070856e73&grant_type=fb_exchange_token&fb_exchange_token=' + token);
-      this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
-    }
+  async createUser(firstname, lastname, location) {
+    await axios.put('https://crave-scoop.herokuapp.com/add-user/' + firstname + '/' + lastname + '/' + location).then(async(response) => {
+      await AsyncStorage.setItem(Keys.USER_ID, response.data);
+      console.log(response);
+      debugger;
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
+  signInFacebook = () => {
+    let accessToken = '';
 
-  async loginFBAsync() {
-    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', {permissions:['public_profile'], behavior: 'web'});
-    if (type === 'success') {
-      const response = await axios.get('https://graph.facebook.com/me?access_token=' + token);
+    Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', {permissions:['public_profile'], behavior: 'web'}).then((response) => {
+      console.log(response);
+      switch(response.type) {
+        case 'success':
+          return response;
+        case 'cancel':
+          return null;
+        default:
+          console.log('bruuuuh');
+          return 'naaah fam';
+      }
+    }).then(async (response) => {
+      if(response.token != null) {
+        await AsyncStorage.setItem(Keys.FACEBOOK_ID, response.token);
 
-      Alert.alert('Logged In!', response.data.name);
+        return response.type;
+      } else {
+        return response.type;
+      }
+    }).then(async(status) => {
 
-      await AsyncStorage.setItem('@fb_id:key', response.data.id);
-      await AsyncStorage.setItem('@fb_access_token:key', token);
+      if (status == 'success') {
+        await this.createUser('Cool', 'Dude', 'The 69');
+        this.props.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
+      } else {
+        Alert.alert('Could not login with Facebook');
+      }
+    });
 
-      axios.put('https://crave-scoop.herokuapp.com/add-user/' + response.data.name + '/LastName/Spokane/').then(async (response) => {
-        await AsyncStorage.setItem(Keys.USER_ID, response.data);
-      });
-
-
-    }
   }
 
 
@@ -159,7 +183,7 @@ class HomeScreen extends React.Component {
         </View>
 
         <View style={styles.buttonContainer} >
-          <RoundButton title='Continue with Facebook' onPress={this.checkLoginStatus.bind(this)} bgColor='white' textColor='#41d9f4' />
+          <RoundButton title='Continue with Facebook' onPress={this.signInFacebook} bgColor='white' textColor='#41d9f4' />
           <RoundButton title='Create Account' onPress={this._createProfileModalPresented} />
         </View>
         <Text style={styles.termsText}>Terms of Service</Text>
@@ -220,6 +244,7 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = (state) => {
+  // debugger;
   return {
     navigator: state.nav,
     isLoggedIn: state.auth.isLoggedIn,

@@ -49,7 +49,7 @@ class PlacesScreen extends React.Component {
 
   async componentDidMount() {
     const id = await AsyncStorage.getItem(Keys.USER_ID);
-
+    console.log('places uid: ', this.props.user);
     this.getVendors();
     this.props.dispatch(this.getUser(id).bind(this));
   }
@@ -84,15 +84,20 @@ class PlacesScreen extends React.Component {
       <VendorView model={{ id: item._id, name: item.name }} onTouch={this.handleKeyPress(item).bind(this)} key={item._id} />
     )
   }
-  _navigateHome = () =>{
+  _navigateHome = () => {
     this.props.navigation.dispatch({type: 'Home'});
   }
 
   _dismissSearchModal = (vendor) => {
+    this.setState({searchPresented: false});
+    return;
+
     axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + vendor._id).then(
       response => this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
     ).then(() => {
       this.setState({searchPresented: false});
+    }).catch(error => {
+      console.log(error);
     });
     // this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, id: item._id});
   }
@@ -113,12 +118,22 @@ class PlacesScreen extends React.Component {
     this.setState({filterPresented: false});
   }
 
-  _dismissAndFilter(vendors) {
+  _dismissAndFilter = (vendors) => {
     this.setState({filterPresented: false, restaurants: vendors});
   }
 
   _presentFilterModal = () => {
     this.setState({filterPresented: true});
+  }
+
+  _vendorPickedSearch = (vendor) => {
+    axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + vendor._id).then(
+      response => this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
+    ).then(() => {
+      this.setState({searchPresented: false});
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
   _autocomplete(text) {
@@ -167,11 +182,11 @@ class PlacesScreen extends React.Component {
         </Modal>
 
         <Modal animationType={'slide'} transparent={false} visible={this.state.searchPresented} >
-          <SearchModal dismissModal={this._dismissSearchModal.bind(this)}/>
+          <SearchModal dismissModal={this._dismissSearchModal.bind(this)} vendorPicked={this._vendorPickedSearch.bind(this)} />
         </Modal>
 
         <Modal animationType={"slide"} transparent={false} visible={this.state.filterPresented} >
-            <FilterModal filterFunc={this.dismissAndFilter.bind(this)} dismissFunc={this._dismissFilterModal.bind(this)} />
+            <FilterModal filterFunc={this._dismissAndFilter.bind(this)} dismissFunc={this._dismissFilterModal.bind(this)} />
         </Modal>
 
         <ScrollView style={styles.scrollContainer}>

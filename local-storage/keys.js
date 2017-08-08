@@ -7,11 +7,14 @@ import {
 export const USER_ID = '@user_id:key';
 export const FACEBOOK_ID = '@fb_id:key';
 
-export async function resetKeys(callback) {
-  await AsyncStorage.removeItem(USER_ID);
-  await AsyncStorage.removeItem(FACEBOOK_ID);
-  callback();
-  console.log('keys resey');
+export function resetKeys(callback) {
+  AsyncStorage.removeItem(USER_ID, () => {
+    AsyncStorage.removeItem(FACEBOOK_ID, () => {
+      console.log('keys resey');
+      callback();
+    });
+  });
+
 }
 
 export function setDummyKeys(){

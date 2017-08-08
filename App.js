@@ -23,18 +23,18 @@ class App extends React.Component {
     const fbID = await AsyncStorage.getItem(Keys.FACEBOOK_ID);
     console.log(fbID, 'id');
     console.log(userID, 'uid');
-    if((userID === 'null') || (fbID === 'null')){
-      this.store.dispatch({type: 'Home'});
+    if((userID === 'null') || (fbID === 'null')) {
+      // this.store.dispatch({type: 'Home'});
     } else {
+      // this.store.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
+      // this.store.dispatch({type: 'Home'});
 
-      this.store.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
     }
   }
 
   async resetUser() {
     await AsyncStorage.setItem(Keys.USER_ID, 'null');
     await AsyncStorage.setItem(Keys.FACEBOOK_ID, 'null');
-
   }
 
   async loginFBAsync() {

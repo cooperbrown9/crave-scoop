@@ -13,7 +13,8 @@ class SearchModal extends React.Component {
   }
 
   static propTypes = {
-    dismissModal: React.PropTypes.func.isRequired
+    dismissModal: React.PropTypes.func.isRequired,
+    vendorPicked: React.PropTypes.func.isRequired
   }
 
   _onChangeText(text) {
@@ -47,7 +48,7 @@ class SearchModal extends React.Component {
 
           <View style={this.vendorView} >
             {this.state.vendors.map(vendor =>
-              <TouchableOpacity onPress={() => this.props.dismissModal(vendor)} key={vendor.name}>
+              <TouchableOpacity onPress={() => this.props.vendorPicked(vendor)} key={vendor.name}>
                 <Text style={{backgroundColor:'transparent', fontSize: 28, fontWeight: 'bold', height: 32, textAlign: 'center', marginTop: 32}} color='green'>{vendor.name}</Text>
               </TouchableOpacity>
             )}
@@ -55,7 +56,7 @@ class SearchModal extends React.Component {
         </View>
 
         <View style={styles.button}>
-          <RoundButton title='SEARCH' borderOn={false} bgColor={Colors.DARK_BLUE} onPress={() => this.props.dismissModal('bruuuuuh')} />
+          <RoundButton title='SEARCH' borderOn={false} bgColor={Colors.DARK_BLUE} onPress={() => this.props.dismissModal()} />
         </View>
       </View>
     )

@@ -23,15 +23,15 @@ class FilterModal extends React.Component {
     nearMeChecked: false,
   };
 
-  filterVendors = () => {
-
-    axios.get('https://crave-scoop.herokuapp.com/get-vendor/597ba3f69f94ee0011109e7f').then(response => {
-      this.props.filterFunc(response.data);
-      this.props.dismissFunc();
-    }).catch(error => {
-      console.log('naaahhhh');
-    });
-  }
+  // filterVendors = () => {
+  //
+  //   axios.get('https://crave-scoop.herokuapp.com/get-vendor/597ba3f69f94ee0011109e7f').then(response => {
+  //     this.props.filterFunc(response.data);
+  //     this.props.dismissFunc();
+  //   }).catch(error => {
+  //     console.log('naaahhhh');
+  //   });
+  // }
 
   filterVendorss = () => {
     let base = 'https://crave-scoop.herokuapp.com/';
@@ -45,8 +45,6 @@ class FilterModal extends React.Component {
         this.props.filterFunc(this.props.vendors);
       })
     }
-
-    this.props.dismissFunc(); 
   }
 
   _getVendorsNearby() {
@@ -73,7 +71,6 @@ class FilterModal extends React.Component {
     this.getVendor();
   }
 
-
   _checkFavorite = () => {
     this.setState({favoriteChecked: !this.state.favoriteChecked});
   }
@@ -95,11 +92,10 @@ class FilterModal extends React.Component {
       <View style={styles.container} >
 
         <CustomNavBar
-          title={'Filter'}
+          title={'FILTER'}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/close.png')}/>}
           rightButton={<Text style={styles.navBarRightButton}>Reset</Text>}
-          leftOnPress={this.props.dismissFunc}
-          />
+          leftOnPress={this.props.dismissFunc}/>
 
         <Text style={{height: 24, width: 120, fontSize: 20, fontWeight: 'bold', marginTop: 16, marginLeft: 16, marginBottom: 16 }} textColor='black' >My Crave</Text>
 

@@ -124,7 +124,6 @@ function modal (state = initialModalState, action) {
       break;
 
     default:
-      console.log('yuuuuuuuh');
       return { randomProp: '' }
       break;
   }
@@ -144,7 +143,6 @@ function auth(state = initialAuthState, action) {
       }
 
     case 'Login_Complete':
-      console.log('yuuuuup');
       return { ...state, isLoggedIn: true, user: action.user };
 
     case 'GetUser':
@@ -218,7 +216,7 @@ function user (state = initialUserState, action){
       initialUserState = { ...state,
       success: true,
       user: action.user };
-      
+
       return initialUserState;
       // return {
       //   ...state,

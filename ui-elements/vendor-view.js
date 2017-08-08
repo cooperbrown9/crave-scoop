@@ -49,15 +49,15 @@ export default class VendorView extends Component {
 
     AsyncStorage.getItem(Keys.USER_ID, (err, id) => {
       console.log(id);
-    let url = this.state.active ? 'https://crave-scoop.herokuapp.com/remove-favorite/' + id + '/' + this.props.model.id : 'https://crave-scoop.herokuapp.com/add-favorite/' + '59765d2df60c01001198f3b5/' + this.props.model.id;
-    console.log(url);
-    axios.put(url).then(response => {
-      this.state.active = !this.state.active;
-      this.setState(this.state);
-    }).catch(error => {
-      console.log('couldnt update like count');
+      let url = this.state.active ? 'https://crave-scoop.herokuapp.com/remove-favorite/' + id + '/' + this.props.model.id : 'https://crave-scoop.herokuapp.com/add-favorite/' + id + '/' + this.props.model.id;
+      console.log(url);
+      axios.put(url).then(response => {
+        this.state.active = !this.state.active;
+        this.setState(this.state);
+      }).catch(error => {
+        console.log('couldnt update like count');
+      });
     });
-  });
   }
 
   render() {
