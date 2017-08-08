@@ -13,8 +13,10 @@ export default class CreateProfileModal extends React.Component {
     user: {}
 
   }
+
   static propTypes:{
     dismissFunc: React.PropTypes.func,
+    getUser: React.PropTypes.func
   }
 
   _createUserAndDismissModal = () => {
@@ -23,13 +25,9 @@ export default class CreateProfileModal extends React.Component {
       await AsyncStorage.setItem(Keys.USER_ID, response.data);
       return response.data;
     }).then((id) => {
-      debugger;
-      axios.get('https://crave-scoop.herokuapp.com/get-user/' + id + '/').then(async (response) =>{
-        await this.setState({user: response.data});
-      })
-    }).then(() =>
-      this.props.dismissFunc()
-    )
+      this.props.dismissFunc();
+      this.props.getUser(id);
+    });
   }
 
 
@@ -68,7 +66,7 @@ export default class CreateProfileModal extends React.Component {
               </TouchableOpacity>
             </View>
             <View style={styles.button}>
-                <RoundButton title='Sign Up' onPress={this._createUserAndDismissModal.bind(this)} bgColor='#41d9f4' color='white' borderOn={false}/>
+                <RoundButton title='Sign Up' onPress={this._createUserAndDismissModal} bgColor='#41d9f4' color='white' borderOn={false}/>
             </View>
             <View style={styles.loginContainer}>
               <Text >Already have an account?</Text>

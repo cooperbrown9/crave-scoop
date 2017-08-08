@@ -171,9 +171,11 @@ class HomeScreen extends React.Component {
     let halfHeight = height / 2;
     return (
       <View style={styles.mainContainer} >
+
         <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} >
-            <CreateProfileModal dismissFunc={this._createProfileModalPresented} />
+            <CreateProfileModal dismissFunc={this._createProfileModalPresented} getUser={this.getUser.bind(this)} />
         </Modal>
+
         <View style={styles.welcomeContainer} >
           <Image source={require('../assets/images/cupcake.png')} style={styles.image} />
           <Text color='white' style={styles.welcomeMessage} >
