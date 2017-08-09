@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, AsyncStorage } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, AsyncStorage, ActivityIndicator, Dimensions } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors.js';import UserID from '../test-user/user.js';
 import axios from 'react-native-axios';
@@ -23,12 +23,21 @@ export default class ProfileScreen extends React.Component {
     name: React.PropTypes.string,
     location: React.PropTypes.string,
     dismissFunc: React.PropTypes.func,
-    logOutFunc: React.PropTypes.func
+    logOutFunc: React.PropTypes.func,
+    renderFavorites: React.PropTypes.func,
+    loading: React.PropTypes.bool
   };
 
+  static defaultProps = {
+    loading: false
+  }
+
   componentDidMount(){
-    this.getProfiles();
-    console.log(this.state.user);
+    this.getProfile();
+  }
+
+  componentWillUnmount() {
+    this.setState({loading: false});
   }
 
   async logOutReset() {
@@ -39,7 +48,12 @@ export default class ProfileScreen extends React.Component {
     });
   }
 
-  async getProfiles() {
+  renderFavoritesWrapper = () => {
+    this.setState({loading: true});
+    this.props.renderFavorites();
+  }
+
+  async getProfile() {
 
     const id = await AsyncStorage.getItem('@user_id:key');
 
@@ -59,6 +73,7 @@ export default class ProfileScreen extends React.Component {
 
   render() {
     const { user } = this.state;
+    const frame = Dimensions.get('window');
     return(
       <View style={styles.container} >
         <CustomNavBar
@@ -90,7 +105,7 @@ export default class ProfileScreen extends React.Component {
                   <Image style={styles.options_Image} source={require('../assets/images/heart.png')} ></Image>
                 </View>
 
-                <TouchableOpacity style={styles.optionsView_Text} >
+                <TouchableOpacity style={styles.optionsView_Text} onPress={this.renderFavoritesWrapper}>
                   <Text style={styles.options_Text} >Favorites</Text>
                 </TouchableOpacity>
 
@@ -119,7 +134,11 @@ export default class ProfileScreen extends React.Component {
             <View style={styles.underline}></View>
 
           </View>
-
+          {this.state.loading ?
+          <View style={{position: 'absolute', top: 0, left: 0,height: frame.height, width: frame.width, backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
+            <ActivityIndicator animating={this.state.loading} size='large' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
+          </View>
+          : null }
         </View>
 
     );
@@ -231,5 +250,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.LIGHT_GREY
   },
 });
+
+var mapStateToProps = state => {
+  return {
+    currentVendors: state.vendorHelper.vendors
+  }
+}
 
 // mapStateToProps

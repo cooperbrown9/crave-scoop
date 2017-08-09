@@ -68,7 +68,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'stretch',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    zIndex: 0
   },
   vendorView: {
     flex: 1,
@@ -107,7 +108,8 @@ const styles = StyleSheet.create({
   button: {
     marginLeft: 64,
     marginRight: 64,
-    marginBottom: 16
+    marginBottom: 32,
+    zIndex: 3
   }
 });
 

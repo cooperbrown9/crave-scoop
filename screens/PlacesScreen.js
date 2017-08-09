@@ -50,8 +50,12 @@ class PlacesScreen extends React.Component {
   async componentDidMount() {
     const id = await AsyncStorage.getItem(Keys.USER_ID);
     console.log('places uid: ', this.props.user);
-    this.getVendors();
+    // this.getVendors();
     this.props.dispatch(this.getUser(id).bind(this));
+  }
+
+  componentWillMount() {
+    this.getVendors();
   }
 
   // getUser = () => {
@@ -126,6 +130,18 @@ class PlacesScreen extends React.Component {
     this.setState({filterPresented: true});
   }
 
+  _loadFavorites() {
+    AsyncStorage.getItem(Keys.USER_ID, (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        axios.get('https://crave-scoop.herokuapp.com/get-favorite-vendors/' + result).then((response) => {
+          this.setState({restaurants: response.data, profilePresented: false});
+        })
+      }
+    });
+  }
+
   _vendorPickedSearch = (vendor) => {
     axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + vendor._id).then(
       response => this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
@@ -136,23 +152,7 @@ class PlacesScreen extends React.Component {
     });
   }
 
-  _autocomplete(text) {
 
-    (text === '') ? this.getRestaurants() : null;
-
-    for(let i = 0; i < this.state.restaurants.length; i++) {
-
-      if(!this.state.restaurants[i].name.includes(text)) {
-        this.state.restaurants.splice(i, 1);
-        i--;
-      }
-    }
-    this.setState({restaurants: this.state.restaurants});
-  }
-
-  _startSearch() {
-    this.setState({searchOn: !this.state.searchOn });
-  }
 
   handleKeyPress(item) {
     return function(e) {
@@ -167,6 +167,7 @@ class PlacesScreen extends React.Component {
   render() {
 
     return (
+
       <View style={(this.state.loading) ? styles.loadingHider : styles.container } >
 
         <CustomNavBar
@@ -178,7 +179,7 @@ class PlacesScreen extends React.Component {
 
 
         <Modal animationType={'slide'} transparent={false} visible={this.state.profilePresented} >
-          <ProfileScreen dismissFunc={this._dismissProfileModal.bind(this)} logOutFunc={this._navigateHome.bind(this)}/>
+          <ProfileScreen dismissFunc={this._dismissProfileModal.bind(this)} logOutFunc={this._navigateHome.bind(this)} renderFavorites={this._loadFavorites.bind(this)} />
         </Modal>
 
         <Modal animationType={'slide'} transparent={false} visible={this.state.searchPresented} >
@@ -203,6 +204,8 @@ class PlacesScreen extends React.Component {
         </View>
 
       </View>
+
+
 
     );
   }

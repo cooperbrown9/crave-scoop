@@ -144,8 +144,7 @@ const styles = StyleSheet.create({
   navBarLeftButton:{
     height: 12,
     width: 12,
-    marginRight: 36,
-    color: Colors.DARK_BLUE
+    marginRight: 36
   },
   navBarRightButton:{
     height: 16,
