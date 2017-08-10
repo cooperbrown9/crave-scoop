@@ -84,8 +84,8 @@ class HomeScreen extends React.Component {
     }
   }
 
-  async createUser(firstname, lastname, location) {
-    await axios.put('https://crave-scoop.herokuapp.com/add-user/' + firstname + '/' + lastname + '/' + location).then(async(response) => {
+  async createUser(firstname, lastname, location, facebookID, facebookToken) {
+    await axios.put('https://crave-scoop.herokuapp.com/add-user/' + firstname + '/' + lastname + '/' + location + '/' + facebookID + '/' + facebookToken).then(async(response) => {
       await AsyncStorage.setItem(Keys.USER_ID, response.data);
     }).catch(error => {
       console.log(error);
@@ -107,7 +107,7 @@ class HomeScreen extends React.Component {
           const pic = await fetch('https://graph.facebook.com/v2.10/' + fbProfile.data.id + '/picture?access_token=' + response.token);
 
           await AsyncStorage.setItem(Keys.PICTURE, pic.url);
-          await this.createUser(name[0], name[1], 'The 69');
+          await this.createUser(name[0], name[1], 'The 69', fbProfile.data.id, response.token);
           this.props.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
 
           return response;

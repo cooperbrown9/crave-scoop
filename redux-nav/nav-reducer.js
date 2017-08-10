@@ -166,7 +166,7 @@ function auth(state = initialAuthState, action) {
   }
 }
 
-const initialVendorState = { vendors: [], success: false, placeDetail: { vendor: {info: { hours: [] }, location: {}, description: '', name: '' } } };
+const initialVendorState = { vendors: [], success: false, placeDetail: { vendor: { hours: [] , location: {}, description: '', name: '' } } };
 function vendorHelper(state = initialVendorState, action) {
 
   switch(action.type) {

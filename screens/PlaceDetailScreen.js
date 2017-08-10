@@ -15,7 +15,7 @@ import CustomNavBar from '../ui-elements/custom-nav-bar';
 import VendorItemModal from '../screens/VendorItemModal';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
 import axios from 'react-native-axios';
-
+import * as Colors from '../colors/colors.js';
 
 class PlaceDetailScreen extends React.Component {
 
@@ -32,16 +32,22 @@ class PlaceDetailScreen extends React.Component {
    model: {},
    vendorItemModalPresented: false,
    vendorLoaded: false,
-   goingBack: false
+   goingBack: false,
+   isFavorite: false
  };
 
  componentDidMount() {
-   console.log(this.props.model.info);
-   console.log("this one");
+   console.log(this.props.model);
+   for(let i = 0; i < this.props.user.favorites.length; i++) {
+     if (this.props.user.favorites[i].vendor_id == this.props.model._id) {
+       this.setState({isFavorite: true});
+       break;
+     }
+   }
  }
 
  _getHoursForDay() {
-   const today = todayHours = this.props.model.info.hours[new Date().getDay()];
+   const today = todayHours = this.props.model.hours[new Date().getDay()];
    let todayHours = today.open + today.open_tod + ' - ' + today.close + today.close_tod;
 
    return todayHours;
@@ -69,6 +75,9 @@ class PlaceDetailScreen extends React.Component {
 
  render() {
 
+   var icon = this.state.isFavorite ? require('../assets/images/black-heart.png') : require('../assets/images/heart.png');
+
+
    return(
      !this.state.goingBack ? (
      <ScrollView style={styles.ScrollContainer} >
@@ -87,7 +96,9 @@ class PlaceDetailScreen extends React.Component {
        <View style={styles.topContainer} >
 
          <View style={styles.topView_Image} >
-           <Image style={styles.topImage} source={require('../assets/images/fake-bg.png')}></Image>
+           <Image style={styles.topImage} source={{uri: this.props.model.background_image}}>
+             <Image style={styles.heartIcon} source={icon} />
+           </Image>
          </View>
 
          <View style={styles.infoContainer} >
@@ -113,7 +124,7 @@ class PlaceDetailScreen extends React.Component {
              </View>
            </View>
 
-           <Text style={styles.restaurantDescription}>{this.props.model.info.description}</Text>
+           <Text style={styles.restaurantDescription}>{this.props.model.description}</Text>
 
          </View>
 
@@ -121,7 +132,7 @@ class PlaceDetailScreen extends React.Component {
 
        <View style={styles.menuContainer} >
 
-         {this.props.model.info.products.map(product => <PlaceDetailItem name={product.name} description={product.description} onPress={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
+         {this.props.model.products.map(product => <PlaceDetailItem name={product.name} description={product.description} onPress={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
 
        </View>
 
@@ -147,6 +158,14 @@ const styles = StyleSheet.create({
  },
  topImage: {
    height: 180
+ },
+ heartIcon: {
+   height: 32,
+   width: 32,
+   position: 'absolute',
+   right: 32,
+   top: 16,
+   tintColor: Colors.DARK_BLUE
  },
  navBarLeftButton: {
    height: 16,
@@ -204,9 +223,9 @@ const styles = StyleSheet.create({
 
 
 var mapStateToProps = (state) => {
-
   return {
-    model: (state.nav.index == 2) ? state.nav.routes[state.nav.index].params.model : { name: '' }
+    model: (state.nav.index == 2) ? state.nav.routes[state.nav.index].params.model : { name: '' },
+    user: state.user.user
   }
 }
 

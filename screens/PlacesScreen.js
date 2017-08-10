@@ -11,7 +11,8 @@ import {
   Button,
   Modal,
   ActivityIndicator,
-  AsyncStorage
+  AsyncStorage,
+  Animated
 } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import axios from 'react-native-axios';
@@ -45,7 +46,9 @@ class PlacesScreen extends React.Component {
     profilePresented: false,
     filterPresented: false,
     searchOn: false,
-    searchPresented: false
+    searchPresented: false,
+    canAccessLocation: false,
+    animatedValue: 1
   }
 
   componentDidMount() {
@@ -68,6 +71,7 @@ class PlacesScreen extends React.Component {
     if (status !== 'granted') {
       Alert.alert('You wont be able to query vendors based off your location');
     } else {
+      this.setState({canAccessLocation: true});
       let location = await Location.getCurrentPositionAsync({});
       this.setState({latitude: location.coords.latitude, longitude: location.coords.longitude});
       this.props.dispatch({type: NavActionTypes.UPDATE_USER_LOCATION, latitude: location.coords.latitude, longitude: location.coords.longitude});
@@ -86,7 +90,7 @@ class PlacesScreen extends React.Component {
 
   getVendors = () => {
     axios.get('https://crave-scoop.herokuapp.com/get-all-vendors-for-places/').then(response => {
-      this.setState({restaurants: response.data, loading: false});
+      this.setState({restaurants: response.data, loading: false, filterPresented: false});
     }).catch(error => {
       console.log(error);
     });
@@ -152,11 +156,15 @@ class PlacesScreen extends React.Component {
   }
 
   _loadNearbyVendors() {
-    let lon = this.props.location.longitude.toString();
-    axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + lon.replace('-','') + '/' + '10').then((response) => {
-      this.setState({restaurants: response.data, filterPresented: false});
-      debugger;
-    });
+    if (this.state.canAccessLocation) {
+      let lon = this.props.location.longitude.toString();
+      axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + lon.replace('-','') + '/' + '10').then((response) => {
+        this.setState({restaurants: response.data, filterPresented: false});
+      });
+    } else {
+      Alert.alert('We cant access your location!');
+      this.setState({filterPresented: false});
+    }
   }
 
   _vendorPickedSearch = (vendor) => {
@@ -169,6 +177,17 @@ class PlacesScreen extends React.Component {
     });
   }
 
+  _searchKeyword = (word) => {
+    axios.get('https://crave-scoop.herokuapp.com/search-vendors-test/' + word).then(response => {
+      console.log(response);
+      this.setState({restaurants: response.data, searchPresented: false});
+    })
+  }
+
+
+  _resetVendors = () => {
+    this.getVendors();
+  }
 
 
   handleKeyPress(item) {
@@ -200,22 +219,28 @@ class PlacesScreen extends React.Component {
         </Modal>
 
         <Modal animationType={'slide'} transparent={false} visible={this.state.searchPresented} >
-          <SearchModal dismissModal={this._dismissSearchModal.bind(this)} vendorPicked={this._vendorPickedSearch.bind(this)} />
+          <SearchModal searchWord={this._searchKeyword.bind(this)} ismissModal={this._dismissSearchModal.bind(this)} vendorPicked={this._vendorPickedSearch.bind(this)} />
         </Modal>
 
         <Modal animationType={"slide"} transparent={false} visible={this.state.filterPresented} >
-            <FilterModal renderNearby={this._loadNearbyVendors.bind(this)} renderFavorites={this._loadFavorites.bind(this)} filterFunc={this._dismissAndFilter.bind(this)} dismissFunc={this._dismissFilterModal.bind(this)} />
+            <FilterModal resetVendors={this._resetVendors.bind(this)} renderNearby={this._loadNearbyVendors.bind(this)} renderFavorites={this._loadFavorites.bind(this)} filterFunc={this._dismissAndFilter.bind(this)} dismissFunc={this._dismissFilterModal.bind(this)} />
         </Modal>
 
-        <ScrollView style={styles.scrollContainer}>
+        <Animated.ScrollView style={styles.scrollContainer} scrollEventThrottle={1} onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: 100 } } }],
+            { useNativeDriver: true }
+          )}
+        >
+        {/* <ScrollView style={styles.scrollContainer}>
 
-          <View style={styles.itemContainer} >
-            {this.state.restaurants.map(model => <VendorView userFavorites={this.props.user.favorites} model={{id: model._id, name: model.name, like_count: model.like_count}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
+          <View style={styles.itemContainer} >*/}
+            {this.state.restaurants.map(model => <VendorView userFavorites={this.props.user.favorites} model={{id: model._id, name: model.name, like_count: model.like_count, image: model.background_image}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
 
-            </View>
+        {/*  </View>
 
-        </ScrollView>
 
+         </ScrollView>*/}
+      </Animated.ScrollView>
         <View style={styles.button}>
           <RoundButton title='Filters' onPress={this._presentFilterModal} bgColor={Colors.DARK_BLUE} borderOn={false}/>
         </View>

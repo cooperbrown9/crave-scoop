@@ -15,7 +15,8 @@ class SearchModal extends React.Component {
   static propTypes = {
     dismissModal: React.PropTypes.func.isRequired,
     vendorPicked: React.PropTypes.func.isRequired,
-    loading: React.PropTypes.bool
+    loading: React.PropTypes.bool,
+    searchWord: React.PropTypes.func.isRequired
   }
 
   static defaultProps = {
@@ -38,6 +39,10 @@ class SearchModal extends React.Component {
     });
   }
 
+  searchWord() {
+    this.props.searchWord(this.state.searchText);
+  }
+
   componentWillUnmount() {
     this.setState({loading: false});
   }
@@ -46,14 +51,20 @@ class SearchModal extends React.Component {
     const frame = Dimensions.get('window');
     return (
       <View style={styles.container}>
+
         <View style={styles.container}>
+
           <View style={styles.searchBarContainer} >
+
             <Image style={styles.searchIcon} source={require('../assets/images/search.png')} />
             <TextInput style={styles.searchBar} placeholder='Search...' editable={true} onChangeText={(text)=> {this._onChangeText(text)} }/>
+
             <TouchableOpacity onPress={() => this.props.dismissModal()}>
               <Image style={styles.resetIcon} source={require('../assets/images/close.png')} />
             </TouchableOpacity>
+
           </View>
+
           <View style={{height: 64}}></View>
 
           <View style={this.vendorView} >
@@ -66,13 +77,15 @@ class SearchModal extends React.Component {
         </View>
 
         <View style={styles.button}>
-          <RoundButton title='SEARCH' borderOn={false} bgColor={Colors.DARK_BLUE} onPress={() => this.props.dismissModal()} />
+          <RoundButton title='SEARCH' borderOn={false} bgColor={Colors.DARK_BLUE} onPress={() => this.searchWord()} />
         </View>
+
         {this.state.loading ?
         <View style={{position: 'absolute', top: 0, left: 0,height: frame.height, width: frame.width, backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
           <ActivityIndicator animating={this.state.loading} size='large' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
         </View>
         : null }
+
       </View>
     )
   }

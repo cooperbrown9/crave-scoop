@@ -15,7 +15,8 @@ class FilterModal extends React.Component {
     name: React.PropTypes.string,
     filterFunc: React.PropTypes.func,
     renderFavorites: React.PropTypes.func,
-    renderNearby: React.PropTypes.func
+    renderNearby: React.PropTypes.func,
+    resetVendors: React.PropTypes.func
   };
 
   state = {
@@ -48,6 +49,11 @@ class FilterModal extends React.Component {
         vendors => dispatch({type: NavActionTypes.FAVORITES, vendors: vendors.data})
       )
     }
+  }
+
+  resetVendors() {
+    this.setState({loading: true});
+    this.props.resetVendors();
   }
 
   componentDidMount() {
@@ -87,7 +93,9 @@ class FilterModal extends React.Component {
           title={'FILTER'}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/close.png')}/>}
           rightButton={<Text style={styles.navBarRightButton}>Reset</Text>}
-          leftOnPress={this.props.dismissFunc}/>
+          leftOnPress={this.props.dismissFunc}
+          rightOnPress={() => this.resetVendors()}
+        />
 
         <Text style={{height: 24, width: 120, fontSize: 20, fontWeight: 'bold', marginTop: 16, marginLeft: 16, marginBottom: 16 }} textColor='black' >My Crave</Text>
 

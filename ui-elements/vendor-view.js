@@ -69,7 +69,7 @@ export default class VendorView extends Component {
 
         <TouchableOpacity onPress={this.props.onTouch} style={styles.wrapper}>
           <View style={styles.imageContainer} >
-            <Image style={styles.image} source={require('../assets/images/fake-bg.jpg')} />
+            <Image style={styles.image} source={{uri: this.props.model.image}} />
           </View>
 
           <View style={styles.bottomView}>
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     flex: 1,
     flexDirection: 'column',
+    // alignItems: 'stretch',
     height: 180,
     marginBottom: 16,
     marginLeft: 16,
@@ -107,6 +108,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     borderRadius: 4,
+    alignItems: 'stretch'
   },
   imageContainer: {
     flex: 3,
