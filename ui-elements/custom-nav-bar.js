@@ -1,7 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
-import Button from 'react-native-button';
 import * as Colors from '../colors/colors.js';
 
 

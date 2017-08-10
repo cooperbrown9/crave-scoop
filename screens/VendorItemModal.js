@@ -13,7 +13,7 @@ class VendorItemModal extends React.Component {
   };
 
  componentDidMount () {
-   
+
  }
 
   render() {
@@ -60,7 +60,7 @@ class VendorItemModal extends React.Component {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: 'transparent',
+      backgroundColor: Colors.CREAM,
     },
     nutritionFactsContainer:{
       flex: 1,
@@ -120,6 +120,7 @@ class VendorItemModal extends React.Component {
       marginRight: 16,
       textAlign: 'center',
       fontWeight: 'bold',
+      fontFamily: 'varela-round'
     },
     resturantInfoContainer: {
       flexDirection: 'row',
@@ -138,6 +139,7 @@ class VendorItemModal extends React.Component {
       marginRight: 16,
       textAlign: 'center',
       marginTop: 10,
+      fontFamily: 'varela-round'
     },
     menuContainer: {
       flex: 1,

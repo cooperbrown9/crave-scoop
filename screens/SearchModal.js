@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, TouchableOpacity, ActivityIndicator, Image, StyleSheet, Dimensions } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import axios from 'react-native-axios';
 import RoundButton from '../ui-elements/round-button.js';
@@ -13,7 +13,13 @@ class SearchModal extends React.Component {
   }
 
   static propTypes = {
-    dismissModal: React.PropTypes.func.isRequired
+    dismissModal: React.PropTypes.func.isRequired,
+    vendorPicked: React.PropTypes.func.isRequired,
+    loading: React.PropTypes.bool
+  }
+
+  static defaultProps = {
+    loading: false
   }
 
   _onChangeText(text) {
@@ -23,16 +29,21 @@ class SearchModal extends React.Component {
   }
 
   queryVendors = (str) => {
+    this.setState({loading: true});
     axios.get('https://crave-scoop.herokuapp.com/search-vendors/' + str).then(response => {
       console.log(response.data);
-      this.setState({vendors: response.data});
+      this.setState({vendors: response.data, loading: false});
     }).catch(error => {
       console.log('nah', error);
     });
   }
 
-  render() {
+  componentWillUnmount() {
+    this.setState({loading: false});
+  }
 
+  render() {
+    const frame = Dimensions.get('window');
     return (
       <View style={styles.container}>
         <View style={styles.container}>
@@ -47,7 +58,7 @@ class SearchModal extends React.Component {
 
           <View style={this.vendorView} >
             {this.state.vendors.map(vendor =>
-              <TouchableOpacity onPress={() => this.props.dismissModal(vendor)} key={vendor.name}>
+              <TouchableOpacity onPress={() => this.props.vendorPicked(vendor)} key={vendor.name}>
                 <Text style={{backgroundColor:'transparent', fontSize: 28, fontWeight: 'bold', height: 32, textAlign: 'center', marginTop: 32}} color='green'>{vendor.name}</Text>
               </TouchableOpacity>
             )}
@@ -55,8 +66,13 @@ class SearchModal extends React.Component {
         </View>
 
         <View style={styles.button}>
-          <RoundButton title='SEARCH' borderOn={false} bgColor={Colors.DARK_BLUE} onPress={() => this.props.dismissModal('bruuuuuh')} />
+          <RoundButton title='SEARCH' borderOn={false} bgColor={Colors.DARK_BLUE} onPress={() => this.props.dismissModal()} />
         </View>
+        {this.state.loading ?
+        <View style={{position: 'absolute', top: 0, left: 0,height: frame.height, width: frame.width, backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
+          <ActivityIndicator animating={this.state.loading} size='large' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
+        </View>
+        : null }
       </View>
     )
   }
@@ -67,7 +83,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'stretch',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    zIndex: 0
   },
   vendorView: {
     flex: 1,
@@ -106,7 +123,8 @@ const styles = StyleSheet.create({
   button: {
     marginLeft: 64,
     marginRight: 64,
-    marginBottom: 16
+    marginBottom: 32,
+    zIndex: 3
   }
 });
 

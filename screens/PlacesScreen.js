@@ -26,6 +26,7 @@ import FilterModal from './FilterModal.js';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
 import SearchModal from './SearchModal.js';
 import * as Keys from '../local-storage/keys.js';
+import { Constants, Location, Permissions } from 'expo';
 
 
 class PlacesScreen extends React.Component {
@@ -47,25 +48,37 @@ class PlacesScreen extends React.Component {
     searchPresented: false
   }
 
-  async componentDidMount() {
-    const id = await AsyncStorage.getItem(Keys.USER_ID);
+  componentDidMount() {
+    AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
+      console.log('places uid: ', this.props.user);
 
-    this.getVendors();
-    this.props.dispatch(this.getUser(id).bind(this));
+      this.props.dispatch(this.getUser(result).bind(this));
+    });
+
   }
 
-  // getUser = () => {
-  //   axios.get('https://crave-scoop.herokuapp.com/get-user/59765b461a79980011c99d2c/').then(response => {
-  //     this.setState({user: response.data});
-  //   }).catch(error => {
-  //     console.log('couldnt get user from places screen');
-  //   });
-  // }
+  componentWillMount() {
+    this._getLocationAsync();
+    this.getVendors();
+  }
 
-  getUser(userID) {
+  _getLocationAsync = async() => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+
+    if (status !== 'granted') {
+      Alert.alert('You wont be able to query vendors based off your location');
+    } else {
+      let location = await Location.getCurrentPositionAsync({});
+      this.setState({latitude: location.coords.latitude, longitude: location.coords.longitude});
+      this.props.dispatch({type: NavActionTypes.UPDATE_USER_LOCATION, latitude: location.coords.latitude, longitude: location.coords.longitude});
+    }
+  }
+
+
+  getUser(userID, location) {
     return function (dispatch) {
       return axios.get('https://crave-scoop.herokuapp.com/get-user/' + userID).then(
-        user => this.props.dispatch({type: NavActionTypes.GET_USER, user: user.data })
+        user => this.props.dispatch({type: NavActionTypes.GET_USER, user: user.data, location: location })
       )
     }
   }
@@ -84,15 +97,20 @@ class PlacesScreen extends React.Component {
       <VendorView model={{ id: item._id, name: item.name }} onTouch={this.handleKeyPress(item).bind(this)} key={item._id} />
     )
   }
-  _navigateHome = () =>{
+  _navigateHome = () => {
     this.props.navigation.dispatch({type: 'Home'});
   }
 
   _dismissSearchModal = (vendor) => {
+    this.setState({searchPresented: false});
+    return;
+
     axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + vendor._id).then(
       response => this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
     ).then(() => {
       this.setState({searchPresented: false});
+    }).catch(error => {
+      console.log(error);
     });
     // this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, id: item._id});
   }
@@ -113,7 +131,7 @@ class PlacesScreen extends React.Component {
     this.setState({filterPresented: false});
   }
 
-  _dismissAndFilter(vendors) {
+  _dismissAndFilter = (vendors) => {
     this.setState({filterPresented: false, restaurants: vendors});
   }
 
@@ -121,23 +139,37 @@ class PlacesScreen extends React.Component {
     this.setState({filterPresented: true});
   }
 
-  _autocomplete(text) {
-
-    (text === '') ? this.getRestaurants() : null;
-
-    for(let i = 0; i < this.state.restaurants.length; i++) {
-
-      if(!this.state.restaurants[i].name.includes(text)) {
-        this.state.restaurants.splice(i, 1);
-        i--;
+  _loadFavorites() {
+    AsyncStorage.getItem(Keys.USER_ID, (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        axios.get('https://crave-scoop.herokuapp.com/get-favorite-vendors/' + result).then((response) => {
+          this.setState({restaurants: response.data, profilePresented: false, filterPresented: false});
+        })
       }
-    }
-    this.setState({restaurants: this.state.restaurants});
+    });
   }
 
-  _startSearch() {
-    this.setState({searchOn: !this.state.searchOn });
+  _loadNearbyVendors() {
+    let lon = this.props.location.longitude.toString();
+    axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + lon.replace('-','') + '/' + '10').then((response) => {
+      this.setState({restaurants: response.data, filterPresented: false});
+      debugger;
+    });
   }
+
+  _vendorPickedSearch = (vendor) => {
+    axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + vendor._id).then(
+      response => this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
+    ).then(() => {
+      this.setState({searchPresented: false});
+    }).catch(error => {
+      console.log(error);
+    });
+  }
+
+
 
   handleKeyPress(item) {
     return function(e) {
@@ -152,6 +184,7 @@ class PlacesScreen extends React.Component {
   render() {
 
     return (
+
       <View style={(this.state.loading) ? styles.loadingHider : styles.container } >
 
         <CustomNavBar
@@ -163,15 +196,15 @@ class PlacesScreen extends React.Component {
 
 
         <Modal animationType={'slide'} transparent={false} visible={this.state.profilePresented} >
-          <ProfileScreen dismissFunc={this._dismissProfileModal.bind(this)} logOutFunc={this._navigateHome.bind(this)}/>
+          <ProfileScreen dismissFunc={this._dismissProfileModal.bind(this)} logOutFunc={this._navigateHome.bind(this)} renderFavorites={this._loadFavorites.bind(this)} />
         </Modal>
 
         <Modal animationType={'slide'} transparent={false} visible={this.state.searchPresented} >
-          <SearchModal dismissModal={this._dismissSearchModal.bind(this)}/>
+          <SearchModal dismissModal={this._dismissSearchModal.bind(this)} vendorPicked={this._vendorPickedSearch.bind(this)} />
         </Modal>
 
         <Modal animationType={"slide"} transparent={false} visible={this.state.filterPresented} >
-            <FilterModal filterFunc={this.dismissAndFilter.bind(this)} dismissFunc={this._dismissFilterModal.bind(this)} />
+            <FilterModal renderNearby={this._loadNearbyVendors.bind(this)} renderFavorites={this._loadFavorites.bind(this)} filterFunc={this._dismissAndFilter.bind(this)} dismissFunc={this._dismissFilterModal.bind(this)} />
         </Modal>
 
         <ScrollView style={styles.scrollContainer}>
@@ -188,6 +221,8 @@ class PlacesScreen extends React.Component {
         </View>
 
       </View>
+
+
 
     );
   }
@@ -331,7 +366,8 @@ var mapStateToProps = (state) => {
 
   return {
     navigator: state.nav,
-    user: state.user.user
+    user: state.user.user,
+    location: state.location
   }
 }
 

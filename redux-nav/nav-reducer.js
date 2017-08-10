@@ -124,7 +124,6 @@ function modal (state = initialModalState, action) {
       break;
 
     default:
-      console.log('yuuuuuuuh');
       return { randomProp: '' }
       break;
   }
@@ -144,7 +143,6 @@ function auth(state = initialAuthState, action) {
       }
 
     case 'Login_Complete':
-      console.log('yuuuuup');
       return { ...state, isLoggedIn: true, user: action.user };
 
     case 'GetUser':
@@ -215,10 +213,13 @@ function user (state = initialUserState, action){
   switch(action.type){
 
     case NavActionTypes.GET_USER:
-      initialUserState = { ...state,
+      initialUserState = {
+      ...state,
       success: true,
-      user: action.user };
-      
+      user: action.user,
+      currentLocation: action.location
+     };
+
       return initialUserState;
       // return {
       //   ...state,
@@ -233,6 +234,23 @@ function user (state = initialUserState, action){
   }
 }
 
+let initialLocationState = { latitude: '', longitude: ''}
+function location(state = initialLocationState, action) {
+
+  switch(action.type) {
+
+    case NavActionTypes.UPDATE_USER_LOCATION:
+      initialLocationState = {
+        latitude: action.latitude,
+        longitude: action.longitude
+      }
+      return initialLocationState;
+
+    default:
+      return initialLocationState;
+  }
+}
+
 
 // export function setUser (data) {
 //   return Object.assign({type: 'Login_Complete', user: data});
@@ -243,7 +261,8 @@ const NavReducer = combineReducers({
   auth,
   modal,
   vendorHelper,
-  user
+  user,
+  location
 });
 
 export default NavReducer;

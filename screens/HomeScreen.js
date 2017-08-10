@@ -28,7 +28,6 @@ import * as Keys from '../local-storage/keys.js';
 class HomeScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'Title',
     header: null
   };
 
@@ -39,25 +38,36 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     // FB App ID 1565112886889636 SECRET: 7765eef11057d8b0e03799d070856e73
+    // Keys.setDummyKeys(() => {
+    //   console.log('skeddit');
+    //   this.checkLogin();
+    // });
+    // Keys.resetKeys(() => {
+      console.log('skeddit');
+      this.checkLogin();
+    // });
 
-    Keys.setDummyKeys();
-    // this.props.dispatch(this.getUserFoReal('59765d2df60c01001198f3b5').bind(this));
-    // this.checkLoginStatus();
-    // this.getUser();
-    // this.somethin();
+  }
 
+  checkLogin = () => {
+    AsyncStorage.getItem(Keys.USER_ID, (err, id) => {
+      if (id == null) {
+        return;
+      } else {
+        this.getUser();
+      }
+    })
   }
 
 
   componentWillMount() {
-    this.getUser();
+    // this.getUser();
   }
 
-  async getUser() {
-    const id = await AsyncStorage.getItem(Keys.USER_ID);
-    console.log(id, 'yuuuh');
-    this.setState({userID: id}, () => {
-      this.props.dispatch(this.getUserHelper(this.state.userID).bind(this));
+  getUser() {
+    AsyncStorage.getItem(Keys.USER_ID, (err, result) => {
+      this.setState({userID: result});
+      this.props.dispatch(this.getUserHelper(result));
     });
   }
 
@@ -66,65 +76,48 @@ class HomeScreen extends React.Component {
       return axios.get('https://crave-scoop.herokuapp.com/get-user/' + id).then(
         response => {
           dispatch({type: NavActionTypes.GET_USER, user: response.data});
-      })
-    }
-  }
-
-
-  async checkLoginStatus() {
-    const id = await AsyncStorage.getItem('@fb_id:key');
-    const token = await AsyncStorage.getItem('@fb_access_token:key');
-
-    if (id == 'null' || token == 'null') {
-      await this.loginFBAsync();
-    } else {
-      // const longToken = await axios.get('https://graph.facebook.com/oauth/access_token?client_id=1565112886889636&client_secret=7765eef11057d8b0e03799d070856e73&grant_type=fb_exchange_token&fb_exchange_token=' + token);
-      this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
-    }
-  }
-
-
-  async loginFBAsync() {
-    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', {permissions:['public_profile'], behavior: 'web'});
-    if (type === 'success') {
-      const response = await axios.get('https://graph.facebook.com/me?access_token=' + token);
-
-      Alert.alert('Logged In!', response.data.name);
-
-      await AsyncStorage.setItem('@fb_id:key', response.data.id);
-      await AsyncStorage.setItem('@fb_access_token:key', token);
-
-      axios.put('https://crave-scoop.herokuapp.com/add-user/' + response.data.name + '/LastName/Spokane/').then(async (response) => {
-        await AsyncStorage.setItem(Keys.USER_ID, response.data);
-      });
-
-
-    }
-  }
-
-
-  getTestUsername = async() => {
-    let g = await AsyncStorage.getItem('@user_id:key');
-    console.log(g);
-    g = await AsyncStorage.getItem('@user_name:key');
-    console.log(g);
-  }
-
-  _getUserHelper = (id) => {
-    return axios.get('https://crave-scoop.herokuapp.com/get-user/' + id);
-  }
-
-  getUserFoReal(id) {
-    return function (dispatch) {
-      return this._getUserHelper(id).then(
-        user => dispatch({type: 'Login', user: user.data})
-      ).then(async (user) => {
-        await AsyncStorage.setItem('@user_id:key', user.user._id);
-        await AsyncStorage.setItem('@user_name:key', user.user.last_name);
       }).then(() => {
-        this.getTestUsername();
+        dispatch({type: NavActionTypes.NAVIGATE_PLACES});
+      }).catch(error => {
+        console.log(error);
       })
     }
+  }
+
+  async createUser(firstname, lastname, location) {
+    await axios.put('https://crave-scoop.herokuapp.com/add-user/' + firstname + '/' + lastname + '/' + location).then(async(response) => {
+      await AsyncStorage.setItem(Keys.USER_ID, response.data);
+    }).catch(error => {
+      console.log(error);
+    });
+  }
+
+  signInFacebook = () => {
+    let accessToken = '';
+
+    Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', {permissions:['public_profile'], behavior: 'web'}).then(async(response) => {
+
+      switch(response.type) {
+
+        case 'success':
+
+          await AsyncStorage.setItem(Keys.FACEBOOK_ID, response.token);
+          const fbProfile = await axios.get('https://graph.facebook.com/me?access_token=' + response.token);
+          let name = fbProfile.data.name.split(' ');
+          const pic = await fetch('https://graph.facebook.com/v2.10/' + fbProfile.data.id + '/picture?access_token=' + response.token);
+
+          await AsyncStorage.setItem(Keys.PICTURE, pic.url);
+          await this.createUser(name[0], name[1], 'The 69');
+          this.props.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
+
+          return response;
+        case 'cancel':
+          return null;
+        default:
+          console.log('bruuuuh');
+          return 'naaah fam';
+      }
+    });
   }
 
   _createProfileModalPresented = () => {
@@ -148,9 +141,11 @@ class HomeScreen extends React.Component {
     let halfHeight = height / 2;
     return (
       <View style={styles.mainContainer} >
+
         <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} >
-            <CreateProfileModal dismissFunc={this._createProfileModalPresented} />
+            <CreateProfileModal dismissFunc={this._createProfileModalPresented} getUser={this.getUser.bind(this)} />
         </Modal>
+
         <View style={styles.welcomeContainer} >
           <Image source={require('../assets/images/cupcake.png')} style={styles.image} />
           <Text color='white' style={styles.welcomeMessage} >
@@ -159,7 +154,7 @@ class HomeScreen extends React.Component {
         </View>
 
         <View style={styles.buttonContainer} >
-          <RoundButton title='Continue with Facebook' onPress={this.checkLoginStatus.bind(this)} bgColor='white' textColor='#41d9f4' />
+          <RoundButton title='Continue with Facebook' onPress={this.signInFacebook} bgColor='white' textColor='#41d9f4' />
           <RoundButton title='Create Account' onPress={this._createProfileModalPresented} />
         </View>
         <Text style={styles.termsText}>Terms of Service</Text>
@@ -220,6 +215,7 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = (state) => {
+  // debugger;
   return {
     navigator: state.nav,
     isLoggedIn: state.auth.isLoggedIn,

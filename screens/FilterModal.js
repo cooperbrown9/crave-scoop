@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, Image, TouchableOpacity, ActivityIndicator, Dimensions } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors.js';
@@ -14,39 +14,24 @@ class FilterModal extends React.Component {
     dismissFunc: React.PropTypes.func.isRequired,
     name: React.PropTypes.string,
     filterFunc: React.PropTypes.func,
-
+    renderFavorites: React.PropTypes.func,
+    renderNearby: React.PropTypes.func
   };
 
   state = {
     favoriteChecked: false,
     openNowChecked: false,
     nearMeChecked: false,
+    loading: false
   };
 
   filterVendors = () => {
-
-    axios.get('https://crave-scoop.herokuapp.com/get-vendor/597ba3f69f94ee0011109e7f').then(response => {
-      this.props.filterFunc(response.data);
-      this.props.dismissFunc();
-    }).catch(error => {
-      console.log('naaahhhh');
-    });
-  }
-
-  filterVendorss = () => {
-    let base = 'https://crave-scoop.herokuapp.com/';
-    let url = 'get-vendor/';
+    this.setState({loading: true});
     if (this.state.nearMeChecked) {
-      this.props.dispatch(this._getVendorsNearby().bind(this)).then(() => {
-        this.props.filterFunc(this.props.vendors);
-      });
+      this.props.renderNearby();
     } else if (this.state.favoriteChecked) {
-      this.props.dispatch(this._getFavoriteVendors().bind(this)).then(() => {
-        this.props.filterFunc(this.props.vendors);
-      })
+      this.props.renderFavorites();
     }
-
-    this.props.dismissFunc(); 
   }
 
   _getVendorsNearby() {
@@ -69,10 +54,13 @@ class FilterModal extends React.Component {
 
   }
 
+  componentWillUnmount() {
+    this.setState({loading: false});
+  }
+
   _dismissPrototype() {
     this.getVendor();
   }
-
 
   _checkFavorite = () => {
     this.setState({favoriteChecked: !this.state.favoriteChecked});
@@ -90,16 +78,16 @@ class FilterModal extends React.Component {
     var favCheck = this.state.favoriteChecked ? require('../assets/images/check-mark.png') : null;
     var openNowCheck = this.state.openNowChecked ? require('../assets/images/check-mark.png') : null;
     var nearMeCheck = this.state.nearMeChecked ? require('../assets/images/check-mark.png') : null;
+    const frame = Dimensions.get('window');
 
     return(
       <View style={styles.container} >
 
         <CustomNavBar
-          title={'Filter'}
+          title={'FILTER'}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/close.png')}/>}
           rightButton={<Text style={styles.navBarRightButton}>Reset</Text>}
-          leftOnPress={this.props.dismissFunc}
-          />
+          leftOnPress={this.props.dismissFunc}/>
 
         <Text style={{height: 24, width: 120, fontSize: 20, fontWeight: 'bold', marginTop: 16, marginLeft: 16, marginBottom: 16 }} textColor='black' >My Crave</Text>
 
@@ -131,8 +119,14 @@ class FilterModal extends React.Component {
 
 
         <View style={styles.buttonStyle} >
-          <RoundButton title='VIEW PLACES' onPress={this.filterVendorss} bgColor={Colors.DARK_BLUE} borderOn={false} />
+          <RoundButton title='VIEW PLACES' onPress={this.filterVendors} bgColor={Colors.DARK_BLUE} borderOn={false} />
         </View>
+
+        {this.state.loading ?
+        <View style={{position: 'absolute', top: 0, left: 0,height: frame.height, width: frame.width, backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
+          <ActivityIndicator animating={this.state.loading} size='large' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
+        </View>
+        : null }
 
       </View>
     )
@@ -148,8 +142,7 @@ const styles = StyleSheet.create({
   navBarLeftButton:{
     height: 12,
     width: 12,
-    marginRight: 36,
-    color: Colors.DARK_BLUE
+    marginRight: 36
   },
   navBarRightButton:{
     height: 16,

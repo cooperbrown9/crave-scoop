@@ -202,6 +202,7 @@ const styles = StyleSheet.create({
  },
 });
 
+
 var mapStateToProps = (state) => {
 
   return {

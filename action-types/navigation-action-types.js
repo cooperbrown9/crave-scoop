@@ -10,4 +10,5 @@ export const FAVORITES = 'get_vendors/favorites';
 export const GET_VENDOR = 'get_vendors/get_vendor';
 
 export const SET_USER = 'user/set_user';
-export const GET_USER = 'user/get_user'; 
+export const GET_USER = 'user/get_user';
+export const UPDATE_USER_LOCATION = 'user/update_user_location';
