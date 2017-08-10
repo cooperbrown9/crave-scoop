@@ -26,6 +26,7 @@ import FilterModal from './FilterModal.js';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
 import SearchModal from './SearchModal.js';
 import * as Keys from '../local-storage/keys.js';
+import { Constants, Location, Permissions } from 'expo';
 
 
 class PlacesScreen extends React.Component {
@@ -47,29 +48,37 @@ class PlacesScreen extends React.Component {
     searchPresented: false
   }
 
-  async componentDidMount() {
-    const id = await AsyncStorage.getItem(Keys.USER_ID);
-    console.log('places uid: ', this.props.user);
-    // this.getVendors();
-    this.props.dispatch(this.getUser(id).bind(this));
+  componentDidMount() {
+    AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
+      console.log('places uid: ', this.props.user);
+
+      this.props.dispatch(this.getUser(result).bind(this));
+    });
+
   }
 
   componentWillMount() {
+    this._getLocationAsync();
     this.getVendors();
   }
 
-  // getUser = () => {
-  //   axios.get('https://crave-scoop.herokuapp.com/get-user/59765b461a79980011c99d2c/').then(response => {
-  //     this.setState({user: response.data});
-  //   }).catch(error => {
-  //     console.log('couldnt get user from places screen');
-  //   });
-  // }
+  _getLocationAsync = async() => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
 
-  getUser(userID) {
+    if (status !== 'granted') {
+      Alert.alert('You wont be able to query vendors based off your location');
+    } else {
+      let location = await Location.getCurrentPositionAsync({});
+      this.setState({latitude: location.coords.latitude, longitude: location.coords.longitude});
+      this.props.dispatch({type: NavActionTypes.UPDATE_USER_LOCATION, latitude: location.coords.latitude, longitude: location.coords.longitude});
+    }
+  }
+
+
+  getUser(userID, location) {
     return function (dispatch) {
       return axios.get('https://crave-scoop.herokuapp.com/get-user/' + userID).then(
-        user => this.props.dispatch({type: NavActionTypes.GET_USER, user: user.data })
+        user => this.props.dispatch({type: NavActionTypes.GET_USER, user: user.data, location: location })
       )
     }
   }
@@ -136,9 +145,17 @@ class PlacesScreen extends React.Component {
         console.log(err);
       } else {
         axios.get('https://crave-scoop.herokuapp.com/get-favorite-vendors/' + result).then((response) => {
-          this.setState({restaurants: response.data, profilePresented: false});
+          this.setState({restaurants: response.data, profilePresented: false, filterPresented: false});
         })
       }
+    });
+  }
+
+  _loadNearbyVendors() {
+    let lon = this.props.location.longitude.toString();
+    axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + lon.replace('-','') + '/' + '10').then((response) => {
+      this.setState({restaurants: response.data, filterPresented: false});
+      debugger;
     });
   }
 
@@ -187,7 +204,7 @@ class PlacesScreen extends React.Component {
         </Modal>
 
         <Modal animationType={"slide"} transparent={false} visible={this.state.filterPresented} >
-            <FilterModal filterFunc={this._dismissAndFilter.bind(this)} dismissFunc={this._dismissFilterModal.bind(this)} />
+            <FilterModal renderNearby={this._loadNearbyVendors.bind(this)} renderFavorites={this._loadFavorites.bind(this)} filterFunc={this._dismissAndFilter.bind(this)} dismissFunc={this._dismissFilterModal.bind(this)} />
         </Modal>
 
         <ScrollView style={styles.scrollContainer}>
@@ -349,7 +366,8 @@ var mapStateToProps = (state) => {
 
   return {
     navigator: state.nav,
-    user: state.user.user
+    user: state.user.user,
+    location: state.location
   }
 }
 

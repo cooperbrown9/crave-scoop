@@ -17,6 +17,7 @@ export default class ProfileScreen extends React.Component {
       last_name: '',
       location: ''
     },
+    profilePic: 'http://enadcity.org/enadcity/wp-content/uploads/2017/02/profile-pictures.png'
   }
 
   static propTypes = {
@@ -54,13 +55,14 @@ export default class ProfileScreen extends React.Component {
   }
 
   async getProfile() {
-
+    this.setState({loading: true});
     const id = await AsyncStorage.getItem('@user_id:key');
 
-    axios.get('https://crave-scoop.herokuapp.com/get-user/' + id + '/').then(async(response) =>{
+    axios.get('https://crave-scoop.herokuapp.com/get-user/' + id + '/').then(async(response) => {
 
-      await this.setState({user: response.data});
-      console.log(this.state.user);
+      const picUrl = await AsyncStorage.getItem(Keys.PICTURE);
+      console.log(picUrl);
+      this.setState({user: response.data, profilePic: picUrl, loading: false});
 
     }).catch(error => {
       console.log('error fetching restaurants');
@@ -86,7 +88,7 @@ export default class ProfileScreen extends React.Component {
         <View style={styles.infoView} >
           <View style={styles.imageView}>
 
-              <Image style={styles.image} source={require('../assets/images/Emma-Watson.png')}/>
+              <Image style={styles.image} source={{uri: this.state.profilePic}}/>
           </View>
 
           <Text style={styles.name} textColor='black'>{this.state.user.first_name + ' ' + this.state.user.last_name}</Text>
@@ -253,7 +255,8 @@ const styles = StyleSheet.create({
 
 var mapStateToProps = state => {
   return {
-    currentVendors: state.vendorHelper.vendors
+    currentVendors: state.vendorHelper.vendors,
+    // picture:
   }
 }
 

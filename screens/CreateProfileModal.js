@@ -9,7 +9,8 @@ import * as Keys from '../local-storage/keys.js';
 
 export default class CreateProfileModal extends React.Component {
   state = {
-    firstName: 'Tony',
+    firstName: '',
+    lastName: '',
     user: {}
 
   }
@@ -28,6 +29,10 @@ export default class CreateProfileModal extends React.Component {
       this.props.dismissFunc();
       this.props.getUser(id);
     });
+  }
+
+  passwordVisible = () => {
+    this.setState({passwordVisible: !this.state.passwordVisible});
   }
 
 
@@ -61,7 +66,7 @@ export default class CreateProfileModal extends React.Component {
                 placeholder={'Create Password'}
                 autoCapitalize = {'none'}
                 />
-              <TouchableOpacity onPress={this._passwordVisible} style={{justifyContent: 'center', alignItems: 'center' }}>
+              <TouchableOpacity onPress={() => this.passwordVisible()} style={{justifyContent: 'center', alignItems: 'center' }}>
                   <Image style={styles.passwordVisibleButton} source={icon}/>
               </TouchableOpacity>
             </View>

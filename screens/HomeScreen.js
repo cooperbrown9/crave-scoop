@@ -28,7 +28,6 @@ import * as Keys from '../local-storage/keys.js';
 class HomeScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'Title',
     header: null
   };
 
@@ -39,7 +38,10 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     // FB App ID 1565112886889636 SECRET: 7765eef11057d8b0e03799d070856e73
-    // Keys.setDummyKeys();
+    // Keys.setDummyKeys(() => {
+    //   console.log('skeddit');
+    //   this.checkLogin();
+    // });
     // Keys.resetKeys(() => {
       console.log('skeddit');
       this.checkLogin();
@@ -85,7 +87,6 @@ class HomeScreen extends React.Component {
   async createUser(firstname, lastname, location) {
     await axios.put('https://crave-scoop.herokuapp.com/add-user/' + firstname + '/' + lastname + '/' + location).then(async(response) => {
       await AsyncStorage.setItem(Keys.USER_ID, response.data);
-      console.log(response);
     }).catch(error => {
       console.log(error);
     });
@@ -94,10 +95,21 @@ class HomeScreen extends React.Component {
   signInFacebook = () => {
     let accessToken = '';
 
-    Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', {permissions:['public_profile'], behavior: 'web'}).then((response) => {
-      console.log(response);
+    Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', {permissions:['public_profile'], behavior: 'web'}).then(async(response) => {
+
       switch(response.type) {
+
         case 'success':
+
+          await AsyncStorage.setItem(Keys.FACEBOOK_ID, response.token);
+          const fbProfile = await axios.get('https://graph.facebook.com/me?access_token=' + response.token);
+          let name = fbProfile.data.name.split(' ');
+          const pic = await fetch('https://graph.facebook.com/v2.10/' + fbProfile.data.id + '/picture?access_token=' + response.token);
+
+          await AsyncStorage.setItem(Keys.PICTURE, pic.url);
+          await this.createUser(name[0], name[1], 'The 69');
+          this.props.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
+
           return response;
         case 'cancel':
           return null;
@@ -105,49 +117,7 @@ class HomeScreen extends React.Component {
           console.log('bruuuuh');
           return 'naaah fam';
       }
-    }).then(async (response) => {
-      if(response.token != null) {
-        await AsyncStorage.setItem(Keys.FACEBOOK_ID, response.token);
-
-        return response.type;
-      } else {
-        return response.type;
-      }
-    }).then(async(status) => {
-
-      if (status == 'success') {
-        await this.createUser('Cool', 'Dude', 'The 69');
-        this.props.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
-      } else {
-        Alert.alert('Could not login with Facebook');
-      }
     });
-
-  }
-
-
-  getTestUsername = async() => {
-    let g = await AsyncStorage.getItem('@user_id:key');
-    console.log(g);
-    g = await AsyncStorage.getItem('@user_name:key');
-    console.log(g);
-  }
-
-  _getUserHelper = (id) => {
-    return axios.get('https://crave-scoop.herokuapp.com/get-user/' + id);
-  }
-
-  getUserFoReal(id) {
-    return function (dispatch) {
-      return this._getUserHelper(id).then(
-        user => dispatch({type: 'Login', user: user.data})
-      ).then(async (user) => {
-        await AsyncStorage.setItem('@user_id:key', user.user._id);
-        await AsyncStorage.setItem('@user_name:key', user.user.last_name);
-      }).then(() => {
-        this.getTestUsername();
-      })
-    }
   }
 
   _createProfileModalPresented = () => {
