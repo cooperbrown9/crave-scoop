@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+  import { combineReducers } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import { AsyncStorage } from 'react-native';
 import { AppNavigator } from './app-navigator.js';
