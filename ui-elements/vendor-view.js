@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 3,
     flexDirection: 'column',
-    marginRight: 16,
     alignSelf: 'stretch'
   },
   image: {
