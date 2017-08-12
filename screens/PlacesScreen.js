@@ -150,6 +150,8 @@ class PlacesScreen extends React.Component {
       } else {
         axios.get('https://crave-scoop.herokuapp.com/get-favorite-vendors/' + result).then((response) => {
           this.setState({restaurants: response.data, profilePresented: false, filterPresented: false});
+        }).finally(() => {
+          this.setState({filterPresented: false})
         })
       }
     });
@@ -219,7 +221,7 @@ class PlacesScreen extends React.Component {
         </Modal>
 
         <Modal animationType={'slide'} transparent={false} visible={this.state.searchPresented} >
-          <SearchModal searchWord={this._searchKeyword.bind(this)} ismissModal={this._dismissSearchModal.bind(this)} vendorPicked={this._vendorPickedSearch.bind(this)} />
+          <SearchModal searchWord={this._searchKeyword.bind(this)} dismissModal={this._dismissSearchModal.bind(this)} vendorPicked={this._vendorPickedSearch.bind(this)} />
         </Modal>
 
         <Modal animationType={"slide"} transparent={false} visible={this.state.filterPresented} >
