@@ -12,7 +12,8 @@ import {
   Modal,
   ActivityIndicator,
   AsyncStorage,
-  Animated
+  Animated,
+  Alert
 } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import axios from 'react-native-axios';
@@ -52,10 +53,9 @@ class PlacesScreen extends React.Component {
   }
 
   componentDidMount() {
-    AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
+    AsyncStorage.getItem(Keys.USER_ID, (err, result) => {
       console.log('places uid: ', this.props.user);
-
-      this.props.dispatch(this.getUser(result).bind(this));
+      this.props.dispatch(this.getUser(result, 'SPO').bind(this));
     });
 
   }
@@ -82,8 +82,11 @@ class PlacesScreen extends React.Component {
   getUser(userID, location) {
     return function (dispatch) {
       return axios.get('https://crave-scoop.herokuapp.com/get-user/' + userID).then(
-        user => this.props.dispatch({type: NavActionTypes.GET_USER, user: user.data, location: location })
-      )
+        user => dispatch({type: NavActionTypes.GET_USER, user: user.data, location: location })
+      ).catch(error => {
+        Alert.alert('Couldnt load your profile');
+        // kick you to login page
+      })
     }
   }
 
@@ -93,6 +96,7 @@ class PlacesScreen extends React.Component {
       this.setState({restaurants: response.data, loading: false, filterPresented: false});
     }).catch(error => {
       console.log(error);
+      Alert.alert('Couldnt load vendors at this time');
     });
   }
 
@@ -390,7 +394,6 @@ const styles = StyleSheet.create({
 // export default PlacesScreen;
 var mapStateToProps = (state) => {
   console.log(state);
-
   return {
     navigator: state.nav,
     user: state.user.user,

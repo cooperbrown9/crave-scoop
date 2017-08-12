@@ -1,44 +1,65 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image,TextInput, AsyncStorage } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity,
+  Image,TextInput, AsyncStorage, Dimensions,
+  ActivityIndicator, Alert
+} from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
 import DARK_BLUE from '../colors/colors.js';
 import UserID from '../test-user/user.js';
 import axios from 'react-native-axios';
 import CustomNavBar from '../ui-elements/custom-nav-bar';
 import * as Keys from '../local-storage/keys.js';
+import * as NavActionTypes from '../action-types/navigation-action-types.js';
+import { connect } from 'react-redux';
 
-export default class CreateProfileModal extends React.Component {
+class CreateProfileModal extends React.Component {
   state = {
-    firstName: '',
-    lastName: '',
-    user: {}
-
+    name: '',
+    passwordVisible: true,
+    location: 'Spokane',
+    loading: false
   }
 
   static propTypes:{
     dismissFunc: React.PropTypes.func,
-    getUser: React.PropTypes.func
+    getUser: React.PropTypes.func,
+    sendStatus: React.PropTypes.func
   }
 
-  _createUserAndDismissModal = () => {
-    const id = '';
-    axios.put('https://crave-scoop.herokuapp.com/add-user/' + this.state.firstName + '/user/Spokane/').then(async (response) => {
-      await AsyncStorage.setItem(Keys.USER_ID, response.data);
-      return response.data;
-    }).then((id) => {
-      this.props.dismissFunc();
-      this.props.getUser(id);
+  componentWillUnmount() {
+    this.setState({ loading: false });
+  }
+
+  createUser() {
+    this.setState({ loading: true });
+    axios.put('https://crave-scoop.herokuapp.com/add-user/' + this.state.name + '/' + ' /' + this.state.location + '/' + 'null' + '/' + 'null')
+      .then((response) => {
+        axios.get('https://crave-scoop.herokuapp.com/get-user/' + response.data).then(async(user) => {
+          await AsyncStorage.setItem(Keys.USER_ID, user.data._id);
+          this.props.dismissFunc(true);
+        }).catch((error) => {
+          this.errorOnCreate();
+        })
+      }).catch(() => {
+        this.errorOnCreate();
+      });
+  }
+
+  errorOnCreate() {
+    this.setState({loading: false}, () => {
+      debugger;
+      this.props.dismissFunc(false);
     });
+
   }
 
   passwordVisible = () => {
     this.setState({passwordVisible: !this.state.passwordVisible});
   }
 
-
-
   render () {
     var icon = this.state.passwordVisible ? require('../assets/images/eye-close.png') : require('../assets/images/eye-open.png');
+    const frame = Dimensions.get('window');
     return(
         <View style={styles.container}>
           <CustomNavBar
@@ -51,12 +72,13 @@ export default class CreateProfileModal extends React.Component {
 
           <View style={styles.textInputsContainer}>
 
-            <Text style={styles.textInputTitle}>Email Address</Text>
+            <Text style={styles.textInputTitle}></Text>
             <View style={{ borderBottomColor: 'black', borderBottomWidth: 1, marginLeft: 32, marginRight: 32, flexDirection: 'row',}}>
               <TextInput style={{height: 40, flex:1,}}
-                placeholder={'john.doe@gmail.com'}
+                placeholder={'Name'}
                 autoCapitalize = {'none'}
-                onChangeText={(username) => this.setState({firstName:username})}
+                onChangeText={(name) => this.setState({ name: name }) }
+                value={this.state.name}
               />
             </View>
 
@@ -71,7 +93,7 @@ export default class CreateProfileModal extends React.Component {
               </TouchableOpacity>
             </View>
             <View style={styles.button}>
-                <RoundButton title='Sign Up' onPress={this._createUserAndDismissModal} bgColor='#41d9f4' color='white' borderOn={false}/>
+                <RoundButton title='Sign Up' onPress={() => this.createUser()} bgColor='#41d9f4' color='white' borderOn={false}/>
             </View>
             <View style={styles.loginContainer}>
               <Text >Already have an account?</Text>
@@ -82,6 +104,13 @@ export default class CreateProfileModal extends React.Component {
               </View>
             </View>
         </View>
+
+        {this.state.loading ?
+        <View style={{position: 'absolute', top: 0, left: 0,height: frame.height, width: frame.width, backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
+          <ActivityIndicator animating={this.state.loading} size='large' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
+        </View>
+        : null }
+
       </View>
     )
   }
@@ -145,6 +174,6 @@ const styles = StyleSheet.create({
     marginLeft: 32,
     marginRight: 32,
   },
-
-
 });
+
+export default CreateProfileModal;

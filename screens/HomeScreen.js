@@ -42,10 +42,10 @@ class HomeScreen extends React.Component {
     //   console.log('skeddit');
     //   this.checkLogin();
     // });
-    // Keys.resetKeys(() => {
+    Keys.resetKeys(() => {
       console.log('skeddit');
       this.checkLogin();
-    // });
+    });
 
   }
 
@@ -54,7 +54,7 @@ class HomeScreen extends React.Component {
       if (id == null) {
         return;
       } else {
-        this.getUser();
+        this.props.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
       }
     })
   }
@@ -120,11 +120,18 @@ class HomeScreen extends React.Component {
     });
   }
 
-  _createProfileModalPresented = () => {
+  _createProfileModalPresented = (status) => {
     if(this.state.profilePresented === false){
       this.setState({ profilePresented: true });
     } else if(this.state.profilePresented === true){
       this.setState({profilePresented: false });
+      if(status) {
+        this.props.navigation.dispatch({ type: NavActionTypes.NAVIGATE_PLACES});
+      } else {
+        setTimeout(() => {
+          Alert.alert('We couldn\'t make your account at this time');
+        }, 1000);
+      }
     }
   }
 
@@ -143,7 +150,7 @@ class HomeScreen extends React.Component {
       <View style={styles.mainContainer} >
 
         <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} >
-            <CreateProfileModal dismissFunc={this._createProfileModalPresented} getUser={this.getUser.bind(this)} />
+            <CreateProfileModal dismissFunc={this._createProfileModalPresented.bind(this)} />
         </Modal>
 
         <View style={styles.welcomeContainer} >
