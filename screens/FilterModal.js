@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     marginRight: 64,
     marginLeft: 64,
-    marginTop: 128
+    marginBottom: 32
   }
 });
 

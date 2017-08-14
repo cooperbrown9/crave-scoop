@@ -45,10 +45,10 @@ class HomeScreen extends React.Component {
     //   this.checkLogin();
     // });
     setTimeout(() => { this.setState({initialLoading: false}) }, 1000);
-    Keys.resetKeys(() => {
+    // Keys.resetKeys(() => {
       console.log('skeddit');
       this.checkLogin();
-    });
+    // });
 
   }
 

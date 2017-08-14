@@ -56,10 +56,10 @@ class PlacesScreen extends React.Component {
   }
 
   componentWillMount() {
-    AsyncStorage.getItem(Keys.USER_ID, (err, result) => {
+    AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
       console.log('places uid: ', this.props.user);
       this.props.dispatch(this.getUser(result, 'SPO').bind(this));
-      this._getLocationAsync();
+      await this._getLocationAsync();
       this.getVendors();
     });
 
@@ -255,7 +255,7 @@ class PlacesScreen extends React.Component {
           <RoundButton title='Filters' onPress={this._presentFilterModal} bgColor={Colors.DARK_BLUE} borderOn={false}/>
         </View>
 
-        
+
 
       </View>
 
