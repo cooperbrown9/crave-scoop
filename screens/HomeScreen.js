@@ -54,6 +54,7 @@ class HomeScreen extends React.Component {
 
   checkLogin = () => {
     AsyncStorage.getItem(Keys.USER_ID, (err, id) => {
+      console.log(id);
       if (id == null) {
         return;
       } else {

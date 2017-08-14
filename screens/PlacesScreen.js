@@ -59,8 +59,8 @@ class PlacesScreen extends React.Component {
     AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
       console.log('places uid: ', this.props.user);
       this.props.dispatch(this.getUser(result, 'SPO').bind(this));
-      await this._getLocationAsync();
       this.getVendors();
+      await this._getLocationAsync();
     });
 
   }
