@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity,
   ActivityIndicator, Alert
 } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
-import DARK_BLUE from '../colors/colors.js';
+import * as Colors from '../colors/colors.js';
 import UserID from '../test-user/user.js';
 import axios from 'react-native-axios';
 import CustomNavBar from '../ui-elements/custom-nav-bar';
@@ -16,14 +16,16 @@ class CreateProfileModal extends React.Component {
   state = {
     name: '',
     passwordVisible: true,
-    location: 'Spokane',
+    location: '',
+    password: '',
     loading: false
   }
 
   static propTypes:{
     dismissFunc: React.PropTypes.func,
     getUser: React.PropTypes.func,
-    sendStatus: React.PropTypes.func
+    sendStatus: React.PropTypes.func,
+    createAndDismiss: React.PropTypes.func
   }
 
   componentWillUnmount() {
@@ -36,7 +38,7 @@ class CreateProfileModal extends React.Component {
       .then((response) => {
         axios.get('https://crave-scoop.herokuapp.com/get-user/' + response.data).then(async(user) => {
           await AsyncStorage.setItem(Keys.USER_ID, user.data._id);
-          this.props.dismissFunc(true);
+          this.props.createAndDismiss(true);
         }).catch((error) => {
           this.errorOnCreate();
         })
@@ -47,10 +49,8 @@ class CreateProfileModal extends React.Component {
 
   errorOnCreate() {
     this.setState({loading: false}, () => {
-      debugger;
-      this.props.dismissFunc(false);
+      this.props.createAndDismiss(false);
     });
-
   }
 
   passwordVisible = () => {
@@ -71,38 +71,54 @@ class CreateProfileModal extends React.Component {
           </View>
 
           <View style={styles.textInputsContainer}>
-
             <Text style={styles.textInputTitle}></Text>
-            <View style={{ borderBottomColor: 'black', borderBottomWidth: 1, marginLeft: 32, marginRight: 32, flexDirection: 'row',}}>
-              <TextInput style={{height: 40, flex:1,}}
+            <View style={styles.fieldContainer}>
+              <TextInput style={styles.textInput}
                 placeholder={'Name'}
                 autoCapitalize = {'none'}
+                autoCorrect={false}
                 onChangeText={(name) => this.setState({ name: name }) }
                 value={this.state.name}
               />
             </View>
 
-            <View style={{ borderBottomColor: 'black', borderBottomWidth: 1, marginLeft: 32, marginRight: 32, flexDirection: 'row', }}>
-              <TextInput style={{height: 40, flex:1}}
+            <View style={styles.fieldContainer}>
+              <TextInput style={styles.textInput}
+                placeholder={'Location'}
+                autoCapitalize = {'none'}
+                autoCorrect={false}
+                onChangeText={(loc) => this.setState({ location: loc }) }
+                value={this.state.location}
+              />
+            </View>
+
+            <View style={styles.fieldContainer}>
+              <TextInput style={styles.textInput}
                 secureTextEntry={this.state.passwordVisible}
                 placeholder={'Create Password'}
                 autoCapitalize = {'none'}
+                autoCorrect={false}
+                onChangeText={(pw) => this.setState({password: pw})}
+                value={this.state.password}
                 />
               <TouchableOpacity onPress={() => this.passwordVisible()} style={{justifyContent: 'center', alignItems: 'center' }}>
                   <Image style={styles.passwordVisibleButton} source={icon}/>
               </TouchableOpacity>
             </View>
+
             <View style={styles.button}>
-                <RoundButton title='Sign Up' onPress={() => this.createUser()} bgColor='#41d9f4' color='white' borderOn={false}/>
+                <RoundButton title='Sign Up' onPress={() => this.createUser()} bgColor={Colors.BLUE} color='white' borderOn={false}/>
             </View>
+
             <View style={styles.loginContainer}>
-              <Text >Already have an account?</Text>
-              <View style={{ borderBottomColor: '#41d9f4', borderBottomWidth: 1}}>
+              <Text style={{fontFamily: 'varela-round'}}>Already have an account?</Text>
+              <View style={{ borderBottomColor: '#41d9f4', borderBottomWidth: 1, marginTop: 8}}>
                 <TouchableOpacity>
-                  <Text style={{color: '#41d9f4'}}>Log in!</Text>
+                  <Text style={{color: Colors.BLUE, fontFamily: 'varela-round'}}>Log in!</Text>
                 </TouchableOpacity>
               </View>
             </View>
+
         </View>
 
         {this.state.loading ?
@@ -126,15 +142,21 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
-
-
   },
   title:{
     fontSize: 40,
     fontWeight: 'bold',
     marginTop: 16,
     textAlign: 'center',
-
+    fontFamily: 'varela-round'
+  },
+  fieldContainer: {
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    marginLeft: 32,
+    marginRight: 32,
+    marginBottom: 16,
+    flexDirection: 'row'
   },
   navBarLeftButton:{
     height: 12,
@@ -153,17 +175,22 @@ const styles = StyleSheet.create({
     tintColor: '#41d9f4'
   },
   textInputsContainer:{
-    flex: 2,
+    flex: 3,
   },
   textInputTitle:{
     height: 20,
     width: 100,
     color: 'gray',
-    marginLeft: 32
+    marginLeft: 32,
+    fontFamily: 'varela-round'
   },
   emailInput:{
     borderColor: 'gray',
-
+  },
+  textInput: {
+    flex: 1,
+    height: 40,
+    fontFamily: 'varela-round'
   },
   loginContainer:{
     alignItems: 'center',

@@ -15,7 +15,6 @@ import {
   Animated,
   Alert
 } from 'react-native';
-import { SearchBar } from 'react-native-elements';
 import axios from 'react-native-axios';
 import VendorView from '../ui-elements/vendor-view.js';
 import { connect } from 'react-redux';
@@ -53,16 +52,17 @@ class PlacesScreen extends React.Component {
   }
 
   componentDidMount() {
-    AsyncStorage.getItem(Keys.USER_ID, (err, result) => {
-      console.log('places uid: ', this.props.user);
-      this.props.dispatch(this.getUser(result, 'SPO').bind(this));
-    });
 
   }
 
   componentWillMount() {
-    this._getLocationAsync();
-    this.getVendors();
+    AsyncStorage.getItem(Keys.USER_ID, (err, result) => {
+      console.log('places uid: ', this.props.user);
+      this.props.dispatch(this.getUser(result, 'SPO').bind(this));
+      this._getLocationAsync();
+      this.getVendors();
+    });
+
   }
 
   _getLocationAsync = async() => {
@@ -84,19 +84,24 @@ class PlacesScreen extends React.Component {
       return axios.get('https://crave-scoop.herokuapp.com/get-user/' + userID).then(
         user => dispatch({type: NavActionTypes.GET_USER, user: user.data, location: location })
       ).catch(error => {
-        Alert.alert('Couldnt load your profile');
-        // kick you to login page
+        if (error.response.status != '200') {
+          Alert.alert('Couldnt load your profile, going back to Login Page');
+          setTimeout(() => { this.props.navigation.goBack()}, 2000);
+        }
       })
     }
   }
 
 
   getVendors = () => {
-    axios.get('https://crave-scoop.herokuapp.com/get-all-vendors-for-places/').then(response => {
+    axios.get('https://crave-scoop.herokuapp.com/get-all-vendors-for-places/')
+    .then(response => {
       this.setState({restaurants: response.data, loading: false, filterPresented: false});
-    }).catch(error => {
+    }).catch((error) => {
       console.log(error);
-      Alert.alert('Couldnt load vendors at this time');
+      if (this.state.restaurants.length < 1) {
+        Alert.alert('Couldnt load vendors at this time');
+      }
     });
   }
 
@@ -237,12 +242,11 @@ class PlacesScreen extends React.Component {
             { useNativeDriver: true }
           )}
         >
-        {/* <ScrollView style={styles.scrollContainer}>
+         {/*<ScrollView style={styles.scrollContainer}>
 
           <View style={styles.itemContainer} >*/}
             {this.state.restaurants.map(model => <VendorView userFavorites={this.props.user.favorites} model={{id: model._id, name: model.name, like_count: model.like_count, image: model.background_image}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
-
-        {/*  </View>
+          {/*</View>
 
 
          </ScrollView>*/}
@@ -250,6 +254,8 @@ class PlacesScreen extends React.Component {
         <View style={styles.button}>
           <RoundButton title='Filters' onPress={this._presentFilterModal} bgColor={Colors.DARK_BLUE} borderOn={false}/>
         </View>
+
+        
 
       </View>
 
@@ -397,7 +403,8 @@ var mapStateToProps = (state) => {
   return {
     navigator: state.nav,
     user: state.user.user,
-    location: state.location
+    location: state.location,
+    loadUserSuccess: state.user.success
   }
 }
 

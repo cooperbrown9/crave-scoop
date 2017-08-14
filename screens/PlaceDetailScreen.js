@@ -113,14 +113,14 @@ class PlaceDetailScreen extends React.Component {
 
                <Image style={{marginRight: 8, height:16, width: 16}} source={require('../assets/images/clock.png')}></Image>
 
-               <Text style={{fontSize: 16, color: 'grey'}}>{this._getHoursForDay()}</Text>
+               <Text style={{fontSize: 16, color: 'grey', fontFamily: 'varela-round'}}>{this._getHoursForDay()}</Text>
              </View>
 
              <View style={styles.resturantInfoContainer_Addy}>
 
                  <Image style={{marginRight: 8, height:16, width: 16}} source={require('../assets/images/pin.png')}></Image>
 
-               <Text style={{fontSize: 16, color: 'grey'}}>{this.props.model.location.address}</Text>
+               <Text style={{fontSize: 16, color: 'grey', fontFamily: 'varela-round'}}>{this.props.model.location.address}</Text>
              </View>
            </View>
 
@@ -183,7 +183,8 @@ const styles = StyleSheet.create({
    fontSize: 20,
    marginTop: 16,
    textAlign: 'center',
-   fontWeight: 'bold'
+   fontWeight: 'bold',
+   fontFamily: 'varela-round'
  },
  resturantInfoContainer: {
    flexDirection: 'row',
@@ -211,7 +212,8 @@ const styles = StyleSheet.create({
    marginLeft: 16,
    marginRight: 16,
    textAlign: 'center',
-   marginTop: 16
+   marginTop: 16,
+   fontFamily: 'varela-round'
  },
  menuContainer: {
    flex: 1,

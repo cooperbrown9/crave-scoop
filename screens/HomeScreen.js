@@ -11,7 +11,8 @@ import {
   Dimensions,
   Modal,
   AsyncStorage,
-  Alert
+  Alert,
+  ActivityIndicator
 } from 'react-native';
 import { connect } from 'react-redux';
 import RoundButton from '../ui-elements/round-button.js';
@@ -33,7 +34,8 @@ class HomeScreen extends React.Component {
 
   state = {
     clicked: false,
-    profilePresented: false
+    profilePresented: false,
+    initialLoading: true
   }
 
   componentDidMount() {
@@ -42,6 +44,7 @@ class HomeScreen extends React.Component {
     //   console.log('skeddit');
     //   this.checkLogin();
     // });
+    setTimeout(() => { this.setState({initialLoading: false}) }, 1000);
     Keys.resetKeys(() => {
       console.log('skeddit');
       this.checkLogin();
@@ -62,6 +65,10 @@ class HomeScreen extends React.Component {
 
   componentWillMount() {
     // this.getUser();
+  }
+
+  componentWillUnmount() {
+    this.setState({initialLoading: false});
   }
 
   getUser() {
@@ -94,20 +101,26 @@ class HomeScreen extends React.Component {
 
   signInFacebook = () => {
     let accessToken = '';
-
-    Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', {permissions:['public_profile'], behavior: 'web'}).then(async(response) => {
+    this.setState({initialLoading: true});
+    Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', { permissions: ['public_profile'], behavior: 'web' }).then(async(response) => {
 
       switch(response.type) {
 
         case 'success':
 
           await AsyncStorage.setItem(Keys.FACEBOOK_ID, response.token);
+
           const fbProfile = await axios.get('https://graph.facebook.com/me?access_token=' + response.token);
+
           let name = fbProfile.data.name.split(' ');
           const pic = await fetch('https://graph.facebook.com/v2.10/' + fbProfile.data.id + '/picture?access_token=' + response.token);
 
           await AsyncStorage.setItem(Keys.PICTURE, pic.url);
+          await AsyncStorage.setItem(Keys.FACEBOOK_PROFILE_ID, fbProfile.data.id);
+          await AsyncStorage.setItem(Keys.FACEBOOK_TOKEN, response.token);
+
           await this.createUser(name[0], name[1], 'The 69', fbProfile.data.id, response.token);
+
           this.props.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
 
           return response;
@@ -135,9 +148,13 @@ class HomeScreen extends React.Component {
     }
   }
 
-  _login = () => {
-    this.props.dispatch({type: NavActionTypes.LOGIN, id: '59765d2df60c01001198f3b5', dispatcher: this.props});
+  _dismissCreateProfile = () => {
+    this.setState({ profilePresented: false });
   }
+
+  // _login = () => {
+  //   this.props.dispatch({type: NavActionTypes.LOGIN, id: '59765d2df60c01001198f3b5', dispatcher: this.props});
+  // }
 
   _goToPlacesScreen = () => {
     this.props.navigation.dispatch({ type: NavActionTypes.NAVIGATE_PLACES });
@@ -150,7 +167,7 @@ class HomeScreen extends React.Component {
       <View style={styles.mainContainer} >
 
         <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} >
-            <CreateProfileModal dismissFunc={this._createProfileModalPresented.bind(this)} />
+            <CreateProfileModal dismissFunc={this._dismissCreateProfile.bind(this)} createAndDismiss={this._createProfileModalPresented.bind(this)} />
         </Modal>
 
         <View style={styles.welcomeContainer} >
@@ -170,6 +187,12 @@ class HomeScreen extends React.Component {
 
           </Text>
         </View>
+
+        {this.state.initialLoading ?
+        <View style={{position: 'absolute', top: 0, left: 0,height: height, width: width, backgroundColor: 'white' }}>
+          <ActivityIndicator animating={this.state.initialLoading} size='large' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
+        </View>
+        : null }
 
       </View>
     );

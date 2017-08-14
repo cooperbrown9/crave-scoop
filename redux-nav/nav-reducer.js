@@ -251,6 +251,17 @@ function location(state = initialLocationState, action) {
   }
 }
 
+let initialRouteState = { route: 'Home' }
+function initialRoute(state = initialRouteState, action) {
+  switch(action.type) {
+    case 'USER_LOGGED_IN':
+      return { route: 'Places'}
+
+    default:
+      return initialRouteState;
+
+  }
+}
 
 // export function setUser (data) {
 //   return Object.assign({type: 'Login_Complete', user: data});
@@ -262,7 +273,8 @@ const NavReducer = combineReducers({
   modal,
   vendorHelper,
   user,
-  location
+  location,
+  initialRoute
 });
 
 export default NavReducer;

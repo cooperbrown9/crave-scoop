@@ -8,14 +8,15 @@ import PlaceDetailScreen from '../screens/PlaceDetailScreen';
 import { AsyncStorage } from 'react-native';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
 import ProfileScreen from '../screens/ProfileScreen';
+import * as Keys from '../local-storage/keys.js';
 
 function getLoginState() {
-  AsyncStorage.getItem('name', (err, result) => {
-    if(err) {
-      console.log(err);
-    } else {
+  AsyncStorage.getItem(Keys.USER_ID, (err, result) => {
+    if (result !== null){
       console.log('result ' + result);
-      return result;
+      return 'Places'
+    } else {
+      return 'Home';
     }
   })
 }
@@ -25,9 +26,10 @@ export const AppNavigator = StackNavigator({
   Places: { screen: PlacesScreen },
   PlaceDetail: { screen: PlaceDetailScreen },
 },
-// { initialRouteName: 'Places' }
+{ initialRouteName: getLoginState() }
   // { initialRouteName: (getLoginState() == null) ? 'Home' : 'Places' }
 );
+
 
 const AppNavigatorWithState = ({ dispatch, nav }) => (
   <AppNavigator navigation={addNavigationHelpers({dispatch, state: nav})} />
@@ -37,7 +39,6 @@ AppNavigatorWithState.propTypes = {
   dispatch: PropTypes.func.isRequired,
   nav: PropTypes.object.isRequired,
 };
-
 
 const mapStateToProps = state => ({
   nav: state.nav,
