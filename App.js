@@ -17,6 +17,16 @@ class App extends React.Component {
   store = createStore(NavReducer, applyMiddleware(thunk));
 
 
+  checkLoginStatus = async() => {
+    const uid = await AsyncStorage.getItem(Keys.USER_ID);
+    const fbID = await AsyncStorage.getItem(Keys.FACEBOOK_ID);
+    this.store.dispatch({type: 'UPDATE_INITIAL_ROUTE_PLACES', route: 'Places'})
+
+    if(fbID === 'null' && uid !== 'null') {
+      this.store.dispatch({type: 'UPDATE_INITIAL_ROUTE_PLACES', route: 'Places'})
+    }
+  }
+
 
   async checkForID() {
     const userID = await AsyncStorage.getItem(Keys.USER_ID);
@@ -26,6 +36,7 @@ class App extends React.Component {
     if((userID === 'null') || (fbID === 'null')) {
       // this.store.dispatch({type: 'Home'});
     } else {
+
       // this.store.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
       // this.store.dispatch({type: 'Home'});
 
@@ -68,13 +79,19 @@ class App extends React.Component {
     await this.checkForID();
   }
 
+  async componentWillMount() {
+    // debugger;
+    // await AsyncStorage.getItem(Keys.USER_ID, (err, result) => {
+    //   this.store.dispatch({type: 'USER_LOGGED_IN'});
+    // })
+  }
+
   render() {
 
     return (
 
       <Provider store={this.store} >
-
-        <AppNavigatorWithState />
+          <AppNavigatorWithState />
 
       </Provider>
 

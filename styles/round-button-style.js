@@ -31,8 +31,7 @@ export default class RoundButtonStyle {
         backgroundColor: 'transparent',
         fontWeight: 'bold',
         color: textColor,
-        letterSpacing: 2
-      }
+        letterSpacing: 2      }
     });
   }
 }
