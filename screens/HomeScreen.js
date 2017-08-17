@@ -165,37 +165,37 @@ class HomeScreen extends React.Component {
     let {width, height} = Dimensions.get('window');
     let halfHeight = height / 2;
     return (
-      <View style={styles.mainContainer} >
-        <Image style={styles.mainContainer} source={require('../assets/images/icecream-background.png')} >
-        <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} >
-            <CreateProfileModal dismissFunc={this._dismissCreateProfile.bind(this)} createAndDismiss={this._createProfileModalPresented.bind(this)} />
-        </Modal>
+        <Image style={styles.backgroundImage} source={require('../assets/images/icecream-background.png')} >
+        <View style={styles.mainContainer} >
+          <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} >
+              <CreateProfileModal dismissFunc={this._dismissCreateProfile.bind(this)} createAndDismiss={this._createProfileModalPresented.bind(this)} />
+          </Modal>
 
-        <View style={styles.welcomeContainer} >
-          <Image source={require('../assets/images/cupcake.png')} style={styles.image} />
-          <Text color='white' style={styles.welcomeMessage} >
-            Welcome to your Daily Crave. { this.props.text }
-          </Text>
-        </View>
+          <View style={styles.welcomeContainer} >
+            <Image source={require('../assets/images/cupcake.png')} style={styles.image} />
+            <Text color='white' style={styles.welcomeMessage} >
+              Welcome to your Daily Crave. { this.props.text }
+            </Text>
+          </View>
 
-        <View style={styles.buttonContainer} >
-          <RoundButton title='Continue with Facebook' onPress={this.signInFacebook} bgColor='white' textColor='#41d9f4' />
-          <RoundButton title='Create Account' onPress={this._createProfileModalPresented} />
-        </View>
-        <Text style={styles.termsText}>Terms of Service</Text>
-        <View>
-          <Text backgroundColor="black">
+          <View style={styles.buttonContainer} >
+            <RoundButton title='Continue with Facebook' onPress={this.signInFacebook} bgColor='white' textColor='#f29e39' style={{flex:1}} />
+            <RoundButton title='Create Account' onPress={this._createProfileModalPresented} style={{flex:1}}/>
+          </View>
+          <Text style={styles.termsText}>Terms of Service</Text>
+          <View>
+            <Text backgroundColor="black">
 
-          </Text>
-        </View>
+            </Text>
+          </View>
 
-        {this.state.initialLoading ?
-        <View style={{position: 'absolute', top: 0, left: 0,height: height, width: width, backgroundColor: 'white' }}>
-          <ActivityIndicator animating={this.state.initialLoading} size='large' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
+          {this.state.initialLoading ?
+          <View style={{position: 'absolute', top: 0, left: 0,height: height, width: width, backgroundColor: 'white' }}>
+            <ActivityIndicator animating={this.state.initialLoading} size='large' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
+          </View>
+          : null }
         </View>
-        : null }
       </Image>
-      </View>
     );
   }
 }
@@ -203,16 +203,23 @@ class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#41d9f4',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+  },
+  backgroundImage: {
+    flex: 1,
+    width: undefined,
+    height: undefined,
+    backgroundColor:'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   welcomeContainer: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-end',
     marginLeft: 16,
-    marginRight: 32
+    marginRight: 32,
   },
   image: {
     tintColor: 'white',
@@ -230,8 +237,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    marginLeft: 32,
-    marginRight: 32
+    alignItems: 'stretch',
+    width: 335
   },
   termsText: {
     color: 'white',
