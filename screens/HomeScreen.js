@@ -45,10 +45,10 @@ class HomeScreen extends React.Component {
     //   this.checkLogin();
     // });
     setTimeout(() => { this.setState({initialLoading: false}) }, 1000);
-    // Keys.resetKeys(() => {
+    Keys.resetKeys(() => {
       console.log('skeddit');
       this.checkLogin();
-    // });
+    });
 
   }
 
@@ -166,7 +166,7 @@ class HomeScreen extends React.Component {
     let halfHeight = height / 2;
     return (
       <View style={styles.mainContainer} >
-
+        <Image style={styles.mainContainer} source={require('../assets/images/icecream-background.png')} >
         <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} >
             <CreateProfileModal dismissFunc={this._dismissCreateProfile.bind(this)} createAndDismiss={this._createProfileModalPresented.bind(this)} />
         </Modal>
@@ -194,7 +194,7 @@ class HomeScreen extends React.Component {
           <ActivityIndicator animating={this.state.initialLoading} size='large' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
         </View>
         : null }
-
+      </Image>
       </View>
     );
   }
@@ -204,7 +204,8 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: '#41d9f4',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   welcomeContainer: {
     flex: 1,
