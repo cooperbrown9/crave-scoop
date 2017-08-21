@@ -45,10 +45,10 @@ class HomeScreen extends React.Component {
     //   this.checkLogin();
     // });
     setTimeout(() => { this.setState({initialLoading: false}) }, 1000);
-    Keys.resetKeys(() => {
+    // Keys.resetKeys(() => {
       console.log('skeddit');
       this.checkLogin();
-    });
+    // });
 
   }
 
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-end',
-    marginLeft: 16,
+    marginLeft: 0,
     marginRight: 32,
   },
   image: {
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     lineHeight: 0,
     fontWeight: 'bold',
     marginLeft: 8,
-    marginTop: 12
+    marginTop: 32
   },
   buttonContainer: {
     flex: 1,

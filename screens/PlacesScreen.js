@@ -13,7 +13,8 @@ import {
   ActivityIndicator,
   AsyncStorage,
   Animated,
-  Alert
+  Alert,
+  Dimensions
 } from 'react-native';
 import axios from 'react-native-axios';
 import VendorView from '../ui-elements/vendor-view.js';
@@ -48,7 +49,8 @@ class PlacesScreen extends React.Component {
     searchOn: false,
     searchPresented: false,
     canAccessLocation: false,
-    animatedValue: 1
+    animatedValue: 1,
+    vendorsLoaded: true
   }
 
   componentDidMount() {
@@ -84,10 +86,10 @@ class PlacesScreen extends React.Component {
       return axios.get('https://crave-scoop.herokuapp.com/get-user/' + userID).then(
         user => dispatch({type: NavActionTypes.GET_USER, user: user.data, location: location })
       ).catch(error => {
-        if (error.response.status != '200') {
+        // if (error.response.status != '200') {
           Alert.alert('Couldnt load your profile, going back to Login Page');
           setTimeout(() => { this.props.navigation.goBack()}, 2000);
-        }
+        // }
       })
     }
   }
@@ -96,12 +98,14 @@ class PlacesScreen extends React.Component {
   getVendors = () => {
     axios.get('https://crave-scoop.herokuapp.com/get-all-vendors-for-places/')
     .then(response => {
-      this.setState({restaurants: response.data, loading: false, filterPresented: false});
+      this.setState({restaurants: response.data, vendorsLoaded: true, loading: false, filterPresented: false});
     }).catch((error) => {
       console.log(error);
-      if (this.state.restaurants.length < 1) {
+
+      // if (this.state.restaurants.length < 1) {
         Alert.alert('Couldnt load vendors at this time');
-      }
+        this.setState({vendorsLoaded: false, loading: false});
+      // }
     });
   }
 
@@ -212,10 +216,17 @@ class PlacesScreen extends React.Component {
   }
 
   render() {
-
+    let { width, height } = Dimensions.get('window');
     return (
 
-      <View style={(this.state.loading) ? styles.loadingHider : styles.container } >
+      <View style={styles.container } >
+        {(!this.state.vendorsLoaded) ?
+          <View style={{position: 'absolute', left:0,right:0,top:0,bottom:0,zIndex:4,backgroundColor:'white'}}>
+            <Text style={{color: 'blue', fontSize: 24, textAlign: 'center', left:0,right:0,top:120}}>Tap to Reload</Text>
+          </View>
+          : null
+        }
+
 
         <CustomNavBar
           title={'PLACES'}
@@ -255,7 +266,11 @@ class PlacesScreen extends React.Component {
           <RoundButton title='Filters' onPress={this._presentFilterModal} bgColor={Colors.DARK_BLUE} borderOn={false}/>
         </View>
 
-
+        {(this.state.loading) ?
+        <View style={{position: 'absolute', top: 0, left: 0,height: height, width: width, backgroundColor: 'white' }}>
+          <ActivityIndicator animating={this.state.loading} size='large' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
+        </View>
+        : null }
 
       </View>
 
