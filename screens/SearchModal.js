@@ -68,11 +68,12 @@ class SearchModal extends React.Component {
           <View style={{height: 64}}></View>
 
           <View style={this.vendorView} >
-            {this.state.vendors.map(vendor =>
+            {(this.state.vendors.length > 0) ? this.state.vendors.map(vendor =>
               <TouchableOpacity onPress={() => this.props.vendorPicked(vendor)} key={vendor.name}>
                 <Text style={{backgroundColor:'transparent', fontSize: 28, fontWeight: 'bold', height: 32, textAlign: 'center', marginTop: 32}} color='green'>{vendor.name}</Text>
               </TouchableOpacity>
-            )}
+            ) :
+          <Text style={{backgroundColor:'transparent', fontSize: 28, fontWeight: 'bold', height: 32, textAlign: 'center', marginTop: 32}} color='green'>No Results</Text>}
           </View>
         </View>
 

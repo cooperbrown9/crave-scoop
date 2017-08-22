@@ -196,6 +196,10 @@ class PlacesScreen extends React.Component {
     axios.get('https://crave-scoop.herokuapp.com/search-vendors-test/' + word).then(response => {
       console.log(response);
       this.setState({restaurants: response.data, searchPresented: false});
+    }).catch(error => {
+      console.log(error);
+      debugger;
+
     })
   }
 
@@ -222,8 +226,10 @@ class PlacesScreen extends React.Component {
       <View style={styles.container } >
         {(!this.state.vendorsLoaded) ?
           <View style={{position: 'absolute', left:0,right:0,top:0,bottom:0,zIndex:4,backgroundColor:'white'}}>
-            <Text style={{color: 'blue', fontSize: 24, textAlign: 'center', left:0,right:0,top:120}}>Tap to Reload</Text>
-          </View>
+            <TouchableOpacity style={{left:0,right:0,top:120}}>
+              <Text style={{color: 'blue', fontSize: 24, textAlign: 'center', }}>Tap to Reload</Text>
+            </TouchableOpacity>
+        </View>
           : null
         }
 

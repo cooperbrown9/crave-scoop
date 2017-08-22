@@ -171,12 +171,12 @@ class HomeScreen extends React.Component {
               <CreateProfileModal dismissFunc={this._dismissCreateProfile.bind(this)} createAndDismiss={this._createProfileModalPresented.bind(this)} />
           </Modal>
 
-          <View style={styles.welcomeContainer} >
+        {/*  <View style={styles.welcomeContainer} >
             <Image source={require('../assets/images/cupcake.png')} style={styles.image} />
             <Text color='white' style={styles.welcomeMessage} >
               Welcome to your Daily Crave. { this.props.text }
             </Text>
-          </View>
+          </View> */}
 
           <View style={styles.buttonContainer} >
             <RoundButton title='Continue with Facebook' onPress={this.signInFacebook} bgColor='white' textColor='#f29e39' style={{flex:1}} />

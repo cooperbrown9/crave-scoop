@@ -46,6 +46,10 @@ class PlaceDetailScreen extends React.Component {
    }
  }
 
+ pressIcon() {
+   
+ }
+
  _getHoursForDay() {
    const today = todayHours = this.props.model.hours[new Date().getDay()];
    let todayHours = today.open + today.open_tod + ' - ' + today.close + today.close_tod;
@@ -97,7 +101,9 @@ class PlaceDetailScreen extends React.Component {
 
          <View style={styles.topView_Image} >
            <Image style={styles.topImage} source={{uri: this.props.model.background_image}}>
-             <Image style={styles.heartIcon} source={icon} />
+             <TouchableOpacity onPress={this.pressIcon}>
+               <Image style={styles.heartIcon} source={icon} />
+             </TouchableOpacity>
            </Image>
          </View>
 

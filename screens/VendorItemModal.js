@@ -60,7 +60,7 @@ class VendorItemModal extends React.Component {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: Colors.CREAM,
+      backgroundColor: 'transparent',
     },
     nutritionFactsContainer:{
       flex: 1,
