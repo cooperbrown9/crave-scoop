@@ -45,10 +45,10 @@ class HomeScreen extends React.Component {
     //   console.log('skeddit');
     //   this.checkLogin();
     // });
-    setTimeout(() => { this.setState({initialLoading: false}) }, 1000);
+    setTimeout(() => { this.setState({initialLoading: false}) }, 2000);
     // Keys.resetKeys(() => {
       console.log('skeddit');
-      this.checkLogin();
+      // this.checkLogin();
     // });
 
   }
@@ -59,7 +59,8 @@ class HomeScreen extends React.Component {
       if (id == null) {
         return;
       } else {
-        this.props.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
+        this.props.dispatch({ type: 'START_PLACES'});
+        // this.props.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
       }
     })
   }
@@ -67,6 +68,8 @@ class HomeScreen extends React.Component {
 
   componentWillMount() {
     // this.getUser();
+    this.checkLogin();
+    
   }
 
   componentWillUnmount() {

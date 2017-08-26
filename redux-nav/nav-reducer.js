@@ -63,12 +63,12 @@ function initState() {
 
 async function firstState () {
   await AsyncStorage.getItem(Keys.USER_ID, (err, result) => {
-  if (result !== null) {
-    return secondNavState;
-  } else {
-    return tempNavState;
-  }
-})
+    if (result !== null) {
+      return secondNavState;
+    } else {
+      return tempNavState;
+    }
+  })
 };
 
 
