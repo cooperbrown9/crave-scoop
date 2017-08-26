@@ -23,23 +23,17 @@ export default class App extends React.Component {
     console.log(fbID, 'id');
     console.log(userID, 'uid');
     if((userID === 'null') || (fbID === 'null')) {
-      // this.store.dispatch({type: 'START_HOME'});
     } else {
-      // this.store.dispatch({ type: 'START_PLACES'})
+      this.store.dispatch({ type: 'START_PLACES'})
       axios.get('https://crave-scoop.herokuapp.com/get-user/' + userID).then(response => {
         if(response.status == '200') {
-
           this.store.dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
         } else {
           console.log('naaaah');
-          debugger;
         }
       }).catch(error => {
         console.log(error);
       });
-      // this.store.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
-      // this.store.dispatch({type: 'Home'});
-
     }
   }
 

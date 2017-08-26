@@ -59,7 +59,7 @@ class HomeScreen extends React.Component {
       if (id == null) {
         return;
       } else {
-        this.props.dispatch({ type: 'START_PLACES'});
+        // this.props.dispatch({ type: 'START_PLACES'});
         // this.props.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
       }
     })
@@ -69,7 +69,7 @@ class HomeScreen extends React.Component {
   componentWillMount() {
     // this.getUser();
     this.checkLogin();
-    
+
   }
 
   componentWillUnmount() {
