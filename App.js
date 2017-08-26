@@ -22,7 +22,8 @@ export default class App extends React.Component {
     const fbID = await AsyncStorage.getItem(Keys.FACEBOOK_ID);
     console.log(fbID, 'id');
     console.log(userID, 'uid');
-    if((userID === 'null') || (fbID === 'null')) {
+    if((userID == null) || (fbID == null)) {
+      this.store.dispatch({ type: 'START_HOME' });
     } else {
       this.store.dispatch({ type: 'START_PLACES'})
       axios.get('https://crave-scoop.herokuapp.com/get-user/' + userID).then(response => {
@@ -30,9 +31,11 @@ export default class App extends React.Component {
           this.store.dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
         } else {
           console.log('naaaah');
+          this.store.dispatch({ type: 'START_HOME'});
         }
       }).catch(error => {
         console.log(error);
+        this.store.dispatch({ type: 'START_HOME' });
       });
     }
   }

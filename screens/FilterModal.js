@@ -32,6 +32,8 @@ class FilterModal extends React.Component {
       this.props.renderNearby();
     } else if (this.state.favoriteChecked) {
       this.props.renderFavorites();
+    } else if(!this.state.nearMeChecked && !this.state.favoriteChecked) {
+      this.props.dismissFunc();
     }
   }
 

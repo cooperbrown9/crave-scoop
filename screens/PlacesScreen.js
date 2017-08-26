@@ -96,6 +96,7 @@ class PlacesScreen extends React.Component {
 
 
   getVendors = () => {
+    this.setState({loading: true});
     axios.get('https://crave-scoop.herokuapp.com/get-all-vendors-for-places/')
     .then(response => {
       this.setState({restaurants: response.data, vendorsLoaded: true, loading: false, filterPresented: false});
@@ -129,7 +130,6 @@ class PlacesScreen extends React.Component {
     }).catch(error => {
       console.log(error);
     });
-    // this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, id: item._id});
   }
 
   _presentSearchModal = () => {
@@ -162,18 +162,12 @@ class PlacesScreen extends React.Component {
         console.log(err);
       } else {
         axios.get('https://crave-scoop.herokuapp.com/get-favorite-vendors/' + result).then((response) => {
-            debugger;
             if(response.data.status !== '200') {
-              this.setState({profilePresented: false}, () => {
-                Alert.alert('You do not have any favorites!');
-                  
-              });
-
+              Alert.alert('Oops!', 'You do not have any favorites!', [ {text: 'Oh ef dude!', onPress: () => this.setState({profilePresented: false})} ] );
             } else {
               this.setState({restaurants: response.data, profilePresented: false, filterPresented: false});
             }
-
-        }).finally(() => {
+        }).finally((status) => {
           this.setState({filterPresented: false})
         })
       }
@@ -184,9 +178,14 @@ class PlacesScreen extends React.Component {
     if (this.state.canAccessLocation) {
       let lon = this.props.location.longitude.toString();
       axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + lon.replace('-','') + '/' + '10').then((response) => {
-        this.setState({restaurants: response.data, filterPresented: false});
+        if(response.data.length < 1) {
+          Alert.alert('Oops!', 'There are no restaurants close to you!', [ {text: 'OK!', onPress: () => this.setState({filterPresented: false})} ]);
+        } else {
+          this.setState({restaurants: response.data, filterPresented: false});
+        }
       });
     } else {
+      debugger;
       Alert.alert('We cant access your location!');
       this.setState({filterPresented: false});
     }
@@ -208,16 +207,12 @@ class PlacesScreen extends React.Component {
       this.setState({restaurants: response.data, searchPresented: false});
     }).catch(error => {
       console.log(error);
-      debugger;
-
     })
   }
-
 
   _resetVendors = () => {
     this.getVendors();
   }
-
 
   handleKeyPress(item) {
     return function(e) {
@@ -236,8 +231,13 @@ class PlacesScreen extends React.Component {
       <View style={styles.container } >
         {(!this.state.vendorsLoaded) ?
           <View style={{position: 'absolute', left:0,right:0,top:0,bottom:0,zIndex:4,backgroundColor:'white'}}>
-            <TouchableOpacity style={{left:0,right:0,top:120}}>
-              <Text style={{color: 'blue', fontSize: 24, textAlign: 'center', }}>Tap to Reload</Text>
+            <TouchableOpacity style={{left:0,right:0,top:120}} onPress={this.getVendors}>
+              <Text style={{color: 'blue', fontSize: 24, textAlign: 'center', color:Colors.DARK_GREY, fontFamily: 'varela-round' }}>
+                Couldn't load Vendors
+              </Text>
+              <View style={{marginLeft: 64, marginRight: 64, marginTop: 32}}>
+                <RoundButton title='RELOAD' onPress={() => this.getVendors()} bgColor={Colors.DARK_BLUE} borderOn={false} />
+              </View>
             </TouchableOpacity>
         </View>
           : null
@@ -283,7 +283,7 @@ class PlacesScreen extends React.Component {
         </View>
 
         {(this.state.loading) ?
-        <View style={{position: 'absolute', top: 0, left: 0,height: height, width: width, backgroundColor: 'white' }}>
+        <View style={{position: 'absolute', top: 0, left: 0,height: height, width: width, backgroundColor: 'white', zIndex: 4 }}>
           <ActivityIndicator animating={this.state.loading} size='large' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
         </View>
         : null }

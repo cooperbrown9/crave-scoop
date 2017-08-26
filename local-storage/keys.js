@@ -25,6 +25,12 @@ export function resetKeys(callback) {
   });
 }
 
+export function resetUserID(callback) {
+  AsyncStorage.removeItem(USER_ID, () => {
+    callback();
+  });
+}
+
 export function setDummyKeys(callback){
   AsyncStorage.setItem(USER_ID, '59765d2df60c01001198f3b5', () => {
     AsyncStorage.setItem(FACEBOOK_ID, 'ABC', () => {
