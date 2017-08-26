@@ -25,6 +25,7 @@ import axios from 'react-native-axios';
 import * as REST from '../rest/rest.js';
 import Expo from 'expo';
 import * as Keys from '../local-storage/keys.js';
+import PlacesScreen from './PlacesScreen.js';
 
 class HomeScreen extends React.Component {
 
@@ -72,8 +73,20 @@ class HomeScreen extends React.Component {
     this.setState({initialLoading: false});
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return true;
+    debugger;
+    console.log(nextProps, nextState);
+    if(nextProps._user.isLoggedIn) {
+      this.props.dispatch({ type: NavActionTypes.NAVIGATE_PLACES });
+      return false;
+    }
+    return true;
+  }
+
   getUser() {
     AsyncStorage.getItem(Keys.USER_ID, (err, result) => {
+      // remove this line
       this.setState({userID: result});
       this.props.dispatch(this.getUserHelper(result));
     });
@@ -83,7 +96,8 @@ class HomeScreen extends React.Component {
     return function(dispatch) {
       return axios.get('https://crave-scoop.herokuapp.com/get-user/' + id).then(
         response => {
-          dispatch({type: NavActionTypes.GET_USER, user: response.data});
+          // dispatch({type: NavActionTypes.GET_USER, user: response.data});
+          dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
       }).then(() => {
         dispatch({type: NavActionTypes.NAVIGATE_PLACES});
       }).catch(error => {
@@ -93,8 +107,10 @@ class HomeScreen extends React.Component {
   }
 
   async createUser(firstname, lastname, location, facebookID, facebookToken) {
-    await axios.put('https://crave-scoop.herokuapp.com/add-user/' + firstname + '/' + lastname + '/' + location + '/' + facebookID + '/' + facebookToken).then(async(response) => {
-      await AsyncStorage.setItem(Keys.USER_ID, response.data);
+    await axios.put('https://crave-scoop.herokuapp.com/add-user/' + firstname + '/' + lastname + '/' + location + '/' + facebookID + '/' + facebookToken).then((response) => {
+      AsyncStorage.setItem(Keys.USER_ID, response.data, () => {
+        this.getUser();
+      })
     }).catch(error => {
       console.log(error);
     });
@@ -116,13 +132,14 @@ class HomeScreen extends React.Component {
           let name = fbProfile.data.name.split(' ');
           const pic = await fetch('https://graph.facebook.com/v2.10/' + fbProfile.data.id + '/picture?access_token=' + response.token);
 
+          // save static user data
           await AsyncStorage.setItem(Keys.PICTURE, pic.url);
           await AsyncStorage.setItem(Keys.FACEBOOK_PROFILE_ID, fbProfile.data.id);
           await AsyncStorage.setItem(Keys.FACEBOOK_TOKEN, response.token);
 
+          // create the user
           await this.createUser(name[0], name[1], 'The 69', fbProfile.data.id, response.token);
-
-          this.props.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
+          // this.props.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
 
           return response;
         case 'cancel':
@@ -160,6 +177,13 @@ class HomeScreen extends React.Component {
   _goToPlacesScreen = () => {
     this.props.navigation.dispatch({ type: NavActionTypes.NAVIGATE_PLACES });
   };
+
+  _dummyLogin = () => {
+    let loginSuccess = true;
+    if (loginSuccess) {
+      this.props.dispatch({type: 'LOGIN_SUCCESSFUL'});
+    }
+  }
 
   render() {
     let {width, height} = Dimensions.get('window');
@@ -199,12 +223,12 @@ class HomeScreen extends React.Component {
     );
   }
 }
-// ask Eric how to put space between children with a flex, like confining Views to specific dimensions
+
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'stretch',
   },
   backgroundImage: {
     flex: 1,
@@ -238,7 +262,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'stretch',
-    width: 335
+    marginTop: 200,
+    width: 340
   },
   termsText: {
     color: 'white',
@@ -254,11 +279,12 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = (state) => {
-  // debugger;
+
   return {
     navigator: state.nav,
     isLoggedIn: state.auth.isLoggedIn,
     user: state.user.user,
+    _user: state.auth
 
   }
 }

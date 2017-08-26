@@ -84,7 +84,7 @@ class PlacesScreen extends React.Component {
   getUser(userID, location) {
     return function (dispatch) {
       return axios.get('https://crave-scoop.herokuapp.com/get-user/' + userID).then(
-        user => dispatch({type: NavActionTypes.GET_USER, user: user.data, location: location })
+        user => dispatch({type: 'LOGIN_SUCCESSFUL', user: user.data })
       ).catch(error => {
         // if (error.response.status != '200') {
           Alert.alert('Couldnt load your profile, going back to Login Page');
@@ -162,7 +162,17 @@ class PlacesScreen extends React.Component {
         console.log(err);
       } else {
         axios.get('https://crave-scoop.herokuapp.com/get-favorite-vendors/' + result).then((response) => {
-          this.setState({restaurants: response.data, profilePresented: false, filterPresented: false});
+            debugger;
+            if(response.data.status !== '200') {
+              this.setState({profilePresented: false}, () => {
+                Alert.alert('You do not have any favorites!');
+                  
+              });
+
+            } else {
+              this.setState({restaurants: response.data, profilePresented: false, filterPresented: false});
+            }
+
         }).finally(() => {
           this.setState({filterPresented: false})
         })
@@ -421,9 +431,10 @@ const styles = StyleSheet.create({
 // export default PlacesScreen;
 var mapStateToProps = (state) => {
   console.log(state);
+  // debugger;
   return {
     navigator: state.nav,
-    user: state.user.user,
+    user: state.auth.user,
     location: state.location,
     loadUserSuccess: state.user.success
   }

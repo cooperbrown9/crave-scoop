@@ -56,13 +56,17 @@ export default class ProfileScreen extends React.Component {
 
   async getProfile() {
     this.setState({loading: true});
-    const id = await AsyncStorage.getItem('@user_id:key');
+    const id = await AsyncStorage.getItem(Keys.USER_ID);
 
     axios.get('https://crave-scoop.herokuapp.com/get-user/' + id + '/').then(async(response) => {
 
-      const picUrl = await AsyncStorage.getItem(Keys.PICTURE);
-      console.log(picUrl);
-      this.setState({user: response.data, profilePic: picUrl, loading: false});
+      AsyncStorage.getItem(Keys.PICTURE, (err, result) => {
+        this.setState({user: response.data, profilePic: result, loading: false});
+      });
+
+      // was this
+      // const picUrl = await AsyncStorage.getItem(Keys.PICTURE);
+      // this.setState({user: response.data, profilePic: picUrl, loading: false});
 
     }).catch(error => {
       console.log('error fetching restaurants');

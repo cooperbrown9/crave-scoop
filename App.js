@@ -12,20 +12,9 @@ import axios from 'react-native-axios';
 import * as NavActionTypes from './action-types/navigation-action-types.js';
 import * as Keys from './local-storage/keys.js';
 
-class App extends React.Component {
+export default class App extends React.Component {
 
   store = createStore(NavReducer, applyMiddleware(thunk));
-
-
-  checkLoginStatus = async() => {
-    const uid = await AsyncStorage.getItem(Keys.USER_ID);
-    const fbID = await AsyncStorage.getItem(Keys.FACEBOOK_ID);
-    this.store.dispatch({type: 'UPDATE_INITIAL_ROUTE_PLACES', route: 'Places'})
-
-    if(fbID === 'null' && uid !== 'null') {
-      this.store.dispatch({type: 'UPDATE_INITIAL_ROUTE_PLACES', route: 'Places'})
-    }
-  }
 
 
   async checkForID() {
@@ -34,9 +23,20 @@ class App extends React.Component {
     console.log(fbID, 'id');
     console.log(userID, 'uid');
     if((userID === 'null') || (fbID === 'null')) {
-      // this.store.dispatch({type: 'Home'});
+      // this.store.dispatch({type: 'START_HOME'});
     } else {
+      // this.store.dispatch({ type: 'START_PLACES'})
+      axios.get('https://crave-scoop.herokuapp.com/get-user/' + userID).then(response => {
+        if(response.status == '200') {
 
+          this.store.dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
+        } else {
+          console.log('naaaah');
+          debugger;
+        }
+      }).catch(error => {
+        console.log(error);
+      });
       // this.store.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
       // this.store.dispatch({type: 'Home'});
 
@@ -87,11 +87,10 @@ class App extends React.Component {
   }
 
   render() {
-
     return (
 
       <Provider store={this.store} >
-          <AppNavigatorWithState />
+        <AppNavigatorWithState />
 
       </Provider>
 
@@ -112,4 +111,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default App;
+// export default App;

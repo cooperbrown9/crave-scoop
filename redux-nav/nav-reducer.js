@@ -1,14 +1,18 @@
-  import { combineReducers } from 'redux';
+import { combineReducers } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import { AsyncStorage } from 'react-native';
 import { AppNavigator } from './app-navigator.js';
 import axios from 'react-native-axios';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
+import * as Keys from '../local-storage/keys.js';
 
 const firstAction = AppNavigator.router.getActionForPathAndParams('Home');
 const tempNavState = AppNavigator.router.getStateForAction(firstAction);
 const secondAction = AppNavigator.router.getActionForPathAndParams('Places');
+const secondNavState = AppNavigator.router.getStateForAction(secondAction);
 const initialNavState = AppNavigator.router.getStateForAction(firstAction, tempNavState);
+// const _action = AppNavigator.router.getActionForPathAndParams('AppScreen');
+// const _state = AppNavigator.router.getStateForAction(_action);
 
 function getDatState () {
 
@@ -57,16 +61,33 @@ function initState() {
 // const fa = AppNavigator.router.getActionForPathAndParams((initState() == 'null' ? 'Home' : 'Places'));
 // const temp = AppNavigator.router.getStateForAction(fa);
 
-function firstState () {
-  return {
-    ...tempNavState
+async function firstState () {
+  await AsyncStorage.getItem(Keys.USER_ID, (err, result) => {
+  if (result !== null) {
+    return secondNavState;
+  } else {
+    return tempNavState;
   }
+})
 };
 
 
-function nav (state = firstState(), action) {
+function nav (state = tempNavState, action) {
+
   let nextState;
   switch (action.type) {
+
+    case 'START_HOME':
+      let homeAction1 = AppNavigator.router.getActionForPathAndParams('Home');
+      let homeState1 = AppNavigator.router.getStateForAction(homeAction1);
+      return homeState1;
+      break;
+
+    case 'START_PLACES':
+      let placesAction1 = AppNavigator.router.getActionForPathAndParams('Places');
+      let placesState1 = AppNavigator.router.getStateForAction(placesAction1);
+      return placesState1;
+      break;
 
     case 'Home':
       nextState = AppNavigator.router.getStateForAction(
@@ -107,6 +128,7 @@ function nav (state = firstState(), action) {
       break;
     default:
       nextState = AppNavigator.router.getStateForAction(action, state);
+      // nextState = {};
       break;
   }
   return nextState || state;
@@ -141,6 +163,18 @@ function auth(state = initialAuthState, action) {
         ...state,
         user: action.user,
       }
+
+    case 'LOGIN_SUCCESSFUL':
+      return {
+        ...state,
+        isLoggedIn: true,
+        user: action.user
+      }
+      // return Object.assign({}, state, {
+      //   loggedIn: true,
+      //   id: 'abc123'
+      // });
+      break;
 
     case 'Login_Complete':
       return { ...state, isLoggedIn: true, user: action.user };
