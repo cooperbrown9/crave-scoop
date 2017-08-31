@@ -297,6 +297,26 @@ function initialRoute(state = initialRouteState, action) {
   }
 }
 
+let initialLoadingState = { loading: true }
+function loading(state = initialLoadingState, action) {
+  switch(action.type) {
+    case 'FINISH_LOADING':
+      return {
+        ...state,
+        loading: false
+      }
+      break;
+    case 'START_LOADING':
+      return {
+        ...state,
+        loading: true
+      }
+      break;
+    default:
+      return state;
+  }
+}
+
 // export function setUser (data) {
 //   return Object.assign({type: 'Login_Complete', user: data});
 // }
@@ -308,7 +328,8 @@ const NavReducer = combineReducers({
   vendorHelper,
   user,
   location,
-  initialRoute
+  initialRoute,
+  loading
 });
 
 export default NavReducer;

@@ -45,7 +45,7 @@ class HomeScreen extends React.Component {
     //   console.log('skeddit');
     //   this.checkLogin();
     // });
-    setTimeout(() => { this.setState({initialLoading: false}) }, 2000);
+    // setTimeout(() => { this.setState({initialLoading: false}) }, 2000);
     // Keys.resetKeys(() => {
       console.log('skeddit');
       // this.checkLogin();
@@ -68,12 +68,13 @@ class HomeScreen extends React.Component {
 
   componentWillMount() {
     // this.getUser();
-    this.checkLogin();
+    // this.checkLogin();
 
   }
 
   componentWillUnmount() {
     this.setState({initialLoading: false});
+    this.props.dispatch({ type: 'FINISH_LOADING' });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -89,8 +90,6 @@ class HomeScreen extends React.Component {
 
   getUser() {
     AsyncStorage.getItem(Keys.USER_ID, (err, result) => {
-      // remove this line
-      this.setState({userID: result});
       this.props.dispatch(this.getUserHelper(result));
     });
   }
@@ -102,6 +101,7 @@ class HomeScreen extends React.Component {
           // dispatch({type: NavActionTypes.GET_USER, user: response.data});
           dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
       }).then(() => {
+        dispatch({ type: 'FINISH_LOADING' });
         dispatch({type: NavActionTypes.NAVIGATE_PLACES});
       }).catch(error => {
         console.log(error);
@@ -122,10 +122,10 @@ class HomeScreen extends React.Component {
   signInFacebook = () => {
     let accessToken = '';
     this.setState({initialLoading: true});
+    this.props.dispatch({ type: 'START_LOADING' });
     Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', { permissions: ['public_profile'], behavior: 'web' }).then(async(response) => {
 
       switch(response.type) {
-
         case 'success':
 
           await AsyncStorage.setItem(Keys.FACEBOOK_ID, response.token);
@@ -216,9 +216,9 @@ class HomeScreen extends React.Component {
             </Text>
           </View>
 
-          {this.state.initialLoading ?
+          {this.props.initialLoading ?
           <View style={{position: 'absolute', top: 0, left: 0,height: height, width: width, backgroundColor: 'white' }}>
-            <ActivityIndicator animating={this.state.initialLoading} size='large' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
+            <ActivityIndicator animating={this.props.initialLoading} size='large' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
           </View>
           : null }
         </View>
@@ -282,12 +282,12 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = (state) => {
-
   return {
     navigator: state.nav,
     isLoggedIn: state.auth.isLoggedIn,
     user: state.user.user,
-    _user: state.auth
+    _user: state.auth,
+    initialLoading: state.loading.loading
 
   }
 }
