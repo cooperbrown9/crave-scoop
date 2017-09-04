@@ -184,7 +184,6 @@ class PlacesScreen extends React.Component {
         }
       });
     } else {
-      debugger;
       Alert.alert('We cant access your location!');
       this.setState({filterPresented: false});
     }
@@ -218,7 +217,9 @@ class PlacesScreen extends React.Component {
       e.preventDefault();
 
       axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + item._id).then(
-        response => this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
+        response => {
+          this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data});
+        }
       )
     }
   }

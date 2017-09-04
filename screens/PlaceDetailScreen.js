@@ -37,17 +37,28 @@ class PlaceDetailScreen extends React.Component {
  };
 
  componentDidMount() {
-   console.log(this.props.model);
-   for(let i = 0; i < this.props.user.favorites.length; i++) {
-     if (this.props.user.favorites[i].vendor_id == this.props.model._id) {
-       this.setState({isFavorite: true});
-       break;
+   if(this.props.user.favorites !== undefined) {
+     for(let i = 0; i < this.props.user.favorites.length; i++) {
+       if (this.props.user.favorites[i].vendor_id == this.props.model._id) {
+        this.setState({isFavorite: true});
+        break;
+       }
      }
    }
  }
 
- pressIcon() {
-   
+ toggleLike = () => {
+   if(this.state.isFavorite) {
+     // unfavorite
+     axios.put('https://crave-scoop.herokuapp.com/remove-favorite/' + this.props.user._id + '/' + this.props.model._id).then(response => {
+       this.setState({ isFavorite: false });
+     });
+   } else {
+     // favorite
+     axios.put('https://crave-scoop.herokuapp.com/add-favorite/' + this.props.user._id + '/' + this.props.model._id).then(response => {
+       this.setState({ isFavorite: true });
+     });
+   }
  }
 
  _getHoursForDay() {
@@ -88,7 +99,7 @@ class PlaceDetailScreen extends React.Component {
        <CustomNavBar
          title={''}
          leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/back-arrow.png')}/>}
-         leftOnPress={() => { this.props.navigation.goBack(); this.setState({goingBack: true}); } } />
+         leftOnPress={() => { this.props.navigation.goBack(); } } />
 
        <Modal animationType={"slide"} transparent={false} visible={this.state.vendorItemModalPresented} >
 
@@ -101,7 +112,7 @@ class PlaceDetailScreen extends React.Component {
 
          <View style={styles.topView_Image} >
            <Image style={styles.topImage} source={{uri: this.props.model.background_image}}>
-             <TouchableOpacity onPress={this.pressIcon}>
+             <TouchableOpacity onPress={this.toggleLike}>
                <Image style={styles.heartIcon} source={icon} />
              </TouchableOpacity>
            </Image>
@@ -231,9 +242,10 @@ const styles = StyleSheet.create({
 
 
 var mapStateToProps = (state) => {
+  debugger;
   return {
-    model: (state.nav.index == 2) ? state.nav.routes[state.nav.index].params.model : { name: '' },
-    user: state.user.user
+    model: state.nav.routes[state.nav.index].params.model,
+    user: state.auth.user
   }
 }
 
