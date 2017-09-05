@@ -13,16 +13,17 @@ export default class ProfileScreen extends React.Component {
   });
   state = {
     user: {
-      first_name: '',
-      last_name: '',
-      location: ''
+      name: '',
+      email: '',
+      zipcode: '',
+      password: ''
     },
     profilePic: 'http://enadcity.org/enadcity/wp-content/uploads/2017/02/profile-pictures.png'
   }
 
   static propTypes = {
     name: React.PropTypes.string,
-    location: React.PropTypes.string,
+    zipcode: React.PropTypes.string,
     dismissFunc: React.PropTypes.func,
     logOutFunc: React.PropTypes.func,
     renderFavorites: React.PropTypes.func,
@@ -57,10 +58,11 @@ export default class ProfileScreen extends React.Component {
   async getProfile() {
     this.setState({loading: true});
     const id = await AsyncStorage.getItem(Keys.USER_ID);
-
+    debugger;
     axios.get('https://crave-scoop.herokuapp.com/get-user/' + id + '/').then(async(response) => {
 
       AsyncStorage.getItem(Keys.PICTURE, (err, result) => {
+
         this.setState({user: response.data, profilePic: result, loading: false});
       });
 
@@ -95,7 +97,7 @@ export default class ProfileScreen extends React.Component {
               <Image style={styles.image} source={{uri: this.state.profilePic}}/>
           </View>
 
-          <Text style={styles.name} textColor='black'>{this.state.user.first_name + ' ' + this.state.user.last_name}</Text>
+          <Text style={styles.name} textColor='black'>{this.state.user.name}</Text>
           <Text style={styles.location} textColor='grey'>{this.state.user.location}</Text>
 
           <View style={styles.button}>

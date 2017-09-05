@@ -16,7 +16,7 @@ class CreateProfileModal extends React.Component {
   state = {
     name: '',
     passwordVisible: true,
-    location: '',
+    zipcode: '',
     password: '',
     email: '',
     loading: false
@@ -35,7 +35,7 @@ class CreateProfileModal extends React.Component {
 
   createUser() {
     this.setState({ loading: true });
-    axios.put('https://crave-scoop.herokuapp.com/add-user/' + this.state.name + '/' + ' /' + this.state.location + '/' + 'null' + '/' + 'null' + '/' + this.state.email)
+    axios.put('https://crave-scoop.herokuapp.com/add-user/' + this.state.name + '/' + this.state.email + '/' + this.state.zipcode + '/' + this.state.password + 'null' + '/' + 'null' )
       .then((response) => {
         axios.get('https://crave-scoop.herokuapp.com/get-user/' + response.data).then(async(user) => {
           await AsyncStorage.setItem(Keys.USER_ID, user.data._id);
@@ -88,7 +88,7 @@ class CreateProfileModal extends React.Component {
                 placeholder={'Zip Code'}
                 autoCapitalize = {'none'}
                 autoCorrect={false}
-                onChangeText={(loc) => this.setState({ location: loc }) }
+                onChangeText={(zip) => this.setState({ zipcode: zip }) }
                 value={this.state.location}
               />
             </View>
