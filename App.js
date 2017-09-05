@@ -46,34 +46,6 @@ export default class App extends React.Component {
     }
   }
 
-  async resetUser() {
-    await AsyncStorage.setItem(Keys.USER_ID, 'null');
-    await AsyncStorage.setItem(Keys.FACEBOOK_ID, 'null');
-  }
-
-  async loginFBAsync() {
-    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', {permissions:['public_profile'], behavior: 'web'});
-    if (type === 'success') {
-      const response = await axios.get('https://graph.facebook.com/me?access_token=' + token);
-
-      Alert.alert('Logged In!', response.data.name);
-
-      await AsyncStorage.setItem('@fb_id:key', response.data.id);
-      await AsyncStorage.setItem('@fb_access_token:key', token);
-
-
-    }
-  }
-
-  async checkLogin() {
-    await AsyncStorage.setItem(Keys.FACEBOOK_ID, 'abc');
-    const id = await AsyncStorage.getItem('@fb_id:key');
-    console.log('fbid', id);
-    if (id != null) {
-      this.store.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
-    }
-  }
-
   async componentDidMount() {
     await Font.loadAsync({
       'varela-regular': require('./assets/fonts/Varela-Regular.ttf'),

@@ -27,7 +27,7 @@ class FilterModal extends React.Component {
   };
 
   filterVendors = () => {
-    this.setState({loading: true});
+    this.setState({ loading: true });
     if (this.state.nearMeChecked) {
       this.props.renderNearby();
     } else if (this.state.favoriteChecked) {

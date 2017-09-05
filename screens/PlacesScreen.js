@@ -161,13 +161,13 @@ class PlacesScreen extends React.Component {
         console.log(err);
       } else {
         axios.get('https://crave-scoop.herokuapp.com/get-favorite-vendors/' + result).then((response) => {
-            if(response.data.status !== '200') {
-              Alert.alert('Oops!', 'You do not have any favorites!', [ {text: 'Oh ef dude!', onPress: () => this.setState({profilePresented: false})} ] );
-            } else {
-              this.setState({restaurants: response.data, profilePresented: false, filterPresented: false});
-            }
+          this.setState({restaurants: response.data, profilePresented: false, filterPresented: false});
+        }).catch(e => {
+          this.setState({ filterPresented: false });
+          console.log('yuh its lit');
         }).finally((status) => {
           this.setState({filterPresented: false})
+          console.log('yuh its lit');
         })
       }
     });
@@ -231,7 +231,7 @@ class PlacesScreen extends React.Component {
       <View style={styles.container } >
         {(!this.state.vendorsLoaded) ?
           <View style={{position: 'absolute', left:0,right:0,top:0,bottom:0,zIndex:4,backgroundColor:'white'}}>
-            <TouchableOpacity style={{left:0,right:0,top:120}} onPress={this.getVendors}>
+            <TouchableOpacity style={{ left:0, right:0, top:120 }} onPress={this.getVendors}>
               <Text style={{color: 'blue', fontSize: 24, textAlign: 'center', color:Colors.DARK_GREY, fontFamily: 'varela-round' }}>
                 Couldn't load Vendors
               </Text>
@@ -243,14 +243,13 @@ class PlacesScreen extends React.Component {
           : null
         }
 
-
         <CustomNavBar
           title={'PLACES'}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/search.png')}/>}
           rightButton={<Image style={styles.navBarRightButton} source={require('../assets/images/settings.png')}/>}
           leftOnPress={this._presentSearchModal}
-          rightOnPress={this._presentProfileModal} />
-
+          rightOnPress={this._presentProfileModal}
+        />
 
         <Modal animationType={'slide'} transparent={false} visible={this.state.profilePresented} >
           <ProfileScreen dismissFunc={this._dismissProfileModal.bind(this)} logOutFunc={this._navigateHome.bind(this)} renderFavorites={this._loadFavorites.bind(this)} />
