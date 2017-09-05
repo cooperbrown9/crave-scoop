@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity,
-  Image,TextInput, AsyncStorage, Dimensions,
+  Image, TextInput, AsyncStorage, Dimensions,
   ActivityIndicator, Alert
 } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';

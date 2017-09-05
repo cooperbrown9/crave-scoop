@@ -16,7 +16,6 @@ export default class App extends React.Component {
 
   store = createStore(NavReducer, applyMiddleware(thunk));
 
-
   async checkForID() {
     const userID = await AsyncStorage.getItem(Keys.USER_ID);
     const fbID = await AsyncStorage.getItem(Keys.FACEBOOK_ID);
@@ -51,7 +50,9 @@ export default class App extends React.Component {
       'varela-regular': require('./assets/fonts/Varela-Regular.ttf'),
       'varela-round': require('./assets/fonts/VarelaRound-Regular.ttf'),
     });
-    await this.checkForID();
+    // Keys.resetKeys(await this.checkForID().bind(this));
+    Keys.resetKeys(() => {this.store.dispatch({type:'START_HOME'})});
+
   }
 
   async componentWillMount() {

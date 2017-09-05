@@ -26,6 +26,7 @@ import * as REST from '../rest/rest.js';
 import Expo from 'expo';
 import * as Keys from '../local-storage/keys.js';
 import PlacesScreen from './PlacesScreen.js';
+import LoginForm from './LoginForm.js';
 
 class HomeScreen extends React.Component {
 
@@ -36,7 +37,8 @@ class HomeScreen extends React.Component {
   state = {
     clicked: false,
     profilePresented: false,
-    initialLoading: true
+    initialLoading: true,
+    loginFormPresented: false
   }
 
   componentDidMount() {
@@ -109,8 +111,8 @@ class HomeScreen extends React.Component {
     }
   }
 
-  async createUser(firstname, lastname, location, facebookID, facebookToken) {
-    await axios.put('https://crave-scoop.herokuapp.com/add-user/' + firstname + '/' + lastname + '/' + location + '/' + facebookID + '/' + facebookToken).then((response) => {
+  async createUser(firstname, lastname, location, facebookID, facebookToken, email) {
+    await axios.put('https://crave-scoop.herokuapp.com/add-user/' + firstname + '/' + lastname + '/' + location + '/' + facebookID + '/' + facebookToken + '/' + email).then((response) => {
       AsyncStorage.setItem(Keys.USER_ID, response.data, () => {
         this.getUser();
       })
@@ -123,7 +125,7 @@ class HomeScreen extends React.Component {
     let accessToken = '';
     this.setState({initialLoading: true});
     this.props.dispatch({ type: 'START_LOADING' });
-    Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', { permissions: ['public_profile'], behavior: 'web' }).then(async(response) => {
+    Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', { permissions: ['public_profile', 'email'], behavior: 'web' }).then(async(response) => {
 
       switch(response.type) {
         case 'success':
@@ -134,7 +136,8 @@ class HomeScreen extends React.Component {
 
           let name = fbProfile.data.name.split(' ');
           const pic = await fetch('https://graph.facebook.com/v2.10/' + fbProfile.data.id + '/picture?access_token=' + response.token);
-
+          const email = await fetch('https://graph.facebook.com/v2.10/' + fbProfile.data.id + '/email?access_token=' + response.token);
+          debugger;
           // save static user data
           await AsyncStorage.setItem(Keys.PICTURE, pic.url);
           await AsyncStorage.setItem(Keys.FACEBOOK_PROFILE_ID, fbProfile.data.id);
@@ -173,9 +176,17 @@ class HomeScreen extends React.Component {
     this.setState({ profilePresented: false });
   }
 
-  // _login = () => {
-  //   this.props.dispatch({type: NavActionTypes.LOGIN, id: '59765d2df60c01001198f3b5', dispatcher: this.props});
-  // }
+  presentLoginForm = () => {
+    this.setState({ loginFormPresented: true });
+  }
+
+  _dismissLoginForm = () => {
+    this.setState({ loginFormPresented: false });
+  }
+
+  _handleLogin = () => {
+    console.log('try login');
+  }
 
   _goToPlacesScreen = () => {
     this.props.navigation.dispatch({ type: NavActionTypes.NAVIGATE_PLACES });
@@ -198,6 +209,10 @@ class HomeScreen extends React.Component {
               <CreateProfileModal dismissFunc={this._dismissCreateProfile.bind(this)} createAndDismiss={this._createProfileModalPresented.bind(this)} />
           </Modal>
 
+          <Modal animationType={'slide'} transparent={false} visible={this.state.loginFormPresented} >
+            <LoginForm dismissFunc={this._dismissLoginForm.bind(this)} loginFunc={this._handleLogin.bind(this)} />
+          </Modal>
+
         {/*  <View style={styles.welcomeContainer} >
             <Image source={require('../assets/images/cupcake.png')} style={styles.image} />
             <Text color='white' style={styles.welcomeMessage} >
@@ -209,7 +224,9 @@ class HomeScreen extends React.Component {
             <RoundButton title='Continue with Facebook' onPress={this.signInFacebook} bgColor='white' textColor='#f29e39' style={{flex:1}} />
             <RoundButton title='Create Account' onPress={this._createProfileModalPresented} style={{flex:1}}/>
           </View>
-          <Text style={styles.termsText}>Terms of Service</Text>
+          <TouchableOpacity onPress={this.presentLoginForm}>
+            <Text style={styles.termsText}>Terms of Service</Text>
+          </TouchableOpacity>
           <View>
             <Text backgroundColor="black">
 
