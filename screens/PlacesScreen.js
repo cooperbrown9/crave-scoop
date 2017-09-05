@@ -101,7 +101,7 @@ class PlacesScreen extends React.Component {
       this.setState({restaurants: response.data, vendorsLoaded: true, loading: false, filterPresented: false});
     }).catch((error) => {
       console.log(error);
-
+      debugger;
       // if (this.state.restaurants.length < 1) {
         Alert.alert('Couldnt load vendors at this time');
         this.setState({vendorsLoaded: false, loading: false});

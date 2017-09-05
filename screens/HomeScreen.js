@@ -112,6 +112,9 @@ class HomeScreen extends React.Component {
   }
 
   async createUser(firstname, lastname, location, facebookID, facebookToken, email) {
+    // name, email, zip, pw, toke, fbid
+    // axios.put('https://crave-scoop.herokuapp.com/create-user/' + name + '/' + email + '/' + )
+
     await axios.put('https://crave-scoop.herokuapp.com/add-user/' + firstname + '/' + lastname + '/' + location + '/' + facebookID + '/' + facebookToken + '/' + email).then((response) => {
       AsyncStorage.setItem(Keys.USER_ID, response.data, () => {
         this.getUser();
@@ -125,7 +128,7 @@ class HomeScreen extends React.Component {
     let accessToken = '';
     this.setState({initialLoading: true});
     this.props.dispatch({ type: 'START_LOADING' });
-    Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', { permissions: ['public_profile', 'email'], behavior: 'web' }).then(async(response) => {
+    Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', { permissions: ['email'], behavior: 'web' }).then(async(response) => {
 
       switch(response.type) {
         case 'success':
@@ -136,15 +139,16 @@ class HomeScreen extends React.Component {
 
           let name = fbProfile.data.name.split(' ');
           const pic = await fetch('https://graph.facebook.com/v2.10/' + fbProfile.data.id + '/picture?access_token=' + response.token);
-          const email = await fetch('https://graph.facebook.com/v2.10/' + fbProfile.data.id + '/email?access_token=' + response.token);
+          const lol = await fetch('https://graph.facebook.com/me?access_token=' + response.token);
           debugger;
           // save static user data
           await AsyncStorage.setItem(Keys.PICTURE, pic.url);
           await AsyncStorage.setItem(Keys.FACEBOOK_PROFILE_ID, fbProfile.data.id);
           await AsyncStorage.setItem(Keys.FACEBOOK_TOKEN, response.token);
-
+          debugger;
           // create the user
           await this.createUser(name[0], name[1], 'The 69', fbProfile.data.id, response.token);
+          // await this.createUseR(name[0], )
           // this.props.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
 
           return response;
@@ -189,9 +193,12 @@ class HomeScreen extends React.Component {
     console.log('try login');
     axios.get('https://crave-scoop.herokuapp.com/login/' + email + '/' + pw).then(response => {
       console.log(response);
-      this.setState({ loginFormPresented: false });
-      this.props.dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
-      this.props.dispatch({ type: 'START_PLACES' });
+      AsyncStorage.setItem(Keys.USER_ID, response.data._id, () => {
+        this.setState({ loginFormPresented: false });
+        this.props.dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
+        this.props.dispatch({ type: 'START_PLACES' });
+      });
+
     }).catch(error => {
       console.log(error.response);
       Alert.alert('Nah');

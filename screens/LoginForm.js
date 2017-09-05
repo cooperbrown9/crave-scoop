@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 24,
     fontFamily: 'varela-round',
-    tintColor: Colors.BLUE
+    color: Colors.BLUE
   },
   loginButton: {
     flex: 1,
