@@ -157,13 +157,14 @@ class HomeScreen extends React.Component {
     });
   }
 
-  _createProfileModalPresented = (status) => {
+  _createProfileModalPresented = (status, user) => {
     if(this.state.profilePresented === false){
       this.setState({ profilePresented: true });
     } else if(this.state.profilePresented === true){
       this.setState({profilePresented: false });
       if(status) {
-        this.props.navigation.dispatch({ type: NavActionTypes.NAVIGATE_PLACES});
+        this.props.dispatch({ type: 'LOGIN_SUCCESSFUL', user: user });
+        this.props.dispatch({type: 'START_PLACES' });
       } else {
         setTimeout(() => {
           Alert.alert('We couldn\'t make your account at this time');
