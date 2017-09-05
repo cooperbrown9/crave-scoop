@@ -18,6 +18,7 @@ class CreateProfileModal extends React.Component {
     passwordVisible: true,
     location: '',
     password: '',
+    email: '',
     loading: false
   }
 
@@ -34,7 +35,7 @@ class CreateProfileModal extends React.Component {
 
   createUser() {
     this.setState({ loading: true });
-    axios.put('https://crave-scoop.herokuapp.com/add-user/' + this.state.name + '/' + ' /' + this.state.location + '/' + 'null' + '/' + 'null')
+    axios.put('https://crave-scoop.herokuapp.com/add-user/' + this.state.name + '/' + ' /' + this.state.location + '/' + 'null' + '/' + 'null' + '/' + this.state.email)
       .then((response) => {
         axios.get('https://crave-scoop.herokuapp.com/get-user/' + response.data).then(async(user) => {
           await AsyncStorage.setItem(Keys.USER_ID, user.data._id);
@@ -84,11 +85,21 @@ class CreateProfileModal extends React.Component {
 
             <View style={styles.fieldContainer}>
               <TextInput style={styles.textInput}
-                placeholder={'Location'}
+                placeholder={'Zip Code'}
                 autoCapitalize = {'none'}
                 autoCorrect={false}
                 onChangeText={(loc) => this.setState({ location: loc }) }
                 value={this.state.location}
+              />
+            </View>
+
+            <View style={styles.fieldContainer}>
+              <TextInput style={styles.textInput}
+                placeholder={'Email'}
+                autoCapitalize = {'none'}
+                autoCorrect={false}
+                onChangeText={(em) => this.setState({ email: em }) }
+                value={this.state.email}
               />
             </View>
 
@@ -100,7 +111,8 @@ class CreateProfileModal extends React.Component {
                 autoCorrect={false}
                 onChangeText={(pw) => this.setState({password: pw})}
                 value={this.state.password}
-                />
+              />
+
               <TouchableOpacity onPress={() => this.passwordVisible()} style={{justifyContent: 'center', alignItems: 'center' }}>
                   <Image style={styles.passwordVisibleButton} source={icon}/>
               </TouchableOpacity>
