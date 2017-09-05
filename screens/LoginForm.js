@@ -24,7 +24,7 @@ class LoginForm extends React.Component {
         </View>
 
         <View style={styles.fieldView} >
-          <View style={{flex: 1, bottomBorderColor: 'black', bottomBorderWidth: 2}}>
+          <View style={styles.field}>
             <TextInput style={styles.textInput}
               placeholder={'Email'}
               autoCapitalize = {'none'}
@@ -33,7 +33,7 @@ class LoginForm extends React.Component {
               value={this.state.email}
             />
           </View>
-          <View style={{flex: 1, bottomBorderColor: 'black', bottomBorderWidth: 2}}>
+          <View style={styles.field}>
             <TextInput style={styles.textInput}
               placeholder={'Password'}
               autoCapitalize = {'none'}
@@ -43,8 +43,9 @@ class LoginForm extends React.Component {
             />
           </View>
         </View>
+
         <View style={styles.loginButton} >
-          <RoundButton title='LOGIN' bgColor={Colors.BLUE}/>
+          <RoundButton title='LOGIN' bgColor={Colors.BLUE} onPress={() => {this.props.loginFunc(this.state.email, this.state.password)}} borderOn={false} />
         </View>
 
       </View>
@@ -62,7 +63,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     marginLeft: 64,
-    marginRight: 64
+    marginRight: 64,
+    marginTop: 32
+  },
+  field: {
+    flex: 1,
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
+    marginBottom: 48
   },
   loginHeader: {
     height: 64,
@@ -78,7 +86,8 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     fontSize: 24,
-    fontFamily: 'varela-round'
+    fontFamily: 'varela-round',
+    tintColor: Colors.BLUE
   },
   loginButton: {
     flex: 1,

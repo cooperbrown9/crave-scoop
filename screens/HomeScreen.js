@@ -184,8 +184,17 @@ class HomeScreen extends React.Component {
     this.setState({ loginFormPresented: false });
   }
 
-  _handleLogin = () => {
+  _handleLogin = (email, pw) => {
     console.log('try login');
+    axios.get('https://crave-scoop.herokuapp.com/login/' + email + '/' + pw).then(response => {
+      console.log(response);
+      this.setState({ loginFormPresented: false });
+      this.props.dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
+      this.props.dispatch({ type: 'START_PLACES' });
+    }).catch(error => {
+      console.log(error.response);
+      Alert.alert('Nah');
+    })
   }
 
   _goToPlacesScreen = () => {
