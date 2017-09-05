@@ -39,7 +39,7 @@ class CreateProfileModal extends React.Component {
       .then((response) => {
         axios.get('https://crave-scoop.herokuapp.com/get-user/' + response.data).then(async(user) => {
           await AsyncStorage.setItem(Keys.USER_ID, user.data._id);
-          this.props.createAndDismiss(true);
+          this.props.createAndDismiss(true, user.data);
         }).catch((error) => {
           this.errorOnCreate();
         })

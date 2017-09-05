@@ -263,20 +263,20 @@ class PlacesScreen extends React.Component {
             <FilterModal resetVendors={this._resetVendors.bind(this)} renderNearby={this._loadNearbyVendors.bind(this)} renderFavorites={this._loadFavorites.bind(this)} filterFunc={this._dismissAndFilter.bind(this)} dismissFunc={this._dismissFilterModal.bind(this)} />
         </Modal>
 
-        <Animated.ScrollView style={styles.scrollContainer} scrollEventThrottle={1} onScroll={Animated.event(
+      {/*  <Animated.ScrollView style={styles.scrollContainer} scrollEventThrottle={1} onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: 100 } } }],
             { useNativeDriver: true }
           )}
-        >
-         {/*<ScrollView style={styles.scrollContainer}>
+        ></Animated.ScrollView>*/}
+         <ScrollView style={styles.scrollContainer}>
 
-          <View style={styles.itemContainer} >*/}
+          <View style={styles.itemContainer} >
             {this.state.restaurants.map(model => <VendorView userFavorites={this.props.user.favorites} model={{id: model._id, name: model.name, like_count: model.like_count, image: model.background_image}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
-          {/*</View>
+          </View>
 
 
-         </ScrollView>*/}
-      </Animated.ScrollView>
+         </ScrollView>
+
         <View style={styles.button}>
           <RoundButton title='Filters' onPress={this._presentFilterModal} bgColor={Colors.DARK_BLUE} borderOn={false}/>
         </View>

@@ -29,7 +29,6 @@ class PlaceDetailScreen extends React.Component {
 
  state = {
    titty: 'cool dude',
-   model: {},
    vendorItemModalPresented: false,
    vendorLoaded: false,
    goingBack: false,
@@ -242,7 +241,6 @@ const styles = StyleSheet.create({
 
 
 var mapStateToProps = (state) => {
-  debugger;
   return {
     model: state.nav.routes[state.nav.index].params.model,
     user: state.auth.user
