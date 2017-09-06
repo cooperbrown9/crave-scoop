@@ -62,6 +62,7 @@ export default class ProfileScreen extends React.Component {
     axios.get('https://crave-scoop.herokuapp.com/get-user/' + id + '/').then(async(response) => {
 
       AsyncStorage.getItem(Keys.PICTURE, (err, result) => {
+        debugger;
         this.setState({user: response.data, profilePic: result || this.state.profilePic, loading: false});
       });
 
