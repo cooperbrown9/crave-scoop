@@ -51,8 +51,8 @@ export default class App extends React.Component {
       'varela-round': require('./assets/fonts/VarelaRound-Regular.ttf'),
     });
     // Keys.resetKeys(await this.checkForID().bind(this));
-      Keys.resetKeys(() => {this.store.dispatch({type:'START_HOME'})});
-
+      // Keys.resetKeys(() => {this.store.dispatch({type:'START_HOME'})});
+      await this.checkForID();
 
   }
 

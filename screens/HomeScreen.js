@@ -111,11 +111,11 @@ class HomeScreen extends React.Component {
     }
   }
 
-  async createUser(firstname, lastname, location, facebookID, facebookToken, email) {
+  async createUser(name, email, zip, password, token, facebookID) {
     // name, email, zip, pw, toke, fbid
-    // axios.put('https://crave-scoop.herokuapp.com/create-user/' + name + '/' + email + '/' + )
+    axios.put('https://crave-scoop.herokuapp.com/create-user/' + name + '/' + email + '/' + zip + '/' + password + '/' + token + '/' + facebookID).then((response) => {
 
-    await axios.put('https://crave-scoop.herokuapp.com/add-user/' + firstname + '/' + lastname + '/' + location + '/' + facebookID + '/' + facebookToken + '/' + email).then((response) => {
+    // await axios.put('https://crave-scoop.herokuapp.com/add-user/' + firstname + '/' + lastname + '/' + location + '/' + facebookID + '/' + facebookToken + '/' + email).then((response) => {
       AsyncStorage.setItem(Keys.USER_ID, response.data, () => {
         this.getUser();
       })
@@ -124,32 +124,35 @@ class HomeScreen extends React.Component {
     });
   }
 
-  signInFacebook = () => {
+  signInFacebook = async() => {
     let accessToken = '';
     this.setState({initialLoading: true});
     this.props.dispatch({ type: 'START_LOADING' });
-    Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', { permissions: ['email'], behavior: 'web' }).then(async(response) => {
+    await Expo.Facebook.logInWithReadPermissionsAsync('1565112886889636', { permissions: ['public_profile', 'email'], behavior: 'web' }).then(async(response) => {
 
       switch(response.type) {
         case 'success':
 
-          await AsyncStorage.setItem(Keys.FACEBOOK_ID, response.token);
-
           const fbProfile = await axios.get('https://graph.facebook.com/me?access_token=' + response.token);
 
-          let name = fbProfile.data.name.split(' ');
-          const pic = await fetch('https://graph.facebook.com/v2.10/' + fbProfile.data.id + '/picture?access_token=' + response.token);
-          const lol = await fetch('https://graph.facebook.com/me?access_token=' + response.token);
-          debugger;
-          // save static user data
-          await AsyncStorage.setItem(Keys.PICTURE, pic.url);
-          await AsyncStorage.setItem(Keys.FACEBOOK_PROFILE_ID, fbProfile.data.id);
-          await AsyncStorage.setItem(Keys.FACEBOOK_TOKEN, response.token);
-          debugger;
-          // create the user
-          await this.createUser(name[0], name[1], 'The 69', fbProfile.data.id, response.token);
-          // await this.createUseR(name[0], )
-          // this.props.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
+          const res = await axios.get('https://crave-scoop.herokuapp.com/login-fb/' + fbProfile.data.id);
+          if(res.status == 200) {
+            // user exists
+            await AsyncStorage.setItem(Keys.USER_ID, res.data._id);
+            this.getUser();
+          } else {
+            // user doesnt exist
+            await AsyncStorage.setItem(Keys.FACEBOOK_ID, response.token);
+
+            let name = fbProfile.data.name.split(' ');
+            const pic = await fetch('https://graph.facebook.com/v2.10/' + fbProfile.data.id + '/picture?access_token=' + response.token);
+            // save static user data
+            await AsyncStorage.setItem(Keys.PICTURE, pic.url);
+            await AsyncStorage.setItem(Keys.FACEBOOK_PROFILE_ID, fbProfile.data.id);
+            await AsyncStorage.setItem(Keys.FACEBOOK_TOKEN, response.token);
+            // create the user
+            await this.createUser(name[0], 'dummy@yahoo.com', '99223', 'null', response.token, fbProfile.data.id);
+          }
 
           return response;
         case 'cancel':
