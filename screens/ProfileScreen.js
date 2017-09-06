@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
   options_Arrow: {
     height: 12,
     width: 12,
-    tintColor: 'red'
+    tintColor: Colors.BLUE
   },
   underline: {
     marginBottom: 32,
