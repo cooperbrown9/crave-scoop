@@ -52,7 +52,7 @@ export default class App extends React.Component {
     });
     // Keys.resetKeys(await this.checkForID().bind(this));
       // Keys.resetKeys(() => {this.store.dispatch({type:'START_HOME'})});
-      await this.checkForID();
+    await this.checkForID();
 
   }
 

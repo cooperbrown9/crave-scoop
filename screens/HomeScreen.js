@@ -243,6 +243,9 @@ class HomeScreen extends React.Component {
           <View style={styles.buttonContainer} >
             <RoundButton title='Continue with Facebook' onPress={this.signInFacebook} bgColor='white' textColor='#f29e39' style={{flex:1}} />
             <RoundButton title='Create Account' onPress={this._createProfileModalPresented} style={{flex:1}}/>
+            <TouchableOpacity onPress={this.presentLoginForm} >
+              <Text style={styles.loginText}>Already have an account? Login!</Text>
+            </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={this.presentLoginForm}>
             <Text style={styles.termsText}>Terms of Service</Text>
@@ -311,6 +314,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textDecorationStyle: 'solid',
     bottom: 32
+  },
+  loginText: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: 'white'
   },
   heart: {
     height: 16,
