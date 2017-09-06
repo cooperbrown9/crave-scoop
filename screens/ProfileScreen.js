@@ -58,12 +58,15 @@ export default class ProfileScreen extends React.Component {
   async getProfile() {
     this.setState({loading: true});
     const id = await AsyncStorage.getItem(Keys.USER_ID);
-    debugger;
+
     axios.get('https://crave-scoop.herokuapp.com/get-user/' + id + '/').then(async(response) => {
 
       AsyncStorage.getItem(Keys.PICTURE, (err, result) => {
-
-        this.setState({user: response.data, profilePic: result, loading: false});
+        debugger;
+        this.setState({user: response.data, loading: false});
+        if(result != null){
+          this.setState({profilePic: result});
+        }
       });
 
       // was this
@@ -98,7 +101,7 @@ export default class ProfileScreen extends React.Component {
           </View>
 
           <Text style={styles.name} textColor='black'>{this.state.user.name}</Text>
-          <Text style={styles.location} textColor='grey'>{this.state.user.location}</Text>
+          <Text style={styles.location} textColor='grey'>{this.state.user.zipcode}</Text>
 
           <View style={styles.button}>
             <RoundButton title='EDIT PROFILE' onPress={this._editProfile} bgColor={Colors.DARK_BLUE} textColor='white' borderOn={false}/>
