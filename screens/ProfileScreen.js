@@ -72,7 +72,20 @@ export default class ProfileScreen extends React.Component {
     this.setState({loading: true});
     this.props.renderFavorites();
   }
-
+// Found Stock Certificates from the 1920's, are they still worth anything?
+// Link to album: https://imgur.com/a/T4ijb
+// Hello!
+// I found these in my dad's office and he has no clue who or where these came from. Theres a few more than the ones in the album I posted but they all look similar. They're all from 1917 - 1920's. Some of them say things like they're for 1000 shares at $1 each, with Capital Stock at $1M.
+// The companies I have certificates for are:
+// Spokane-Athabaska Ol Co Ltd
+// Latah Texas Oil & Gas Company
+// Northern Wyoming Oil Company
+// Vindicator Oil Company
+// Otis Orchards Supply Company
+// Texas Wonder Pools Oil Corporation
+// Not sure if these are worth anything anymore but I would be happy to share the wealth with whoever helps me figure this out!
+// If you need more pictures please let me know!
+// Thank you for your help in advance!
   async getProfile() {
     this.setState({loading: true});
     const id = await AsyncStorage.getItem(Keys.USER_ID);
@@ -80,7 +93,10 @@ export default class ProfileScreen extends React.Component {
     axios.get('https://crave-scoop.herokuapp.com/get-user/' + id + '/').then(async(response) => {
 
       AsyncStorage.getItem(Keys.PICTURE, (err, result) => {
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         this.setState({user: response.data, profilePic: result || this.state.profilePic, loading: false});
       });
 

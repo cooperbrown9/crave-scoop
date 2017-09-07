@@ -52,15 +52,9 @@ export default class App extends React.Component {
     });
     // Keys.resetKeys(await this.checkForID().bind(this));
       // Keys.resetKeys(() => {this.store.dispatch({type:'START_HOME'})});
+    // await AsyncStorage.setItem(Keys.USER_ID, 'jhjksgf');
     await this.checkForID();
 
-  }
-
-  async componentWillMount() {
-    // debugger;
-    // await AsyncStorage.getItem(Keys.USER_ID, (err, result) => {
-    //   this.store.dispatch({type: 'USER_LOGGED_IN'});
-    // })
   }
 
   render() {

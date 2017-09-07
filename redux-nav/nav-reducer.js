@@ -11,6 +11,7 @@ const tempNavState = AppNavigator.router.getStateForAction(firstAction);
 const secondAction = AppNavigator.router.getActionForPathAndParams('Places');
 const secondNavState = AppNavigator.router.getStateForAction(secondAction);
 const initialNavState = AppNavigator.router.getStateForAction(firstAction, tempNavState);
+
 // const _action = AppNavigator.router.getActionForPathAndParams('AppScreen');
 // const _state = AppNavigator.router.getStateForAction(_action);
 
