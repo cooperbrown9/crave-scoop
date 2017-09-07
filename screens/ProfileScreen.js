@@ -16,8 +16,10 @@ export default class ProfileScreen extends React.Component {
       name: '',
       email: '',
       zipcode: '',
-      password: ''
+      password: '',
+
     },
+    userLocation: '',
     profilePic: 'http://enadcity.org/enadcity/wp-content/uploads/2017/02/profile-pictures.png'
   }
 
@@ -36,6 +38,9 @@ export default class ProfileScreen extends React.Component {
 
   componentDidMount(){
     this.getProfile();
+    if(this.state.user.zipcode != '') {
+      this.getLocation();
+    }
   }
 
   componentWillUnmount() {
@@ -50,6 +55,19 @@ export default class ProfileScreen extends React.Component {
     });
   }
 
+  async getLocation() {
+    axios.get('https://maps.googleapis.com/maps/api/geocode/json?components=postal_code:99223&key=AIzaSyA7APhFiG55kTt8p38sfGoqaGEmB908YJk')
+      .then(function (response) {
+        this.setState({userLocation: response.data.results[0].address_components[1].long_name + ', ' + response.data.results[0].address_components[3].long_name });
+        console.log(this.state.userLocation);
+
+      }.bind(this))
+      .catch(function (error) {
+          console.log(error);
+      });
+
+  }
+
   renderFavoritesWrapper = () => {
     this.setState({loading: true});
     this.props.renderFavorites();
@@ -62,7 +80,7 @@ export default class ProfileScreen extends React.Component {
     axios.get('https://crave-scoop.herokuapp.com/get-user/' + id + '/').then(async(response) => {
 
       AsyncStorage.getItem(Keys.PICTURE, (err, result) => {
-        debugger;
+
         this.setState({user: response.data, profilePic: result || this.state.profilePic, loading: false});
       });
 
@@ -98,7 +116,7 @@ export default class ProfileScreen extends React.Component {
           </View>
 
           <Text style={styles.name} textColor='black'>{this.state.user.name}</Text>
-          <Text style={styles.location} textColor='grey'>{this.state.user.zipcode}</Text>
+          <Text style={styles.location} textColor='grey'>{this.state.userLocation}</Text>
 
           <View style={styles.button}>
             <RoundButton title='EDIT PROFILE' onPress={this._editProfile} bgColor={Colors.DARK_BLUE} textColor='white' borderOn={false}/>

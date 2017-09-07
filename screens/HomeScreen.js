@@ -165,6 +165,7 @@ class HomeScreen extends React.Component {
   }
 
   _createProfileModalPresented = (status, user) => {
+    debugger;
     if(this.state.profilePresented === false){
       this.setState({ profilePresented: true });
     } else if(this.state.profilePresented === true){
