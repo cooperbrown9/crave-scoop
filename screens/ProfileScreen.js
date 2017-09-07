@@ -36,11 +36,11 @@ export default class ProfileScreen extends React.Component {
     loading: false
   }
 
-  componentDidMount(){
-    this.getProfile();
-    if(this.state.user.zipcode != '') {
+  async componentDidMount(){
+    await this.getProfile();
+    // if(this.state.user.zipcode != '') {
       this.getLocation();
-    }
+    // }
   }
 
   componentWillUnmount() {
@@ -57,15 +57,12 @@ export default class ProfileScreen extends React.Component {
 
   async getLocation() {
     axios.get('https://maps.googleapis.com/maps/api/geocode/json?components=postal_code:99223&key=AIzaSyA7APhFiG55kTt8p38sfGoqaGEmB908YJk')
-      .then(function (response) {
+      .then((response) => {
         this.setState({userLocation: response.data.results[0].address_components[1].long_name + ', ' + response.data.results[0].address_components[3].long_name });
-        console.log(this.state.userLocation);
-
-      }.bind(this))
-      .catch(function (error) {
+      })
+      .catch((error) => {
           console.log(error);
       });
-
   }
 
   renderFavoritesWrapper = () => {
@@ -90,13 +87,9 @@ export default class ProfileScreen extends React.Component {
     this.setState({loading: true});
     const id = await AsyncStorage.getItem(Keys.USER_ID);
 
-    axios.get('https://crave-scoop.herokuapp.com/get-user/' + id + '/').then(async(response) => {
+    await axios.get('https://crave-scoop.herokuapp.com/get-user/' + id + '/').then(async(response) => {
 
-      AsyncStorage.getItem(Keys.PICTURE, (err, result) => {
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
+      await AsyncStorage.getItem(Keys.PICTURE, (err, result) => {
         this.setState({user: response.data, profilePic: result || this.state.profilePic, loading: false});
       });
 
@@ -294,8 +287,10 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = state => {
+  debugger;
   return {
     currentVendors: state.vendorHelper.vendors,
+    user: state.auth.user
     // picture:
   }
 }

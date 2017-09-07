@@ -160,10 +160,10 @@ class PlacesScreen extends React.Component {
         axios.get('https://crave-scoop.herokuapp.com/get-favorite-vendors/' + result).then((response) => {
           this.setState({restaurants: response.data, profilePresented: false, filterPresented: false});
         }).catch(e => {
-          this.setState({ filterPresented: false });
+          this.setState({ filterPresented: false, profilePresented: false });
           console.log('yuh its lit');
         }).finally((status) => {
-          this.setState({filterPresented: false})
+          this.setState({filterPresented: false, profilePresented: false });
           console.log('yuh its lit');
         })
       }
