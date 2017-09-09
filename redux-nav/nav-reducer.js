@@ -73,7 +73,7 @@ async function firstState () {
 };
 
 
-function nav (state = tempNavState, action) {
+export default function nav (state = tempNavState, action) {
 
   let nextState;
   switch (action.type) {
@@ -111,6 +111,7 @@ function nav (state = tempNavState, action) {
         NavigationActions.navigate({routeName: 'PlaceDetail', params: { model: action.model }}),
         state
       );
+      nextState.model = action.model;
       break;
 
     case NavActionTypes.GO_BACK:
@@ -134,72 +135,72 @@ function nav (state = tempNavState, action) {
   }
   return nextState || state;
 }
+//
+// const initialModalState = {};
+// function modal (state = initialModalState, action) {
+//
+//   let nextState = state;
+//   switch(action.type) {
+//
+//     case 'VendorItemModal':
+//
+//       return { model: action.model }
+//       break;
+//
+//     default:
+//       return { randomProp: '' }
+//       break;
+//   }
+// }
 
-const initialModalState = {};
-function modal (state = initialModalState, action) {
-
-  let nextState = state;
-  switch(action.type) {
-
-    case 'VendorItemModal':
-
-      return { model: action.model }
-      break;
-
-    default:
-      return { randomProp: '' }
-      break;
-  }
-}
-
-const initialAuthState = { isLoggedIn: false, userID: '', user: {} };
-
-function auth(state = initialAuthState, action) {
-
-  switch (action.type) {
-
-    case 'Login':
-      return {
-        type: action.type,
-        ...state,
-        user: action.user,
-      }
-
-    case 'LOGIN_SUCCESSFUL':
-      return {
-        ...state,
-        isLoggedIn: true,
-        user: action.user
-      }
-      // return Object.assign({}, state, {
-      //   loggedIn: true,
-      //   id: 'abc123'
-      // });
-      break;
-
-    case 'Login_Complete':
-      return { ...state, isLoggedIn: true, user: action.user };
-
-    case 'GetUser':
-      axios.get('https://crave-scoop.herokuapp.com/get-user/' + action.id).then(response => {
-        action.dispatcher.dispatch({type: 'GetUserComplete', user: response.data});
-      }).catch(error => {
-        action.dispatcher.dispatch({type: 'GetUserFail', id: action.id, error: error });
-      });
-      return { ...state, isLoggedIn: false };
-
-    case 'GetUserComplete':
-      return { ...state, isLoggedIn: true, user: action.user }
-
-    case 'GetUserFail':
-      return { ...state, isLoggedIn: false, userID: action.id, error: action.error };
-
-    case 'Logout':
-      return { ...state, isLoggedIn: false };
-    default:
-      return state;
-  }
-}
+// const initialAuthState = { isLoggedIn: false, userID: '', user: {} };
+//
+// function auth(state = initialAuthState, action) {
+//
+//   switch (action.type) {
+//
+//     case 'Login':
+//       return {
+//         type: action.type,
+//         ...state,
+//         user: action.user,
+//       }
+//
+//     case 'LOGIN_SUCCESSFUL':
+//       return {
+//         ...state,
+//         isLoggedIn: true,
+//         user: action.user
+//       }
+//       // return Object.assign({}, state, {
+//       //   loggedIn: true,
+//       //   id: 'abc123'
+//       // });
+//       break;
+//
+//     case 'Login_Complete':
+//       return { ...state, isLoggedIn: true, user: action.user };
+//
+//     case 'GetUser':
+//       axios.get('https://crave-scoop.herokuapp.com/get-user/' + action.id).then(response => {
+//         action.dispatcher.dispatch({type: 'GetUserComplete', user: response.data});
+//       }).catch(error => {
+//         action.dispatcher.dispatch({type: 'GetUserFail', id: action.id, error: error });
+//       });
+//       return { ...state, isLoggedIn: false };
+//
+//     case 'GetUserComplete':
+//       return { ...state, isLoggedIn: true, user: action.user }
+//
+//     case 'GetUserFail':
+//       return { ...state, isLoggedIn: false, userID: action.id, error: action.error };
+//
+//     case 'Logout':
+//       return { ...state, isLoggedIn: false };
+//     default:
+//       return state;
+//   }
+// }
 
 const initialVendorState = { vendors: [], success: false, placeDetail: { vendor: { hours: [] , location: {}, description: '', name: '' } } };
 function vendorHelper(state = initialVendorState, action) {
@@ -242,49 +243,49 @@ function vendorHelper(state = initialVendorState, action) {
   }
 }
 
-let initialUserState = { success: false, user: {} }
-function user (state = initialUserState, action){
+// let initialUserState = { success: false, user: {} }
+// function user (state = initialUserState, action){
+//
+//   switch(action.type){
+//
+//     case NavActionTypes.GET_USER:
+//       initialUserState = {
+//       ...state,
+//       success: true,
+//       user: action.user,
+//       currentLocation: action.location
+//      };
+//
+//       return initialUserState;
+//       // return {
+//       //   ...state,
+//       //   success: true,
+//       //   user: action.user
+//       // }
+//       break;
+//
+//     default:
+//       return initialUserState;
+//       break;
+//   }
+// }
 
-  switch(action.type){
-
-    case NavActionTypes.GET_USER:
-      initialUserState = {
-      ...state,
-      success: true,
-      user: action.user,
-      currentLocation: action.location
-     };
-
-      return initialUserState;
-      // return {
-      //   ...state,
-      //   success: true,
-      //   user: action.user
-      // }
-      break;
-
-    default:
-      return initialUserState;
-      break;
-  }
-}
-
-let initialLocationState = { latitude: '', longitude: ''}
-function location(state = initialLocationState, action) {
-
-  switch(action.type) {
-
-    case NavActionTypes.UPDATE_USER_LOCATION:
-      initialLocationState = {
-        latitude: action.latitude,
-        longitude: action.longitude
-      }
-      return initialLocationState;
-
-    default:
-      return initialLocationState;
-  }
-}
+// let initialLocationState = { latitude: '', longitude: ''}
+// function location(state = initialLocationState, action) {
+//
+//   switch(action.type) {
+//
+//     case NavActionTypes.UPDATE_USER_LOCATION:
+//       initialLocationState = {
+//         latitude: action.latitude,
+//         longitude: action.longitude
+//       }
+//       return initialLocationState;
+//
+//     default:
+//       return initialLocationState;
+//   }
+// }
 
 let initialRouteState = { route: 'Home' }
 function initialRoute(state = initialRouteState, action) {
@@ -298,25 +299,25 @@ function initialRoute(state = initialRouteState, action) {
   }
 }
 
-let initialLoadingState = { loading: true }
-function loading(state = initialLoadingState, action) {
-  switch(action.type) {
-    case 'FINISH_LOADING':
-      return {
-        ...state,
-        loading: false
-      }
-      break;
-    case 'START_LOADING':
-      return {
-        ...state,
-        loading: true
-      }
-      break;
-    default:
-      return state;
-  }
-}
+// let initialLoadingState = { loading: true }
+// function loading(state = initialLoadingState, action) {
+//   switch(action.type) {
+//     case 'FINISH_LOADING':
+//       return {
+//         ...state,
+//         loading: false
+//       }
+//       break;
+//     case 'START_LOADING':
+//       return {
+//         ...state,
+//         loading: true
+//       }
+//       break;
+//     default:
+//       return state;
+//   }
+// }
 
 // export function setUser (data) {
 //   return Object.assign({type: 'Login_Complete', user: data});
@@ -324,13 +325,13 @@ function loading(state = initialLoadingState, action) {
 
 const NavReducer = combineReducers({
   nav,
-  auth,
-  modal,
-  vendorHelper,
-  user,
-  location,
+  // auth,
+  // modal,
+  // vendorHelper,
+  // user,
+  // location,
   initialRoute,
-  loading
+  // loading
 });
 
-export default NavReducer;
+// export default NavReducer;

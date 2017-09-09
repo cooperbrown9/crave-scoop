@@ -5,6 +5,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { connect } from 'react-redux';
 import NavReducer from './redux-nav/nav-reducer.js';
 import AppNavigatorWithState from './redux-nav/app-navigator.js';
+import MainReducer from './reducers/main-reducer.js';
 import thunk from 'redux-thunk';
 import Expo from 'expo';
 import { Font } from 'expo';
@@ -14,7 +15,7 @@ import * as Keys from './local-storage/keys.js';
 
 export default class App extends React.Component {
 
-  store = createStore(NavReducer, applyMiddleware(thunk));
+  store = createStore(MainReducer, applyMiddleware(thunk));
 
   async checkForID() {
     const userID = await AsyncStorage.getItem(Keys.USER_ID);

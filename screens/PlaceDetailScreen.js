@@ -82,7 +82,6 @@ class PlaceDetailScreen extends React.Component {
     //  let model = { name: item.name, description: item.description };
 
      this.props.dispatch({type: 'VendorItemModal', model: { name: item.name, description: item.description }});
-
      this.setState({vendorItemModalPresented: true});
    }
  }
@@ -242,7 +241,7 @@ const styles = StyleSheet.create({
 
 var mapStateToProps = (state) => {
   return {
-    model: state.nav.routes[state.nav.index].params.model,
+    model: state.nav.model,
     user: state.auth.user
   }
 }

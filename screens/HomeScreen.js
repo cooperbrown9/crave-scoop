@@ -331,7 +331,7 @@ var mapStateToProps = (state) => {
   return {
     navigator: state.nav,
     isLoggedIn: state.auth.isLoggedIn,
-    user: state.user.user,
+    // user: state.user.user,
     _user: state.auth,
     initialLoading: state.loading.loading
 
