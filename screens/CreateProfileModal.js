@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity,
   Image, TextInput, AsyncStorage, Dimensions,
   ActivityIndicator, Alert
@@ -7,12 +7,11 @@ import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors.js';
 import UserID from '../test-user/user.js';
 import axios from 'react-native-axios';
-import CustomNavBar from '../ui-elements/custom-nav-bar';
 import * as Keys from '../local-storage/keys.js';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
 import { connect } from 'react-redux';
 
-class CreateProfileModal extends React.Component {
+class CreateProfileModal extends Component {
   state = {
     name: '',
     passwordVisible: true,
@@ -26,7 +25,8 @@ class CreateProfileModal extends React.Component {
     dismissFunc: React.PropTypes.func,
     getUser: React.PropTypes.func,
     sendStatus: React.PropTypes.func,
-    createAndDismiss: React.PropTypes.func
+    createAndDismiss: React.PropTypes.func,
+    createUser: React.PropTypes.func
   }
 
   componentWillUnmount() {
@@ -35,31 +35,34 @@ class CreateProfileModal extends React.Component {
 
   createUser() {
     this.setState({ loading: true });
-    axios.put('https://crave-scoop.herokuapp.com/create-user/' + this.state.name + '/' + this.state.email + '/' + this.state.zipcode + '/' + this.state.password + '/' + 'null' + '/' + 'null'  )
-      .then((response) => {
-        debugger;
-        axios.get('https://crave-scoop.herokuapp.com/get-user/' + response.data).then(async(user) => {
-          await AsyncStorage.setItem(Keys.USER_ID, user.data._id);
-
-          this.props.createAndDismiss(true, user.data);
-        }).catch((error) => {
-          debugger;
-          this.errorOnCreate();
-        })
-      }).catch(() => {
-        debugger;
-        this.errorOnCreate();
-      });
+    this.props.createUser(this.state.name, this.state.email, this.state.password, 'null', 'null');
+    //
+    // return;
+    // axios.put('https://crave-scoop.herokuapp.com/create-user/' + this.state.name + '/' + this.state.email + '/' + this.state.zipcode + '/' + this.state.password + '/' + 'null' + '/' + 'null'  )
+    //   .then((response) => {
+    //     debugger;
+    //     axios.get('https://crave-scoop.herokuapp.com/get-user/' + response.data).then(async(user) => {
+    //       await AsyncStorage.setItem(Keys.USER_ID, user.data._id);
+    //
+    //       this.props.createAndDismiss(true, user.data);
+    //     }).catch((error) => {
+    //       debugger;
+    //       this.errorOnCreate();
+    //     })
+    //   }).catch(() => {
+    //     debugger;
+    //     this.errorOnCreate();
+    //   });
   }
 
   errorOnCreate() {
-    this.setState({loading: false}, () => {
-      this.props.createAndDismiss(false);
+    this.setState({ loading: false }, () => {
+      // this.props.createAndDismiss(false);
     });
   }
 
   passwordVisible = () => {
-    this.setState({passwordVisible: !this.state.passwordVisible});
+    this.setState({ passwordVisible: !this.state.passwordVisible });
   }
 
   render () {
@@ -67,10 +70,6 @@ class CreateProfileModal extends React.Component {
     const frame = Dimensions.get('window');
     return(
         <View style={styles.container}>
-          <CustomNavBar
-            title={''}
-            leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/close.png')}/>}
-            leftOnPress={this.props.dismissFunc}/>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Create Account</Text>
           </View>

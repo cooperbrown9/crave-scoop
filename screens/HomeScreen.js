@@ -96,31 +96,52 @@ class HomeScreen extends React.Component {
     });
   }
 
-  getUserHelper(id) {
+  getUserHelper(sessionID, userID) {
     return function(dispatch) {
-      return axios.get('https://crave-scoop.herokuapp.com/get-user/' + id).then(
+      return axios.get('https://crave-scoop.herokuapp.com/user/' + sessionID + '/' + userID).then(
         response => {
-          // dispatch({type: NavActionTypes.GET_USER, user: response.data});
+          debugger;
           dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
-      }).then(() => {
-        dispatch({ type: 'FINISH_LOADING' });
-        dispatch({type: NavActionTypes.NAVIGATE_PLACES});
+          dispatch({ type: 'FINISH_LOADING' });
+          dispatch({type: NavActionTypes.NAVIGATE_PLACES});
       }).catch(error => {
+        debugger;
         console.log(error);
-      })
+        dispatch({ type: 'FINISH_LOADING' });
+        Alert.alert('Couldnt make your account at this time');
+      });
     }
   }
 
-  async createUser(name, email, zip, password, token, facebookID) {
-    // name, email, zip, pw, toke, fbid
-    axios.put('https://crave-scoop.herokuapp.com/create-user/' + name + '/' + email + '/' + zip + '/' + password + '/' + token + '/' + facebookID).then((response) => {
-
-    // await axios.put('https://crave-scoop.herokuapp.com/add-user/' + firstname + '/' + lastname + '/' + location + '/' + facebookID + '/' + facebookToken + '/' + email).then((response) => {
-      AsyncStorage.setItem(Keys.USER_ID, response.data, () => {
-        this.getUser();
-      })
+  getUserLegit(sessionID, userID) {
+    axios.get('https://crave-scoop.herokuapp.com/user/' + sessionID + '/' + userID).then(response => {
+      debugger;
+      AsyncStorage.setItem(Keys.USER_ID, userID, () => {
+        AsyncStorage.setItem(Keys.SESSION_ID, sessionID, () => {
+          this.setState({ profilePresented: false, loginFormPresented: false });
+          this.props.dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
+          this.props.dispatch({ type: 'FINISH_LOADING' });
+          this.props.dispatch({type: NavActionTypes.NAVIGATE_PLACES});
+        });
+      });
     }).catch(error => {
       console.log(error);
+      this.setState({ profilePresented: false, loginFormPresented: false });
+      this.props.dispatch({ type: 'FINISH_LOADING' });
+      Alert.alert('Couldnt make your account at this time');
+    });
+  }
+
+  createUser(name, email, password, token, facebookID) {
+    console.log('TOKEN:', token);
+    var data = { name: name, email: email, password: password, facebookID: facebookID };
+    axios.post('https://crave-scoop.herokuapp.com/register', data).then((response) => {
+      this.getUserLegit(response.data.sessionId, response.data.userId);
+    }).catch(e => {
+      console.log(e);
+      Alert.alert('That email is already in use!');
+      this.props.dispatch({ type: 'FINISH_LOADING' });
+      this.setState({ profilePresented: false, loginFormPresented: false });
     });
   }
 
@@ -134,6 +155,15 @@ class HomeScreen extends React.Component {
         case 'success':
 
           const fbProfile = await axios.get('https://graph.facebook.com/me?access_token=' + response.token);
+
+          let fbName = fbProfile.data.name.split(' ');
+          const fbPic = await fetch('https://graph.facebook.com/v2.10/' + fbProfile.data.id + '/picture?access_token=' + response.token);
+
+          this.createUser(fbName[0], 'null2ggggg', 'null', response.token, fbProfile.data.id);
+          return;
+          break;
+          // this.createUser()
+          // --------------------------
 
           const res = await axios.get('https://crave-scoop.herokuapp.com/login-fb/' + fbProfile.data.id);
           if(res.status == 200) {
@@ -156,6 +186,7 @@ class HomeScreen extends React.Component {
 
           return response;
         case 'cancel':
+        this.props.dispatch({ type: 'FINISH_LOADING' });
           return null;
         default:
           console.log('bruuuuh');
@@ -165,7 +196,10 @@ class HomeScreen extends React.Component {
   }
 
   _createProfileModalPresented = (status, user) => {
-    debugger;
+
+    this.setState({ profilePresented: true});
+
+    return;
     if(this.state.profilePresented === false){
       this.setState({ profilePresented: true });
     } else if(this.state.profilePresented === true){
@@ -193,6 +227,7 @@ class HomeScreen extends React.Component {
     this.setState({ loginFormPresented: false });
   }
 
+  // FIXME
   _handleLogin = (email, pw) => {
     console.log('try login');
     axios.get('https://crave-scoop.herokuapp.com/login/' + email + '/' + pw).then(response => {
@@ -227,7 +262,7 @@ class HomeScreen extends React.Component {
         <Image style={styles.backgroundImage} source={require('../assets/images/icecream-background.png')} >
         <View style={styles.mainContainer} >
           <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} >
-              <CreateProfileModal dismissFunc={this._dismissCreateProfile.bind(this)} createAndDismiss={this._createProfileModalPresented.bind(this)} />
+              <CreateProfileModal dismissFunc={this._dismissCreateProfile.bind(this)} createUser={this.createUser.bind(this)} />
           </Modal>
 
           <Modal animationType={'slide'} transparent={false} visible={this.state.loginFormPresented} >
@@ -258,7 +293,7 @@ class HomeScreen extends React.Component {
           </View>
 
           {this.props.initialLoading ?
-          <View style={{position: 'absolute', top: 0, left: 0,height: height, width: width, backgroundColor: 'white' }}>
+          <View style={{position: 'absolute', top: -32, left: -32,right:-32,bottom:-32, backgroundColor: 'white' }}>
             <ActivityIndicator animating={this.props.initialLoading} size='large' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
           </View>
           : null }

@@ -9,6 +9,7 @@ export const FACEBOOK_ID = '@fb_id:key';
 export const PICTURE = '@profile_picture:key';
 export const FACEBOOK_PROFILE_ID = '@fb_profile_id:key';
 export const FACEBOOK_TOKEN = '@fb_token:key';
+export const SESSION_ID = '@session_id:key';
 
 export function resetKeys(callback) {
   AsyncStorage.removeItem(USER_ID, () => {

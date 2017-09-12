@@ -46,6 +46,40 @@ export default class App extends React.Component {
     }
   }
 
+  async checkLoginStatus() {
+    const userID = await AsyncStorage.getItem(Keys.USER_ID);
+    const sessionID = await AsyncStorage.getItem(Keys.SESSION_ID);
+    console.log('APP.JS', userID, sessionID);
+
+    if (!userID || !sessionID) {
+      this.store.dispatch({ type: 'FINISH_LOADING' });
+      return;
+    } else {
+      await axios.get('https://crave-scoop.herokuapp.com/verify-session/' + sessionID + '/' + userID).then(async(response) => {
+        await this.getUserData(sessionID, userID);
+      }).catch(e => {
+        Keys.resetKeys(() => {
+          console.log(e);
+          this.store.dispatch({ type: 'FINISH_LOADING' });
+          this.store.dispatch({ type: 'START_HOME' });
+        })
+      })
+    }
+  }
+
+  async getUserData(sessionID, userID) {
+    await axios.get('https://crave-scoop.herokuapp.com/user/' + sessionID + '/' + userID).then(response => {
+      this.store.dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
+      this.store.dispatch({ type: 'START_PLACES' });
+    }).catch(e => {
+      Keys.resetKeys(() => {
+        console.log(e);
+        this.store.dispatch({ type: 'FINISH_LOADING' });
+        this.store.dispatch({ type: 'START_HOME' });
+      })
+    })
+  }
+
   async componentDidMount() {
     await Font.loadAsync({
       'varela-regular': require('./assets/fonts/Varela-Regular.ttf'),
@@ -54,7 +88,7 @@ export default class App extends React.Component {
     // Keys.resetKeys(await this.checkForID().bind(this));
       // Keys.resetKeys(() => {this.store.dispatch({type:'START_HOME'})});
     // await AsyncStorage.setItem(Keys.USER_ID, 'jhjksgf');
-    await this.checkForID();
+    await this.checkLoginStatus(); // checkLoginStatus();
 
   }
 
