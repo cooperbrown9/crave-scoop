@@ -34,7 +34,7 @@ class VendorItemModal extends React.Component {
 
             <View style={styles.infoContainer} >
 
-              <TouchableOpacity onPress={this._onPress} >
+              <TouchableOpacity onPress={this._onPress} style={{marginTop: 10}}>
                 <Text style={styles.infoTitle}>{this.props.model.name}</Text>
               </TouchableOpacity>
               <Text style={styles.restaurantDescription}>{this.props.model.description}</Text>
@@ -92,15 +92,16 @@ class VendorItemModal extends React.Component {
     topContainer : {
       flex: 1,
       flexDirection: 'column',
-      justifyContent: 'flex-start',
       alignItems: 'stretch',
     },
     topView_Image: {
-      flex: 1,
+      flex: 2,
+      alignItems: 'center',
+      justifyContent: 'flex-start'
 
     },
     topImage: {
-      height: 180,
+      resizeMode: 'contain'
     },
     navBarLeftButton: {
       height: 16,
@@ -109,10 +110,12 @@ class VendorItemModal extends React.Component {
 
     },
     infoContainer: {
-      flex: 2,
+      flex: 3,
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignItems: 'stretch',
+      backgroundColor: 'white',
+
     },
     infoTitle: {
       fontSize: 20,
