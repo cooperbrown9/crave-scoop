@@ -59,7 +59,6 @@ class PlacesScreen extends React.Component {
 
   componentWillMount() {
     AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
-      console.log('places uid: ', this.props.user);
       this.getVendors();
       await this._getLocationAsync();
     });
@@ -72,37 +71,22 @@ class PlacesScreen extends React.Component {
     if (status !== 'granted') {
       Alert.alert('You wont be able to query vendors based off your location');
     } else {
-      this.setState({canAccessLocation: true});
+      this.setState({ canAccessLocation: true });
       let location = await Location.getCurrentPositionAsync({});
-      this.setState({latitude: location.coords.latitude, longitude: location.coords.longitude});
-      this.props.dispatch({type: NavActionTypes.UPDATE_USER_LOCATION, latitude: location.coords.latitude, longitude: location.coords.longitude});
+      this.setState({ latitude: location.coords.latitude, longitude: location.coords.longitude });
+      this.props.dispatch({ type: NavActionTypes.UPDATE_USER_LOCATION, latitude: location.coords.latitude, longitude: location.coords.longitude });
     }
   }
-
-
-  getUser(userID, location) {
-    return function (dispatch) {
-      return axios.get('https://crave-scoop.herokuapp.com/get-user/' + userID).then(
-        user => dispatch({type: 'LOGIN_SUCCESSFUL', user: user.data })
-      ).catch(error => {
-        // if (error.response.status != '200') {
-          Alert.alert('Couldnt load your profile, going back to Login Page');
-          setTimeout(() => { this.props.navigation.goBack()}, 2000);
-        // }
-      })
-    }
-  }
-
 
   getVendors = () => {
-    this.setState({loading: true});
+    this.setState({ loading: true });
     axios.get('https://crave-scoop.herokuapp.com/get-all-vendors-for-places/')
     .then(response => {
-      this.setState({restaurants: response.data, vendorsLoaded: true, loading: false, filterPresented: false});
+      this.setState({ restaurants: response.data, vendorsLoaded: true, loading: false, filterPresented: false });
     }).catch((error) => {
       console.log(error);
       Alert.alert('Couldnt load vendors at this time');
-      this.setState({vendorsLoaded: false, loading: false});
+      this.setState({ vendorsLoaded: false, loading: false });
     });
   }
 
@@ -111,16 +95,22 @@ class PlacesScreen extends React.Component {
       <VendorView model={{ id: item._id, name: item.name }} onTouch={this.handleKeyPress(item).bind(this)} key={item._id} />
     )
   }
+
   _navigateHome = () => {
-    this.props.navigation.dispatch({type: 'Home'});
+    axios.get('https://crave-scoop.herokuapp.com/logout').then(response => {
+      this.props.navigation.dispatch({ type: 'Home' });
+    }).catch(e => {
+      console.log(e);
+      Alert.alert('Couldnt log out at this time');
+    })
   }
 
   _dismissSearchModal = (vendor) => {
-    this.setState({searchPresented: false});
+    this.setState({ searchPresented: false });
     return;
 
     axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + vendor._id).then(
-      response => this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
+      response => this.props.navigation.dispatch({ type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data })
     ).then(() => {
       this.setState({searchPresented: false});
     }).catch(error => {
@@ -161,10 +151,8 @@ class PlacesScreen extends React.Component {
           this.setState({restaurants: response.data, profilePresented: false, filterPresented: false});
         }).catch(e => {
           this.setState({ filterPresented: false, profilePresented: false });
-          console.log('yuh its lit');
         }).finally((status) => {
           this.setState({filterPresented: false, profilePresented: false });
-          console.log('yuh its lit');
         })
       }
     });
@@ -198,7 +186,6 @@ class PlacesScreen extends React.Component {
 
   _searchKeyword = (word) => {
     axios.get('https://crave-scoop.herokuapp.com/search-vendors-test/' + word).then(response => {
-      console.log(response);
       this.setState({restaurants: response.data, searchPresented: false});
     }).catch(error => {
       console.log(error);
@@ -215,9 +202,9 @@ class PlacesScreen extends React.Component {
 
       axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + item._id).then(
         response => {
-          this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data});
+          this.props.navigation.dispatch({ type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data });
         }
-      )
+      );
     }
   }
 
@@ -424,10 +411,7 @@ const styles = StyleSheet.create({
   }
 });
 
-// export default PlacesScreen;
 var mapStateToProps = (state) => {
-  console.log(state);
-  // debugger;
   return {
     navigator: state.nav,
     user: state.auth.user,

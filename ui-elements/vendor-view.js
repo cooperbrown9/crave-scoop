@@ -28,7 +28,7 @@ export default class VendorView extends Component {
   componentDidMount() {
     for(let i = 0; i < this.props.userFavorites.length; i++) {
       if(this.props.userFavorites[i].vendor_id === this.props.model.id) {
-        this.setState({active: true, wasLiked: true});
+        this.setState({ active: true, wasLiked: true });
       }
     }
   }
@@ -46,16 +46,15 @@ export default class VendorView extends Component {
   }
 
   _iconSwitch = () => {
-
     AsyncStorage.getItem(Keys.USER_ID, (err, id) => {
-      console.log(id);
-      let url = this.state.active ? 'https://crave-scoop.herokuapp.com/remove-favorite/' + id + '/' + this.props.model.id : 'https://crave-scoop.herokuapp.com/add-favorite/' + id + '/' + this.props.model.id;
-      console.log(url);
-      axios.put(url).then(response => {
-        this.state.active = !this.state.active;
-        this.setState(this.state);
-      }).catch(error => {
-        console.log('couldnt update like count');
+      AsyncStorage.getItem(Keys.SESSION_ID, (err, sessionID) => {
+        let url = this.state.active ? 'https://crave-scoop.herokuapp.com/unfavorite/' + sessionID + '/' + id + '/' + this.props.model.id : 'https://crave-scoop.herokuapp.com/favorite/' + sessionID + '/' + id + '/' + this.props.model.id;
+        axios.post(url).then(response => {
+          this.state.active = !this.state.active;
+          this.setState(this.state);
+        }).catch(error => {
+          console.log('couldnt update like count');
+        });
       });
     });
   }

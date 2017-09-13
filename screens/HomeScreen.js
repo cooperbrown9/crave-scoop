@@ -115,7 +115,6 @@ class HomeScreen extends React.Component {
 
   getUserLegit(sessionID, userID) {
     axios.get('https://crave-scoop.herokuapp.com/user/' + sessionID + '/' + userID).then(response => {
-      debugger;
       AsyncStorage.setItem(Keys.USER_ID, userID, () => {
         AsyncStorage.setItem(Keys.SESSION_ID, sessionID, () => {
           this.setState({ profilePresented: false, loginFormPresented: false });
@@ -132,16 +131,30 @@ class HomeScreen extends React.Component {
     });
   }
 
-  createUser(name, email, password, token, facebookID) {
+  // TODO make createUserFacebook function
+  createUserFB(name, email, password, token, facebookID) {
     console.log('TOKEN:', token);
     var data = { name: name, email: email, password: password, facebookID: facebookID };
-    axios.post('https://crave-scoop.herokuapp.com/register', data).then((response) => {
+    axios.post('https://crave-scoop.herokuapp.com/register-fb', data).then((response) => {
       this.getUserLegit(response.data.sessionId, response.data.userId);
     }).catch(e => {
       console.log(e);
       Alert.alert('That email is already in use!');
       this.props.dispatch({ type: 'FINISH_LOADING' });
       this.setState({ profilePresented: false, loginFormPresented: false });
+    });
+  }
+
+  createUser(name, email, password, facebookID) {
+    var data = { name: name, email: email, password: password, facebookID: facebookID };
+    axios.post('https://crave-scoop.herokuapp.com/register', data).then((response) => {
+      this.getUserLegit(response.data.sessionId, response.data.userId);
+    }).catch(e => {
+      console.log(e);
+      this.props.dispatch({ type: 'FINISH_LOADING' });
+      this.setState({ profilePresented: false, loginFormPresented: false });
+      setTimeout(() => {Alert.alert('That email is already in use!')}, 1000);
+
     });
   }
 
@@ -158,9 +171,16 @@ class HomeScreen extends React.Component {
 
           let fbName = fbProfile.data.name.split(' ');
           const fbPic = await fetch('https://graph.facebook.com/v2.10/' + fbProfile.data.id + '/picture?access_token=' + response.token);
-
-          this.createUser(fbName[0], 'null2ggggg', 'null', response.token, fbProfile.data.id);
-          return;
+          const fbEmail = await fetch('https://graph.facebook.com/v2.10/me?fields=email&access_token=' + response.token)
+            .then(async(r) => r.json()
+          ).then(data => {
+            console.log(data);
+            this.createUserFB(fbName[0], data.email, 'fb', response.token, data.id);
+          });
+          break;
+          // debugger;
+          // this.createUser(fbName[0], 'null2ggggg', 'null', response.token, fbProfile.data.id);
+          // return;
           break;
           // this.createUser()
           // --------------------------
