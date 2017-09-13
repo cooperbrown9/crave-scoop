@@ -17,8 +17,10 @@ export function resetKeys(callback) {
       AsyncStorage.removeItem(PICTURE, () => {
         AsyncStorage.removeItem(FACEBOOK_PROFILE_ID, () => {
           AsyncStorage.removeItem(FACEBOOK_TOKEN, () => {
-            console.log('keys resey');
-            callback();
+            AsyncStorage.removeItem(SESSION_ID, () => {
+              console.log('keys resey');
+              callback();
+            })
           });
         });
       });

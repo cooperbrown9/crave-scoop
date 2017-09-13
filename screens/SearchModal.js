@@ -31,7 +31,7 @@ class SearchModal extends React.Component {
 
   queryVendors = (str) => {
     this.setState({loading: true});
-    axios.get('https://crave-scoop.herokuapp.com/search-vendors/' + str).then(response => {
+    axios.get('https://crave-scoop.herokuapp.com/search-vendors-test/' + str).then(response => {
       console.log(response.data);
       this.setState({vendors: response.data, loading: false});
     }).catch(error => {
@@ -57,7 +57,7 @@ class SearchModal extends React.Component {
           <View style={styles.searchBarContainer} >
 
             <Image style={styles.searchIcon} source={require('../assets/images/search.png')} />
-            <TextInput style={styles.searchBar} placeholder='Search...' editable={true} onChangeText={(text)=> {this._onChangeText(text)} }/>
+            <TextInput style={styles.searchBar} autoCapitalize={'none'} placeholder='Search...' editable={true} onChangeText={(text)=> {this._onChangeText(text)} }/>
 
             <TouchableOpacity onPress={() => this.props.dismissModal()}>
               <Image style={styles.resetIcon} source={require('../assets/images/close.png')} />
