@@ -12,7 +12,7 @@ import {
   Modal,
   AsyncStorage,
   Alert,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import { connect } from 'react-redux';
 import RoundButton from '../ui-elements/round-button.js';
@@ -30,7 +30,7 @@ import LoginForm from './LoginForm.js';
 class HomeScreen extends React.Component {
 
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
   state = {
@@ -289,19 +289,14 @@ class HomeScreen extends React.Component {
           <View style={styles.buttonContainer} >
             <RoundButton title='Continue with Facebook' onPress={this.signInFacebook} bgColor='white' textColor='#f29e39' style={{flex:1}} />
             <RoundButton title='Create Account' onPress={this._createProfileModalPresented} style={{flex:1}}/>
-            <TouchableOpacity onPress={this.presentLoginForm} >
-              <Text style={styles.loginText}>Already have an account? Login!</Text>
+            <TouchableOpacity onPress={this.presentLoginForm}  >
+              <Text style={styles.loginText}>Already have an account? <Text style={{textDecorationLine: 'underline'}}>Login</Text></Text>
+
             </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={() => { console.log('hittas') }} >
             <Text style={styles.termsText}>Terms of Service</Text>
           </TouchableOpacity>
-          <View>
-            <Text backgroundColor="black">
-
-            </Text>
-          </View>
-
           {this.props.initialLoading ?
           <View style={{position: 'absolute', top: -32, left: -32,right:-32,bottom:-32, backgroundColor: 'white' }}>
             <ActivityIndicator animating={this.props.initialLoading} size='large' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
@@ -314,6 +309,7 @@ class HomeScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+
   mainContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -337,6 +333,12 @@ const styles = StyleSheet.create({
   image: {
     tintColor: 'white',
   },
+  underline: {
+    marginBottom: 32,
+    height: 2,
+    marginLeft: 32,
+    backgroundColor: 'gray'
+  },
   welcomeMessage: {
     fontSize: 32,
     textAlign: 'left',
@@ -352,7 +354,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'stretch',
     marginTop: 200,
-    width: 340
+    width: Dimensions.get('window').width - (Dimensions.get('window').width/10),
   },
   termsText: {
     color: 'white',
@@ -364,7 +366,9 @@ const styles = StyleSheet.create({
   loginText: {
     fontSize: 16,
     textAlign: 'center',
-    color: 'white'
+    color: 'white',
+
+
   },
   heart: {
     height: 16,

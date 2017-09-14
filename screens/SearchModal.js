@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, ActivityIndicator, Image, StyleSheet, Dimensions } from 'react-native';
-import { SearchBar } from 'react-native-elements';
 import axios from 'react-native-axios';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors.js';
