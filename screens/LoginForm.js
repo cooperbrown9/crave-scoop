@@ -78,10 +78,9 @@ const styles = StyleSheet.create({
     marginBottom: 48
   },
   loginHeader: {
-    height: 64,
-    marginTop: 64,
-    alignItems: 'stretch',
-    backgroundColor: 'transparent'
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   loginHeaderText: {
     fontSize: 24,

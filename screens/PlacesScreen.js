@@ -12,7 +12,6 @@ import {
   Modal,
   ActivityIndicator,
   AsyncStorage,
-  Animated,
   Alert,
   Dimensions
 } from 'react-native';
@@ -56,14 +55,17 @@ class PlacesScreen extends React.Component {
   }
 
   componentDidMount() {
-
-  }
-
-  componentWillMount() {
     AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
       this.getVendors();
       await this._getLocationAsync();
     });
+  }
+
+  componentWillMount() {
+    // AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
+    //   this.getVendors();
+    //   await this._getLocationAsync();
+    // });
   }
 
   _getLocationAsync = async() => {
@@ -93,6 +95,13 @@ class PlacesScreen extends React.Component {
     });
   }
 
+  scrollableNodeError(e) {
+    if(!e.message.includes('Cannot read property')) {
+      console.log(e);
+
+    }
+  }
+
   renderVendorView(item) {
     return(
       <VendorView model={{ id: item._id, name: item.name }} onTouch={this.handleKeyPress(item).bind(this)} key={item._id} />
@@ -119,8 +128,8 @@ class PlacesScreen extends React.Component {
 
   _dismissSearchModal = (vendor) => {
     this.setState({ searchPresented: false });
-    return;
-
+    // return;
+    debugger;
     axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + vendor._id).then(
       response => this.props.navigation.dispatch({ type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data })
     ).then(() => {
@@ -284,16 +293,18 @@ class PlacesScreen extends React.Component {
             <FilterModal resetVendors={this._resetVendors.bind(this)} renderNearby={this._loadNearbyVendors.bind(this)} renderFavorites={this._loadFavorites.bind(this)} filterFunc={this._dismissAndFilter.bind(this)} dismissFunc={this._dismissFilterModal.bind(this)} />
         </Modal>
 
-        {(!this.state.empty) ?
+
          <ScrollView style={styles.scrollContainer}>
+           {(!this.state.empty) ?
           <View style={styles.itemContainer} >
             {this.state.restaurants.map(model => <VendorView updateUser={this._updateUser.bind(this)} userFavorites={this.props.user.favorites} model={{id: model._id, name: model.name, like_count: model.like_count, image: model.background_image}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
           </View>
+          : this._emptyQueryState()
+          }
          </ScrollView>
-         : this._emptyQueryState()
-       }
+
         <View style={styles.button}>
-          <RoundButton title='FILTERS' onPress={this._presentFilterModal} bgColor={Colors.DARK_BLUE} borderOn={false}/>
+          {/* <RoundButton title='FILTERS' onPress={this._presentFilterModal} bgColor={Colors.DARK_BLUE} borderOn={false}/> */ }
         </View>
 
 
@@ -441,6 +452,7 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = (state) => {
+  debugger;
   return {
     navigator: state.nav,
     user: state.auth.user,

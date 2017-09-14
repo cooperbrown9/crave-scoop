@@ -271,7 +271,7 @@ class HomeScreen extends React.Component {
     return (
         <Image style={styles.backgroundImage} source={require('../assets/images/icecream-background.png')} >
         <View style={styles.mainContainer} >
-          <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} >
+          <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} onRequestClose={() => {console.log('modal')}} >
               <CreateProfileModal dismissFunc={this._dismissCreateProfile.bind(this)} createUser={this.createUser.bind(this)} />
           </Modal>
 
@@ -287,10 +287,10 @@ class HomeScreen extends React.Component {
           </View> */}
 
           <View style={styles.buttonContainer} >
-            <RoundButton title='Continue with Facebook' onPress={this.signInFacebook} bgColor='white' textColor='#f29e39' style={{flex:1}} />
-            <RoundButton title='Create Account' onPress={this._createProfileModalPresented} style={{flex:1}}/>
+            <RoundButton title='Continue with Facebook' onPress={this.signInFacebook} bgColor='white' textColor='#f29e39' style={{ flex:1 }} />
+            <RoundButton title='Create Account' onPress={this._createProfileModalPresented} style={{ flex:1 }}/>
             <TouchableOpacity onPress={this.presentLoginForm}  >
-              <Text style={styles.loginText}>Already have an account? <Text style={{textDecorationLine: 'underline'}}>Login</Text></Text>
+              <Text style={styles.loginText}>Already have an account? <Text style={{ textDecorationLine: 'underline' }}>Login</Text></Text>
 
             </TouchableOpacity>
           </View>
@@ -298,7 +298,7 @@ class HomeScreen extends React.Component {
             <Text style={styles.termsText}>Terms of Service</Text>
           </TouchableOpacity>
           {this.props.initialLoading ?
-          <View style={{position: 'absolute', top: -32, left: -32,right:-32,bottom:-32, backgroundColor: 'white' }}>
+          <View style={{ position: 'absolute', top: -32, left: -32,right:-32,bottom:-32, backgroundColor: 'white' }}>
             <ActivityIndicator animating={this.props.initialLoading} size='large' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
           </View>
           : null }

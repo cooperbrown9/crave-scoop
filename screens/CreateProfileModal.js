@@ -53,6 +53,7 @@ class CreateProfileModal extends Component {
     const frame = Dimensions.get('window');
     return(
         <View style={styles.container}>
+          
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Create Account</Text>
           </View>
