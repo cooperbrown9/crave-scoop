@@ -12,6 +12,7 @@ import { Font } from 'expo';
 import axios from 'react-native-axios';
 import * as NavActionTypes from './action-types/navigation-action-types.js';
 import * as Keys from './local-storage/keys.js';
+import * as URLS from './constants/url';
 
 export default class App extends React.Component {
 
@@ -55,7 +56,7 @@ export default class App extends React.Component {
       this.store.dispatch({ type: 'FINISH_LOADING' });
       return;
     } else {
-      await axios.get('https://crave-scoop.herokuapp.com/verify-session/' + sessionID + '/' + userID).then(async(response) => {
+      await axios.get(URLS.verifySession(sessionID, userID)).then(async(response) => {
         await this.getUserData(sessionID, userID);
       }).catch(e => {
         Keys.resetKeys(() => {
@@ -68,7 +69,7 @@ export default class App extends React.Component {
   }
 
   async getUserData(sessionID, userID) {
-    await axios.get('https://crave-scoop.herokuapp.com/user/' + sessionID + '/' + userID).then(response => {
+    await axios.get(URLS.getUser(sessionID, userID)).then(response => {
       this.store.dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
       this.store.dispatch({ type: 'START_PLACES' });
     }).catch(e => {
@@ -89,7 +90,6 @@ export default class App extends React.Component {
       // Keys.resetKeys(() => {this.store.dispatch({type:'START_HOME'})});
     // await AsyncStorage.setItem(Keys.USER_ID, 'jhjksgf');
     await this.checkLoginStatus(); // checkLoginStatus();
-
   }
 
   render() {

@@ -36,23 +36,6 @@ class CreateProfileModal extends Component {
   createUser() {
     this.setState({ loading: true });
     this.props.createUser(this.state.name, this.state.email, this.state.password, 'null', 'null');
-    //
-    // return;
-    // axios.put('https://crave-scoop.herokuapp.com/create-user/' + this.state.name + '/' + this.state.email + '/' + this.state.zipcode + '/' + this.state.password + '/' + 'null' + '/' + 'null'  )
-    //   .then((response) => {
-    //     debugger;
-    //     axios.get('https://crave-scoop.herokuapp.com/get-user/' + response.data).then(async(user) => {
-    //       await AsyncStorage.setItem(Keys.USER_ID, user.data._id);
-    //
-    //       this.props.createAndDismiss(true, user.data);
-    //     }).catch((error) => {
-    //       debugger;
-    //       this.errorOnCreate();
-    //     })
-    //   }).catch(() => {
-    //     debugger;
-    //     this.errorOnCreate();
-    //   });
   }
 
   errorOnCreate() {

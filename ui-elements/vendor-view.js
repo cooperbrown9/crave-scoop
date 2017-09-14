@@ -17,7 +17,8 @@ export default class VendorView extends Component {
   static propTypes = {
     onTouch: React.PropTypes.func,
     model: React.PropTypes.object,
-    userFavorites: React.PropTypes.array
+    userFavorites: React.PropTypes.array,
+    updateUser: React.PropTypes.func
   }
 
   state = {
@@ -52,6 +53,7 @@ export default class VendorView extends Component {
         axios.post(url).then(response => {
           this.state.active = !this.state.active;
           this.setState(this.state);
+          this.props.updateUser();
         }).catch(error => {
           console.log('couldnt update like count');
         });
@@ -66,7 +68,7 @@ export default class VendorView extends Component {
     return(
       <View style={styles.container} >
 
-        <TouchableOpacity onPress={this.props.onTouch} style={styles.wrapper}>
+        <TouchableOpacity onPress={this.props.onTouch} activeOpacity={0.7} style={styles.wrapper}>
           <View style={styles.imageContainer} >
             <Image style={styles.image} source={{uri: this.props.model.image}} />
           </View>

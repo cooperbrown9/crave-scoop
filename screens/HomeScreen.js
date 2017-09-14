@@ -19,7 +19,6 @@ import RoundButton from '../ui-elements/round-button.js';
 import FilterModal from './FilterModal.js';
 import CreateProfileModal from './CreateProfileModal.js';
 import LinearGradient from 'react-native-linear-gradient';
-import { GetUserByID } from '../rest/rest.js';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
 import axios from 'react-native-axios';
 import * as REST from '../rest/rest.js';
@@ -43,16 +42,7 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     // FB App ID 1565112886889636 SECRET: 7765eef11057d8b0e03799d070856e73
-    // Keys.setDummyKeys(() => {
-    //   console.log('skeddit');
-    //   this.checkLogin();
-    // });
-    // setTimeout(() => { this.setState({initialLoading: false}) }, 2000);
-    // Keys.resetKeys(() => {
-      console.log('skeddit');
-      // this.checkLogin();
-    // });
-
+    console.log('skeddit');
   }
 
   checkLogin = () => {
@@ -69,13 +59,10 @@ class HomeScreen extends React.Component {
 
 
   componentWillMount() {
-    // this.getUser();
-    // this.checkLogin();
-
   }
 
   componentWillUnmount() {
-    this.setState({initialLoading: false});
+    this.setState({ initialLoading: false });
     this.props.dispatch({ type: 'FINISH_LOADING' });
   }
 
@@ -131,7 +118,6 @@ class HomeScreen extends React.Component {
     });
   }
 
-  // TODO make createUserFacebook function
   createUserFB(name, email, password, token, facebookID) {
     console.log('TOKEN:', token);
     var data = { name: name, email: email, password: password, facebookID: facebookID };
@@ -250,18 +236,22 @@ class HomeScreen extends React.Component {
   // FIXME
   _handleLogin = (email, pw) => {
     console.log('try login');
-    axios.get('https://crave-scoop.herokuapp.com/login/' + email + '/' + pw).then(response => {
+    let data = { email: email, password: pw };
+    axios.post('https://crave-scoop.herokuapp.com/auth/login', data).then(response => {
       console.log(response);
-      AsyncStorage.setItem(Keys.USER_ID, response.data._id, () => {
-        this.setState({ loginFormPresented: false });
-        this.props.dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
-        this.props.dispatch({ type: 'START_PLACES' });
+      debugger;
+      AsyncStorage.setItem(Keys.USER_ID, response.data.userId, () => {
+        AsyncStorage.setItem(Keys.SESSION_ID, response.data.sessionId, () => {
+          this.setState({ loginFormPresented: false });
+          this.props.dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
+          this.props.dispatch({ type: 'START_PLACES' });
+        });
       });
-
     }).catch(error => {
       console.log(error.response);
-      Alert.alert('Nah');
-    })
+      this.setState({ loginFormPresented: false });
+      setTimeout(() => { Alert.alert('Could not login at this time')}, 1000);
+    });
   }
 
   _goToPlacesScreen = () => {
@@ -303,7 +293,7 @@ class HomeScreen extends React.Component {
               <Text style={styles.loginText}>Already have an account? Login!</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={this.presentLoginForm}>
+          <TouchableOpacity onPress={() => { console.log('hittas') }} >
             <Text style={styles.termsText}>Terms of Service</Text>
           </TouchableOpacity>
           <View>

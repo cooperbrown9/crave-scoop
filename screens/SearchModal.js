@@ -70,10 +70,10 @@ class SearchModal extends React.Component {
           <View style={this.vendorView} >
             {(this.state.vendors.length > 0) ? this.state.vendors.map(vendor =>
               <TouchableOpacity onPress={() => this.props.vendorPicked(vendor)} key={vendor.name}>
-                <Text style={{backgroundColor:'transparent', fontSize: 28, fontWeight: 'bold', height: 32, textAlign: 'center', marginTop: 32}} color='green'>{vendor.name}</Text>
+                <Text style={styles.resultsText} color='green'>{vendor.name}</Text>
               </TouchableOpacity>
             ) :
-          <Text style={{backgroundColor:'transparent', fontSize: 28, fontWeight: 'bold', height: 32, textAlign: 'center', marginTop: 32}} color='green'>No Results</Text>}
+          <Text style={styles.noResultsText} color='green'>No Results</Text>}
           </View>
         </View>
 
@@ -115,6 +115,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around'
+  },
+  resultsText: {
+    backgroundColor: 'transparent',
+    fontFamily: 'varela-round',
+    fontSize: 28,
+    height: 32,
+    marginTop: 32,
+    marginLeft: 32,
+    textAlign: 'left',
+    fontWeight: 'bold'
+  },
+  noResultsText: {
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'varela-round',
+    fontSize: 28,
+    height: 32,
+    marginTop: 32
   },
   searchBar: {
     flex: 1,
