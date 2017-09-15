@@ -70,7 +70,6 @@ export default class App extends React.Component {
 
   async getUserData(sessionID, userID) {
     await axios.get(URLS.getUser(sessionID, userID)).then(response => {
-      debugger;
       this.store.dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
       this.store.dispatch({ type: 'START_PLACES' });
     }).catch(e => {

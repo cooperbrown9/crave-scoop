@@ -304,7 +304,7 @@ class PlacesScreen extends React.Component {
          </ScrollView>
 
         <View style={styles.button}>
-          {/* <RoundButton title='FILTERS' onPress={this._presentFilterModal} bgColor={Colors.DARK_BLUE} borderOn={false}/> */ }
+          <RoundButton title='FILTERS' onPress={this._presentFilterModal} bgColor={Colors.DARK_BLUE} borderOn={false} />
         </View>
 
 
@@ -452,7 +452,6 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = (state) => {
-  debugger;
   return {
     navigator: state.nav,
     user: state.auth.user,
