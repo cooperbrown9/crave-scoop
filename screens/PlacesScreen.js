@@ -58,6 +58,8 @@ class PlacesScreen extends React.Component {
     AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
       this.getVendors();
       await this._getLocationAsync();
+      // this.setState({ empty: true });
+
     });
   }
 
@@ -128,8 +130,8 @@ class PlacesScreen extends React.Component {
 
   _dismissSearchModal = (vendor) => {
     this.setState({ searchPresented: false });
-    // return;
-    debugger;
+    return;
+
     axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + vendor._id).then(
       response => this.props.navigation.dispatch({ type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data })
     ).then(() => {
@@ -259,6 +261,7 @@ class PlacesScreen extends React.Component {
     return (
 
       <View style={styles.container } >
+
         {(!this.state.vendorsLoaded) ?
           <View style={{position: 'absolute', left:0,right:0,top:0,bottom:0,zIndex:4,backgroundColor:'white'}}>
             <TouchableOpacity style={{ left:0, right:0, top:120 }} onPress={this.getVendors}>
