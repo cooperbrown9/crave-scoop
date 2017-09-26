@@ -12,7 +12,6 @@ import {
   Modal,
   ActivityIndicator,
   AsyncStorage,
-  Animated,
   Alert,
   Dimensions
 } from 'react-native';
@@ -28,6 +27,7 @@ import FilterModal from './FilterModal.js';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
 import SearchModal from './SearchModal.js';
 import * as Keys from '../local-storage/keys.js';
+
 import { Constants, Location, Permissions } from 'expo';
 
 
@@ -50,19 +50,24 @@ class PlacesScreen extends React.Component {
     searchPresented: false,
     canAccessLocation: false,
     animatedValue: 1,
-    vendorsLoaded: true
+    vendorsLoaded: true,
+    empty: false
   }
 
   componentDidMount() {
-
-  }
-
-  componentWillMount() {
     AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
       this.getVendors();
       await this._getLocationAsync();
-    });
+      // this.setState({ empty: true });
 
+    });
+  }
+
+  componentWillMount() {
+    // AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
+    //   this.getVendors();
+    //   await this._getLocationAsync();
+    // });
   }
 
   _getLocationAsync = async() => {
@@ -84,10 +89,19 @@ class PlacesScreen extends React.Component {
     .then(response => {
       this.setState({ restaurants: response.data, vendorsLoaded: true, loading: false, filterPresented: false });
     }).catch((error) => {
-      console.log(error);
-      Alert.alert('Couldnt load vendors at this time');
-      this.setState({ vendorsLoaded: false, loading: false });
+      if(!error.message.includes('Cannot read property')) {
+        console.log(error);
+        Alert.alert('Couldnt load vendors at this time');
+        this.setState({ vendorsLoaded: false, loading: false });
+      }
     });
+  }
+
+  scrollableNodeError(e) {
+    if(!e.message.includes('Cannot read property')) {
+      console.log(e);
+
+    }
   }
 
   renderVendorView(item) {
@@ -103,6 +117,15 @@ class PlacesScreen extends React.Component {
       console.log(e);
       Alert.alert('Couldnt log out at this time');
     })
+  }
+
+  _emptyQueryState = (query) => {
+    this.setState({ empty: true });
+    return (
+      <View style={{ flex: 1 }}>
+        <Text>No {query}</Text>
+      </View>
+    );
   }
 
   _dismissSearchModal = (vendor) => {
@@ -165,12 +188,12 @@ class PlacesScreen extends React.Component {
         if(response.data.length < 1) {
           Alert.alert('Oops!', 'There are no restaurants close to you!', [ {text: 'OK!', onPress: () => this.setState({filterPresented: false})} ]);
         } else {
-          this.setState({restaurants: response.data, filterPresented: false});
+          this.setState({ restaurants: response.data, filterPresented: false });
         }
       });
     } else {
       Alert.alert('We cant access your location!');
-      this.setState({filterPresented: false});
+      this.setState({ filterPresented: false });
     }
   }
 
@@ -190,6 +213,31 @@ class PlacesScreen extends React.Component {
     }).catch(error => {
       console.log(error);
     })
+  }
+
+  // after vendor is liked/unliked, stores user on redux so that
+  // place detail favorites is updated
+  _updateUser = () => {
+    AsyncStorage.getItem(Keys.USER_ID, (e1, userID) => {
+      if (e1) {
+        this.props.dispatch({ type: 'START_HOME' });
+      }
+      AsyncStorage.getItem(Keys.SESSION_ID, (e2, sessionID) => {
+        if(e2) {
+          this.props.dispatch({ type: 'START_HOME' });
+        } else {
+          axios.get('https://crave-scoop.herokuapp.com/user/' + sessionID + '/' + userID).then(response => {
+            this.props.dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
+          }).catch(e => {
+            Keys.resetKeys(() => {
+              console.log(e);
+              this.props.dispatch({ type: 'FINISH_LOADING' });
+              this.props.dispatch({ type: 'START_HOME' });
+            });
+          });
+        }
+      });
+    });
   }
 
   _resetVendors = () => {
@@ -213,6 +261,7 @@ class PlacesScreen extends React.Component {
     return (
 
       <View style={styles.container } >
+
         {(!this.state.vendorsLoaded) ?
           <View style={{position: 'absolute', left:0,right:0,top:0,bottom:0,zIndex:4,backgroundColor:'white'}}>
             <TouchableOpacity style={{ left:0, right:0, top:120 }} onPress={this.getVendors}>
@@ -243,27 +292,24 @@ class PlacesScreen extends React.Component {
           <SearchModal searchWord={this._searchKeyword.bind(this)} dismissModal={this._dismissSearchModal.bind(this)} vendorPicked={this._vendorPickedSearch.bind(this)} />
         </Modal>
 
-        <Modal animationType={"slide"} transparent={false} visible={this.state.filterPresented} >
+        <Modal animationType={'slide'} transparent={false} visible={this.state.filterPresented} >
             <FilterModal resetVendors={this._resetVendors.bind(this)} renderNearby={this._loadNearbyVendors.bind(this)} renderFavorites={this._loadFavorites.bind(this)} filterFunc={this._dismissAndFilter.bind(this)} dismissFunc={this._dismissFilterModal.bind(this)} />
         </Modal>
 
-      {/*  <Animated.ScrollView style={styles.scrollContainer} scrollEventThrottle={1} onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: 100 } } }],
-            { useNativeDriver: true }
-          )}
-        ></Animated.ScrollView>*/}
+
          <ScrollView style={styles.scrollContainer}>
-
+           {(!this.state.empty) ?
           <View style={styles.itemContainer} >
-            {this.state.restaurants.map(model => <VendorView userFavorites={this.props.user.favorites} model={{id: model._id, name: model.name, like_count: model.like_count, image: model.background_image}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
+            {this.state.restaurants.map(model => <VendorView updateUser={this._updateUser.bind(this)} userFavorites={this.props.user.favorites} model={{id: model._id, name: model.name, like_count: model.like_count, image: model.background_image}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
           </View>
-
-
+          : this._emptyQueryState()
+          }
          </ScrollView>
 
         <View style={styles.button}>
-          <RoundButton title='Filters' onPress={this._presentFilterModal} bgColor={Colors.DARK_BLUE} borderOn={false}/>
+          <RoundButton title='FILTERS' onPress={this._presentFilterModal} bgColor={Colors.DARK_BLUE} borderOn={false} />
         </View>
+
 
         {(this.state.loading) ?
         <View style={{position: 'absolute', top: 0, left: 0,height: height, width: width, backgroundColor: 'white', zIndex: 4 }}>
@@ -273,12 +319,9 @@ class PlacesScreen extends React.Component {
 
       </View>
 
-
-
     );
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {

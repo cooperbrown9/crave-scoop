@@ -39,7 +39,7 @@ class PlaceDetailScreen extends React.Component {
    if(this.props.user.favorites !== undefined) {
      for(let i = 0; i < this.props.user.favorites.length; i++) {
        if (this.props.user.favorites[i].vendor_id == this.props.model._id) {
-        this.setState({isFavorite: true});
+        this.setState({ isFavorite: true });
         break;
        }
      }
