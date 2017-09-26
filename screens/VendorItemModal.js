@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, StatusBar, View, ScrollView, Text, Image, TouchableOpacity } from 'react-native';
 import * as Colors from '../colors/colors.js';
 import CustomNavBar from '../ui-elements/custom-nav-bar.js';
 import axios from 'react-native-axios';
@@ -20,7 +20,9 @@ class VendorItemModal extends React.Component {
 
     return (
       <View style={styles.container} >
-
+        <StatusBar
+          barStyle="dark-content"
+        />
         <CustomNavBar
           title={''}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/back-arrow.png')}/>}

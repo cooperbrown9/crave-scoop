@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors';
 
@@ -18,6 +18,9 @@ class LoginForm extends React.Component {
   render() {
     return (
       <View style={styles.container} >
+        <StatusBar
+          barStyle="dark-content"
+        />
 
         <TouchableOpacity style={{ position: 'absolute', left: 0, top: 64, marginLeft: 24, zIndex: 4 }} onPress={this.props.dismissFunc} >
           <Image style={{ height: 24, width: 24 }} source={require('../assets/images/close.png')} />

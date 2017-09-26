@@ -13,7 +13,8 @@ import {
   ActivityIndicator,
   AsyncStorage,
   Alert,
-  Dimensions
+  Dimensions,
+  StatusBar
 } from 'react-native';
 import axios from 'react-native-axios';
 import VendorView from '../ui-elements/vendor-view.js';
@@ -261,6 +262,9 @@ class PlacesScreen extends React.Component {
     return (
 
       <View style={styles.container } >
+        <StatusBar
+          barStyle="dark-content"
+        />
 
         {(!this.state.vendorsLoaded) ?
           <View style={{position: 'absolute', left:0,right:0,top:0,bottom:0,zIndex:4,backgroundColor:'white'}}>

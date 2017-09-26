@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity,
+import { StyleSheet, StatusBar, View, Text, TouchableOpacity,
   Image, TextInput, AsyncStorage, Dimensions,
   ActivityIndicator, Alert
 } from 'react-native';
@@ -53,7 +53,10 @@ class CreateProfileModal extends Component {
     const frame = Dimensions.get('window');
     return(
         <View style={styles.container}>
-          
+          <StatusBar
+            barStyle="dark-content"
+          />
+
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Create Account</Text>
           </View>

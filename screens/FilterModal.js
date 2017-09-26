@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, Image, TouchableOpacity, ActivityIndicator, Dimensions } from 'react-native';
+import { StyleSheet, View, StatusBar, ScrollView, Text, Image, TouchableOpacity, ActivityIndicator, Dimensions } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors.js';
@@ -90,7 +90,9 @@ class FilterModal extends React.Component {
 
     return(
       <View style={styles.container} >
-
+        <StatusBar
+          barStyle="dark-content"
+        />
         <CustomNavBar
           title={'FILTER'}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/close.png')}/>}

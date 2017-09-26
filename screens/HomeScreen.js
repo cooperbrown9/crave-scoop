@@ -12,6 +12,7 @@ import {
   Modal,
   AsyncStorage,
   Alert,
+  StatusBar,
   ActivityIndicator,
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -270,6 +271,9 @@ class HomeScreen extends React.Component {
     let halfHeight = height / 2;
     return (
         <Image style={styles.backgroundImage} source={require('../assets/images/icecream-background.png')} >
+          <StatusBar
+            barStyle="dark-content"
+          />
         <View style={styles.mainContainer} >
           <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} onRequestClose={() => {console.log('modal')}} >
               <CreateProfileModal dismissFunc={this._dismissCreateProfile.bind(this)} createUser={this.createUser.bind(this)} />

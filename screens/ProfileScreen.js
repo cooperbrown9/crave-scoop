@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, AsyncStorage, ActivityIndicator, Dimensions } from 'react-native';
+import { StyleSheet, StatusBar, View, Text, TouchableOpacity, Image, AsyncStorage, ActivityIndicator, Dimensions } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors.js';import UserID from '../test-user/user.js';
 import axios from 'react-native-axios';
@@ -100,6 +100,9 @@ export default class ProfileScreen extends React.Component {
     const frame = Dimensions.get('window');
     return(
       <View style={styles.container} >
+        <StatusBar
+          barStyle="dark-content"
+        />
         <CustomNavBar
           title={'SETTINGS'}
           leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/close.png')}/>}
