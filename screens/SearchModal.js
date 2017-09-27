@@ -67,7 +67,7 @@ class SearchModal extends React.Component {
 
           </View>
 
-          <View style={{height: 64}}></View>
+          <View style={{height: 1}}></View>
 
           <View style={this.vendorView} >
             {(this.state.vendors.length > 0) ? this.state.vendors.map(vendor =>
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     marginLeft: 32,
     marginRight: 64,
-    marginTop: 32,
+    marginTop: 16,
     backgroundColor: 'red'
   },
   searchBarContainer: {
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   resultsText: {
     backgroundColor: 'transparent',
     fontFamily: 'varela-round',
-    fontSize: 28,
+    fontSize: 22,
     height: 32,
     marginTop: 32,
     marginLeft: 32,
