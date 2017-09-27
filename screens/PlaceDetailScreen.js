@@ -151,7 +151,7 @@ class PlaceDetailScreen extends React.Component {
 
        <View style={styles.menuContainer} >
 
-         {this.props.model.products.map(product => <PlaceDetailItem name={product.name} description={product.description} onPress={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
+         {this.props.model.products.map(product => <PlaceDetailItem name={product.name} description={product.description} image={product.image} onPress={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
 
        </View>
 
@@ -244,6 +244,8 @@ const styles = StyleSheet.create({
 
 
 var mapStateToProps = (state) => {
+  console.log(state);
+  debugger;
   return {
     model: state.nav.model,
     user: state.auth.user

@@ -5,7 +5,7 @@ const PlaceDetailItem = (props) => (
 
   <TouchableOpacity onPress={props.onPress} style={styles.container} >
       <View style={styles.imageContainer} >
-        <Image style={styles.image} source={require('../assets/images/cupcake-photo.png')} />
+        <Image style={styles.image} source={{ uri: props.image }} />
       </View>
 
       <View style={styles.itemInfoContainer} >
@@ -25,6 +25,7 @@ const PlaceDetailItem = (props) => (
 PlaceDetailItem.propTypes = {
   name: React.PropTypes.string.isRequired,
   description: React.PropTypes.string.isRequired,
+  image: React.PropTypes.string,
   onPress: React.PropTypes.func
 };
 
