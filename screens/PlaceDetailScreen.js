@@ -4,6 +4,7 @@ import {
   ScrollView,
   View,
   Text,
+  StatusBar,
   Image,
   TouchableOpacity,
   Modal } from 'react-native';
@@ -94,6 +95,9 @@ class PlaceDetailScreen extends React.Component {
    return(
      !this.state.goingBack ? (
      <ScrollView style={styles.ScrollContainer} >
+       <StatusBar
+         barStyle="dark-content"
+       />
        <CustomNavBar
          title={''}
          leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/back-arrow.png')}/>}

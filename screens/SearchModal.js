@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, ActivityIndicator, Image, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StatusBar, TextInput, Button, TouchableOpacity, ActivityIndicator, Image, StyleSheet, Dimensions } from 'react-native';
 import axios from 'react-native-axios';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors.js';
@@ -50,6 +50,9 @@ class SearchModal extends React.Component {
     const frame = Dimensions.get('window');
     return (
       <View style={styles.container}>
+        <StatusBar
+          barStyle="dark-content"
+        />
 
         <View style={styles.container}>
 
