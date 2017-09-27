@@ -64,10 +64,7 @@ class PlacesScreen extends React.Component {
   }
 
   componentWillMount() {
-    // AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
-    //   this.getVendors();
-    //   await this._getLocationAsync();
-    // });
+
   }
 
   _getLocationAsync = async() => {
@@ -174,6 +171,7 @@ class PlacesScreen extends React.Component {
           this.setState({restaurants: response.data, profilePresented: false, filterPresented: false});
         }).catch(e => {
           this.setState({ filterPresented: false, profilePresented: false });
+          setTimeout(() => { Alert.alert('You do not have any favorites!')}, 1000);
         }).finally((status) => {
           this.setState({filterPresented: false, profilePresented: false });
         })
@@ -298,7 +296,7 @@ class PlacesScreen extends React.Component {
 
 
          <ScrollView style={styles.scrollContainer}>
-           {(!this.state.empty) ?
+          {(!this.state.empty) ?
           <View style={styles.itemContainer} >
             {this.state.restaurants.map(model => <VendorView updateUser={this._updateUser.bind(this)} userFavorites={this.props.user.favorites} model={{id: model._id, name: model.name, like_count: model.like_count, image: model.background_image}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
           </View>
