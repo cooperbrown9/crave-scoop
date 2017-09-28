@@ -80,17 +80,13 @@ class PlaceDetailScreen extends React.Component {
    return function(e) {
      e.preventDefault();
 
-    //  let model = { name: item.name, description: item.description };
-
-     this.props.dispatch({type: 'VendorItemModal', model: { name: item.name, description: item.description }});
-     this.setState({vendorItemModalPresented: true});
+     this.props.dispatch({type: 'VendorItemModal', model: { name: item.name, description: item.description, image: item.image }});
+     this.setState({ vendorItemModalPresented: true });
    }
  }
 
  render() {
-
    var icon = this.state.isFavorite ? require('../assets/images/black-heart.png') : require('../assets/images/heart.png');
-
 
    return(
      !this.state.goingBack ? (
@@ -244,8 +240,6 @@ const styles = StyleSheet.create({
 
 
 var mapStateToProps = (state) => {
-  console.log(state);
-  debugger;
   return {
     model: state.nav.model,
     user: state.auth.user

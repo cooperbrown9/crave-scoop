@@ -302,7 +302,15 @@ class PlacesScreen extends React.Component {
          <ScrollView style={styles.scrollContainer}>
           {(!this.state.empty) ?
           <View style={styles.itemContainer} >
-            {this.state.restaurants.map(model => <VendorView updateUser={this._updateUser.bind(this)} userFavorites={this.props.user.favorites} model={{id: model._id, name: model.name, like_count: model.like_count, image: model.background_image}} onTouch={this.handleKeyPress(model).bind(this)} key={model._id}/>)}
+            {this.state.restaurants.map(model =>
+              <VendorView
+              updateUser={this._updateUser.bind(this)}
+              userFavorites={this.props.user.favorites}
+              model={{id: model._id, name: model.name, like_count: model.like_count, image: model.background_image}}
+              onTouch={this.handleKeyPress(model).bind(this)}
+              key={model._id}
+              />
+          )}
           </View>
           : this._emptyQueryState()
           }

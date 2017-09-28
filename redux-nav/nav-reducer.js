@@ -113,7 +113,7 @@ export default function nav (state = tempNavState, action) {
       );
       let newProducts = [];
       for(let i = 0; i < action.model.products.length; i++) {
-        if(action.model.products[i].instock === 'yes') {
+        if(action.model.products[i].instock === 'available') {
           newProducts.push(action.model.products[i]);
         }
       }
