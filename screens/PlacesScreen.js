@@ -55,12 +55,12 @@ class PlacesScreen extends React.Component {
     empty: false
   }
 
-  componentDidMount() {
-    AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
-      this.getVendors();
+  async componentDidMount() {
+    await AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
       await this._getLocationAsync();
-      // this.setState({ empty: true });
 
+      // get vendors within 50 mile radius
+      await this.getInitialVendors(50);
     });
   }
 
@@ -78,6 +78,20 @@ class PlacesScreen extends React.Component {
       let location = await Location.getCurrentPositionAsync({});
       this.setState({ latitude: location.coords.latitude, longitude: location.coords.longitude });
       this.props.dispatch({ type: NavActionTypes.UPDATE_USER_LOCATION, latitude: location.coords.latitude, longitude: location.coords.longitude });
+    }
+  }
+
+  getInitialVendors = async(radius) => {
+    // this.setState({ canAccessLocation: false });
+    if(this.state.canAccessLocation) {
+      axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + this.props.location.longitude + '/' + radius).then(response => {
+        this.setState({ restaurants: response.data, vendorsLoaded: true, loading: false });
+      }).catch(error => {
+        Alert.alert('Could not load vendors in your area');
+      });
+    } else {
+      // Alert.alert('We need to get your location to load vendors near you');
+      await setTimeout(async() => { await this._getLocationAsync(); this.getInitialVendors() }, 2000);
     }
   }
 
@@ -183,7 +197,7 @@ class PlacesScreen extends React.Component {
   _loadNearbyVendors() {
     if (this.state.canAccessLocation) {
       let lon = this.props.location.longitude.toString();
-      axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + lon.replace('-','') + '/' + '10').then((response) => {
+      axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + lon + '/' + '10').then((response) => {
         if(response.data.length < 1) {
           Alert.alert('Oops!', 'There are no restaurants close to you!', [ {text: 'OK!', onPress: () => this.setState({filterPresented: false})} ]);
         } else {
