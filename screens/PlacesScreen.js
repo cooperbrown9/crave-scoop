@@ -52,11 +52,12 @@ class PlacesScreen extends React.Component {
     canAccessLocation: false,
     animatedValue: 1,
     vendorsLoaded: true,
-    empty: false
+    empty: false,
+    emptyStateText: 'You do not have any favorites!'
   }
 
-  async componentDidMount() {
-    await AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
+  componentDidMount() {
+    AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
       await this._getLocationAsync();
 
       // get vendors within 50 mile radius
@@ -82,10 +83,11 @@ class PlacesScreen extends React.Component {
   }
 
   getInitialVendors = async(radius) => {
-    // this.setState({ canAccessLocation: false });
+    // this forces the views not to render
+    this.setState({ empty: false, loading: true });
     if(this.state.canAccessLocation) {
       axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + this.props.location.longitude + '/' + radius).then(response => {
-        this.setState({ restaurants: response.data, vendorsLoaded: true, loading: false });
+        this.setState({ restaurants: response.data, vendorsLoaded: true, loading: false, empty: false });
       }).catch(error => {
         Alert.alert('Could not load vendors in your area');
       });
@@ -93,6 +95,11 @@ class PlacesScreen extends React.Component {
       // Alert.alert('We need to get your location to load vendors near you');
       await setTimeout(async() => { await this._getLocationAsync(); this.getInitialVendors() }, 2000);
     }
+  }
+
+  reloadVendors() {
+    this.setState({ vendorsLoaded: false, loading: true });
+    this.getInitialVendors(50);
   }
 
   getVendors = () => {
@@ -132,10 +139,10 @@ class PlacesScreen extends React.Component {
   }
 
   _emptyQueryState = (query) => {
-    this.setState({ empty: true });
+    this.setState({ empty: true, profilePresented: false, filterPresented: false});
     return (
-      <View style={{ flex: 1 }}>
-        <Text>No {query}</Text>
+      <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
+        <Text style={{ flex: 1, fontFamily: 'varela-round', fontSize: 28, alignItems: 'center', justifyContent:'center' }}>No {query}</Text>
       </View>
     );
   }
@@ -183,10 +190,21 @@ class PlacesScreen extends React.Component {
         console.log(err);
       } else {
         axios.get('https://crave-scoop.herokuapp.com/get-favorite-vendors/' + result).then((response) => {
-          this.setState({restaurants: response.data, profilePresented: false, filterPresented: false});
+          // remove null vendors, in case they were deleted in db
+          let vendors = [];
+          for(let i = 0; i < response.data.length; i++) {
+            if(response.data[i] !== null) {
+              vendors.push(response.data[i]);
+            }
+          }
+          if(vendors.length < 1) {
+            this.setState({ empty: true, emptyStateText: 'You do not have any favorite restaurants!' });
+          } else {
+            this.setState({restaurants: vendors, profilePresented: false, filterPresented: false});
+          }
         }).catch(e => {
           this.setState({ filterPresented: false, profilePresented: false });
-          setTimeout(() => { Alert.alert('You do not have any favorites!')}, 1000);
+          // setTimeout(() => { Alert.alert('You do not have any favorites!')}, 1000);
         }).finally((status) => {
           this.setState({filterPresented: false, profilePresented: false });
         })
@@ -197,9 +215,12 @@ class PlacesScreen extends React.Component {
   _loadNearbyVendors() {
     if (this.state.canAccessLocation) {
       let lon = this.props.location.longitude.toString();
-      axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + lon + '/' + '10').then((response) => {
+
+      // last parameter is the radius u want restaurants within
+      axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + lon + '/' + '0').then((response) => {
         if(response.data.length < 1) {
-          Alert.alert('Oops!', 'There are no restaurants close to you!', [ {text: 'OK!', onPress: () => this.setState({filterPresented: false})} ]);
+          this.setState({ empty: true, emptyStateText: 'There are no nearby restaurants!', filterPresented: false, profilePresented: false });
+          // Alert.alert('Oops!', 'There are no restaurants close to you!', [ {text: 'OK!', onPress: () => this.setState({filterPresented: false})} ]);
         } else {
           this.setState({ restaurants: response.data, filterPresented: false });
         }
@@ -263,6 +284,14 @@ class PlacesScreen extends React.Component {
 
       axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + item._id).then(
         response => {
+
+          let newProducts = [];
+          for(let i = 0; i < response.data.products.length; i++) {
+            if(response.data.products[i].instock === 'available') {
+              newProducts.push(response.data.products[i]);
+            }
+          }
+          response.data.products = newProducts;
           this.props.navigation.dispatch({ type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data });
         }
       );
@@ -326,13 +355,21 @@ class PlacesScreen extends React.Component {
               />
           )}
           </View>
-          : this._emptyQueryState()
+          : (<View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ flex: 1, fontFamily: 'varela-round', fontSize: 28, alignItems: 'center', justifyContent:'center', marginTop: 64 }}>{this.state.emptyStateText}</Text>
+            <View style={{ position: 'absolute', top: 180, left: 0, right: 0, marginLeft: 32, marginRight: 32 }}>
+              <RoundButton title='RELOAD' onPress={() => {this.getInitialVendors(50)}} bgColor={Colors.DARK_BLUE} borderOn={false} />
+            </View>
+        </View>)
           }
          </ScrollView>
 
+         {!this.state.empty ?
         <View style={styles.button}>
           <RoundButton title='FILTERS' onPress={this._presentFilterModal} bgColor={Colors.DARK_BLUE} borderOn={false} />
         </View>
+        : null
+      }
 
 
         {(this.state.loading) ?

@@ -33,10 +33,25 @@ class PlaceDetailScreen extends React.Component {
    vendorItemModalPresented: false,
    vendorLoaded: false,
    goingBack: false,
-   isFavorite: false
+   isFavorite: false,
+   products: []
  };
 
  componentDidMount() {
+  //  if(this.props.user.favorites !== undefined) {
+  //    for(let i = 0; i < this.props.user.favorites.length; i++) {
+  //      if (this.props.user.favorites[i].vendor_id == this.props.model._id) {
+  //        debugger;
+  //       this.setState({ isFavorite: true, products: this.props.model.products });
+  //       break;
+  //      }
+  //    }
+  //  }
+   setInterval(() => {this.loadMenuItems() }, 3000);
+ }
+
+ componentWillMount() {
+   this.setState({ products: this.props.model.products });
    if(this.props.user.favorites !== undefined) {
      for(let i = 0; i < this.props.user.favorites.length; i++) {
        if (this.props.user.favorites[i].vendor_id == this.props.model._id) {
@@ -45,6 +60,19 @@ class PlaceDetailScreen extends React.Component {
        }
      }
    }
+ }
+
+ loadMenuItems = () => {
+   axios.get('https://crave-scoop.herokuapp.com/get-vendor-products/' + this.props.model._id).then(response => {
+     // pulls out all available products and stores in newProducts
+     let newProducts = [];
+     for(let i = 0; i < response.data.length; i++) {
+       if(response.data[i].instock === 'available') {
+         newProducts.push(response.data[i]);
+       }
+     }
+     this.setState({ products: newProducts });
+   });
  }
 
  toggleLike = () => {
@@ -147,7 +175,7 @@ class PlaceDetailScreen extends React.Component {
 
        <View style={styles.menuContainer} >
 
-         {this.props.model.products.map(product => <PlaceDetailItem name={product.name} description={product.description} image={product.image} onPress={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
+         {this.state.products.map(product => <PlaceDetailItem name={product.name} description={product.description} image={product.image} onPress={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
 
        </View>
 

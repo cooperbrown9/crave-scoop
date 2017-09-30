@@ -279,7 +279,6 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = state => {
-  debugger;
   return {
     currentVendors: state.vendorHelper.vendors,
     user: state.auth.user
