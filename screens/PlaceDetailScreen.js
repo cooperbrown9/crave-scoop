@@ -47,7 +47,13 @@ class PlaceDetailScreen extends React.Component {
   //      }
   //    }
   //  }
-   setInterval(() => {this.loadMenuItems() }, 3000);
+
+  // setTimeout(() => {setInterval(() => {this.loadMenuItems()}, 3000)}, 2000);
+
+  // setTimeout(() => {setInterval(() => {this.loadMenuItems()}, 3000)}, 2000);
+  if(this.state.goingBack) {
+    setInterval(() => {this.loadMenuItems() }, 3000);    
+  }
  }
 
  componentWillMount() {
@@ -125,7 +131,7 @@ class PlaceDetailScreen extends React.Component {
        <CustomNavBar
          title={''}
          leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/back-arrow.png')}/>}
-         leftOnPress={() => { this.props.navigation.goBack(); } } />
+         leftOnPress={() => { this.setState({ goingBack: true }); this.props.navigation.goBack(); } } />
 
        <Modal animationType={"slide"} transparent={false} visible={this.state.vendorItemModalPresented} >
 

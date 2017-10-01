@@ -211,7 +211,7 @@ class PlacesScreen extends React.Component {
       }
     });
   }
-
+ 
   _loadNearbyVendors() {
     if (this.state.canAccessLocation) {
       let lon = this.props.location.longitude.toString();
