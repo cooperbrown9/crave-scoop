@@ -5,10 +5,10 @@
     "slug": "crave-scoop",
     "privacy": "public",
     "sdkVersion": "18.0.0",
-    "version": "1.7",
+    "version": "1.7.1",
     "orientation": "portrait",
     "primaryColor": "#cccccc",
-    "icon": "./assets/icons/app-icon.png",
+    "icon": "./assets/icons/dummyicon.png",
     "notification": {
       "icon": "./assets/icons/notification-icon.png",
       "color": "#000000"
