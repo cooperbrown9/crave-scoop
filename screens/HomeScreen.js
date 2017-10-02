@@ -38,7 +38,7 @@ class HomeScreen extends React.Component {
   state = {
     clicked: false,
     profilePresented: false,
-    initialLoading: true,
+    initialLoading: false,
     loginFormPresented: false
   }
 

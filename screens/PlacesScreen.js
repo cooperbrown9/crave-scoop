@@ -44,10 +44,9 @@ class PlacesScreen extends React.Component {
 
   state = {
     restaurants: [],
-    loading: true,
+    loading: false,
     profilePresented: false,
     filterPresented: false,
-    searchOn: false,
     searchPresented: false,
     canAccessLocation: false,
     animatedValue: 1,
@@ -111,7 +110,7 @@ class PlacesScreen extends React.Component {
       if(!error.message.includes('Cannot read property')) {
         console.log(error);
         Alert.alert('Couldnt load vendors at this time');
-        this.setState({ vendorsLoaded: false, loading: false });
+        this.setState({ vendorsLoaded: false, loading: false, empty: true, emptyStateText: 'Could not load vendors' });
       }
     });
   }
@@ -211,7 +210,7 @@ class PlacesScreen extends React.Component {
       }
     });
   }
- 
+
   _loadNearbyVendors() {
     if (this.state.canAccessLocation) {
       let lon = this.props.location.longitude.toString();
