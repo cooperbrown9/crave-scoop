@@ -8,9 +8,9 @@
     "version": "1.8.1",
     "orientation": "portrait",
     "primaryColor": "#cccccc",
-    "icon": "./assets/icons/dummyicon.jpg",
+    "icon": "./assets/icons/app-icon-dummy.png",
     "notification": {
-      "icon": "./assets/icons/dummyicon.jpg",
+      "icon": "./assets/icons/app-icon-dummy.png",
       "color": "#000000"
     },
     "loading": {
