@@ -60,8 +60,8 @@ class PlacesScreen extends React.Component {
     AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
       await this._getLocationAsync();
 
-      // get vendors within 50 mile radius
-      await this.getInitialVendors(50);
+      // get vendors within 100 mile radius
+      await this.getInitialVendors(100);
     });
   }
 
@@ -90,9 +90,14 @@ class PlacesScreen extends React.Component {
     // this.props.location.latitude = 47.59;
     // this.props.location.longitude = -117.406417;
     // debugger;
+    console.log(this.props.location.latitude + ' ' + this.props.location.longitude);
     if(this.state.canAccessLocation) {
       axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + this.props.location.longitude + '/' + radius).then(response => {
-        this.setState({ restaurants: response.data, vendorsLoaded: true, loading: false, empty: false });
+        if(response.data.length < 1) {
+          this.setState({ vendorsLoaded: true, loading: false, empty: true, emptyStateText: 'There are no restaurants close to you!' });
+        } else {
+          this.setState({ restaurants: response.data, vendorsLoaded: true, loading: false, empty: false });
+        }
       }).catch(error => {
         Alert.alert('Could not load vendors in your area');
       });
