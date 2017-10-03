@@ -56,6 +56,7 @@ class PlacesScreen extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({ loading: true });
     AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
       await this._getLocationAsync();
 
@@ -67,6 +68,7 @@ class PlacesScreen extends React.Component {
   componentWillMount() {
 
   }
+  
 
   _getLocationAsync = async() => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -81,9 +83,14 @@ class PlacesScreen extends React.Component {
     }
   }
 
+
   getInitialVendors = async(radius) => {
     // this forces the views not to render
     this.setState({ empty: false, loading: true });
+    this.props.location.latitude = 47.59;
+    this.props.location.longitude = -117.406417;
+    const dumLon = -117.406417;
+    // debugger;
     if(this.state.canAccessLocation) {
       axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + this.props.location.longitude + '/' + radius).then(response => {
         this.setState({ restaurants: response.data, vendorsLoaded: true, loading: false, empty: false });
