@@ -61,7 +61,7 @@ class PlacesScreen extends React.Component {
       await this._getLocationAsync();
 
       // get vendors within 100 mile radius
-      await this.getInitialVendors(100);
+      await this.getInitialVendors(1000);
     });
   }
 
@@ -96,7 +96,21 @@ class PlacesScreen extends React.Component {
         if(response.data.length < 1) {
           this.setState({ vendorsLoaded: true, loading: false, empty: true, emptyStateText: 'There are no restaurants close to you!' });
         } else {
-          this.setState({ restaurants: response.data, vendorsLoaded: true, loading: false, empty: false });
+          for(let i = 0; i < response.data.length - 1; i++) {
+            for(let j = 1; j < response.data.length; j++) {
+              if(response.data[i].distanceFromUser > response.data[j].distanceFromUser) {
+                let temp = response.data[i];
+                response.data[i] = response.data[j];
+                response.data[j] = temp;
+              }
+              if(i === response.data.length - 2 && j === response.data.length - 1) {
+                this.setState({ restaurants: response.data, vendorsLoaded: true, loading: false, empty: false });
+              }
+            }
+
+          }
+          // debugger;
+          // this.setState({ restaurants: response.data, vendorsLoaded: true, loading: false, empty: false });
         }
       }).catch(error => {
         Alert.alert('Could not load vendors in your area');
