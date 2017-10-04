@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, StatusBar, View, Text, TouchableOpacity, Image, AsyncStorage, ActivityIndicator, Dimensions } from 'react-native';
+import { StyleSheet, StatusBar, Platform, View, Text, TouchableOpacity, Image, AsyncStorage, ActivityIndicator, Dimensions } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors.js';import UserID from '../test-user/user.js';
 import axios from 'react-native-axios';
@@ -109,6 +109,7 @@ export default class ProfileScreen extends React.Component {
           leftOnPress={this.props.dismissFunc}
           rightButton={<Text style={styles.navBarRightButton}>Log Out</Text>}
           rightOnPress={() => this.logOutReset()}
+          styles={styles.navBar}
           />
         <View style={styles.infoView} >
           <View style={styles.imageView}>
@@ -207,8 +208,17 @@ const styles = StyleSheet.create({
   },
   navBarRightButton:{
     height: 16,
-    width: 64,
-    marginLeft: 36,
+    ...Platform.select({
+      ios: {
+        width: 64,
+        marginLeft: 36,
+      },
+      android: {
+        width: 100,
+        marginLeft: 36,
+        height:20
+      },
+    }),
     color: 'red',
     fontFamily: 'varela-round'
   },
@@ -237,7 +247,13 @@ const styles = StyleSheet.create({
     marginLeft: 84,
     marginRight: 84
   },
-
+  navBar:{
+    ...Platform.select({
+      android: {
+        marginTop: 0,
+      },
+    }),
+  },
   settingOptionsContainer: {
     flex: 1,
     justifyContent: 'center',
