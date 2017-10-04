@@ -60,8 +60,8 @@ class PlacesScreen extends React.Component {
     AsyncStorage.getItem(Keys.USER_ID, async(err, result) => {
       await this._getLocationAsync();
 
-      // get vendors within 100 mile radius
-      await this.getInitialVendors(1000);
+      // get vendors within 50 mile radius
+      await this.getInitialVendors(50);
     });
   }
 
@@ -89,12 +89,13 @@ class PlacesScreen extends React.Component {
     this.setState({ empty: false, loading: true });
     // this.props.location.latitude = 47.59;
     // this.props.location.longitude = -117.406417;
-    // debugger;
     console.log(this.props.location.latitude + ' ' + this.props.location.longitude);
     if(this.state.canAccessLocation) {
       axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + this.props.location.longitude + '/' + radius).then(response => {
         if(response.data.length < 1) {
-          this.setState({ vendorsLoaded: true, loading: false, empty: true, emptyStateText: 'There are no restaurants close to you!' });
+          this.setState({ vendorsLoaded: true, loading: false, empty: true, emptyStateText: 'There are no restaurants close to you!', filterPresented: false });
+        } else if(response.data.length === 1 || response.data.length === 2) {
+          this.setState({ restaurants: response.data, vendorsLoaded: true, loading: false, empty: false, filterPresented: false })
         } else {
           for(let i = 0; i < response.data.length - 1; i++) {
             for(let j = 1; j < response.data.length; j++) {
@@ -103,11 +104,11 @@ class PlacesScreen extends React.Component {
                 response.data[i] = response.data[j];
                 response.data[j] = temp;
               }
-              if(i === response.data.length - 2 && j === response.data.length - 1) {
-                this.setState({ restaurants: response.data, vendorsLoaded: true, loading: false, empty: false });
-              }
-            }
 
+            }
+            if(i === response.data.length - 2) {
+              this.setState({ restaurants: response.data, vendorsLoaded: true, loading: false, empty: false, filterPresented: false });
+            }
           }
           // debugger;
           // this.setState({ restaurants: response.data, vendorsLoaded: true, loading: false, empty: false });
@@ -241,11 +242,21 @@ class PlacesScreen extends React.Component {
       let lon = this.props.location.longitude.toString();
 
       // last parameter is the radius u want restaurants within
-      axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + lon + '/' + '0').then((response) => {
+      axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + lon + '/' + '1000').then((response) => {
         if(response.data.length < 1) {
           this.setState({ empty: true, emptyStateText: 'There are no nearby restaurants!', filterPresented: false, profilePresented: false });
           // Alert.alert('Oops!', 'There are no restaurants close to you!', [ {text: 'OK!', onPress: () => this.setState({filterPresented: false})} ]);
         } else {
+          for(let i = 0; i < response.data.length - 1; i++) {
+            for(let j = 1; j < response.data.length; j++) {
+              if(response.data[i].distanceFromUser > response.data[j].distanceFromUser) {
+                let temp = response.data[i];
+                response.data[i] = response.data[j];
+                response.data[j] = temp;
+              }
+
+            }
+          }
           this.setState({ restaurants: response.data, filterPresented: false });
         }
       });
@@ -299,7 +310,7 @@ class PlacesScreen extends React.Component {
   }
 
   _resetVendors = () => {
-    this.getVendors();
+    this.getInitialVendors(50);
   }
 
   handleKeyPress(item) {
