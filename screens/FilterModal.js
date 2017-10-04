@@ -37,21 +37,21 @@ class FilterModal extends React.Component {
     }
   }
 
-  _getVendorsNearby() {
-    return function(dispatch) {
-      return axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/47.659195/117.4208805/10').then(
-        vendors => dispatch({type: NavActionTypes.NEARBY, vendors: vendors.data})
-      )
-    }
-  }
+  // _getVendorsNearby() {
+  //   return function(dispatch) {
+  //     return axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/47.659195/117.4208805/10').then(
+  //       vendors => dispatch({type: NavActionTypes.NEARBY, vendors: vendors.data})
+  //     )
+  //   }
+  // }
 
-  _getFavoriteVendors() {
-    return function(dispatch) {
-      return axios.get('https://crave-scoop.herokuapp.com/get-favorite-vendors/59765d2df60c01001198f3b5').then(
-        vendors => dispatch({type: NavActionTypes.FAVORITES, vendors: vendors.data})
-      )
-    }
-  }
+  // _getFavoriteVendors() {
+  //   return function(dispatch) {
+  //     return axios.get('https://crave-scoop.herokuapp.com/get-favorite-vendors/59765d2df60c01001198f3b5').then(
+  //       vendors => dispatch({type: NavActionTypes.FAVORITES, vendors: vendors.data})
+  //     )
+  //   }
+  // }
 
   resetVendors() {
     this.setState({loading: true});

@@ -112,6 +112,7 @@ class CreateProfileModal extends Component {
                 <RoundButton title='Sign Up' onPress={() => this.createUser()} bgColor={Colors.BLUE} color='white' borderOn={false}/>
             </View>
 
+            {/*
             <View style={styles.loginContainer}>
               <Text style={{fontFamily: 'varela-round'}}>Already have an account?</Text>
               <View style={{ borderBottomColor: '#41d9f4', borderBottomWidth: 1, marginTop: 8}}>
@@ -120,7 +121,7 @@ class CreateProfileModal extends Component {
                 </TouchableOpacity>
               </View>
             </View>
-
+            */}
         </View>
 
         {this.state.loading ?

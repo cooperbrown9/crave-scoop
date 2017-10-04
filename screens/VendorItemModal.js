@@ -1,20 +1,23 @@
 import React from 'react';
-import { StyleSheet, StatusBar, View, ScrollView, Text, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, StatusBar, View, ScrollView, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import * as Colors from '../colors/colors.js';
 import CustomNavBar from '../ui-elements/custom-nav-bar.js';
 import axios from 'react-native-axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+var FRAME = Dimensions.get('window');
+
 
 class VendorItemModal extends React.Component {
 
   static propTypes = {
-    dismissFunc: React.PropTypes.func.isRequired
+    dismissFunc: React.PropTypes.func.isRequired,
+    model: React.PropTypes.object
   };
 
- componentDidMount () {
-
- }
+  componentDidMount () {
+    console.log(this.props.model);
+  }
 
   render() {
 
@@ -25,13 +28,13 @@ class VendorItemModal extends React.Component {
         />
         <CustomNavBar
           title={''}
-          leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/back-arrow.png')}/>}
+          leftButton={<Image style={styles.navBarLeftButton} source={require('../assets/images/back-arrow.png')} /> }
           leftOnPress={() => this.props.dismissFunc()} />
 
           <View style={styles.topContainer} >
 
             <View style={styles.topView_Image} >
-              <Image style={styles.topImage} source={require('../assets/images/cake.png')}></Image>
+              <Image style={styles.topImage} source={{ uri: this.props.model.image }} />
             </View>
 
             <View style={styles.infoContainer} >
@@ -51,9 +54,7 @@ class VendorItemModal extends React.Component {
                       </View>
                   )}
               </View>
-
             </View>
-
           </View>
       </View>
     );
@@ -89,7 +90,6 @@ class VendorItemModal extends React.Component {
       width: 16,
       marginLeft: 36,
       tintColor: '#41d9f4'
-
     },
     topContainer : {
       flex: 1,
@@ -97,13 +97,13 @@ class VendorItemModal extends React.Component {
       alignItems: 'stretch',
     },
     topView_Image: {
-      flex: 2,
-      alignItems: 'center',
-      justifyContent: 'flex-start'
-
+      height: 180
     },
     topImage: {
-      resizeMode: 'contain'
+      width: FRAME.Width,
+      height: 180,
+      resizeMode: 'cover'
+
     },
     navBarLeftButton: {
       height: 16,
@@ -155,6 +155,7 @@ class VendorItemModal extends React.Component {
   });
 
   var mapStateToProps = (state) => {
+    console.log(state);
    return {
      model: state.modal.model,
      nutritionFacts: ['dairy free', 'vegan', 'gluten free', 'vegetarian'],

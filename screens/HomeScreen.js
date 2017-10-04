@@ -27,6 +27,7 @@ import Expo from 'expo';
 import * as Keys from '../local-storage/keys.js';
 import PlacesScreen from './PlacesScreen.js';
 import LoginForm from './LoginForm.js';
+import * as URLS from '../constants/url';
 
 class HomeScreen extends React.Component {
 
@@ -37,7 +38,7 @@ class HomeScreen extends React.Component {
   state = {
     clicked: false,
     profilePresented: false,
-    initialLoading: true,
+    initialLoading: false,
     loginFormPresented: false
   }
 
@@ -69,7 +70,6 @@ class HomeScreen extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return true;
-    debugger;
     console.log(nextProps, nextState);
     if(nextProps._user.isLoggedIn) {
       this.props.dispatch({ type: NavActionTypes.NAVIGATE_PLACES });
@@ -88,12 +88,10 @@ class HomeScreen extends React.Component {
     return function(dispatch) {
       return axios.get('https://crave-scoop.herokuapp.com/user/' + sessionID + '/' + userID).then(
         response => {
-          debugger;
           dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
           dispatch({ type: 'FINISH_LOADING' });
           dispatch({type: NavActionTypes.NAVIGATE_PLACES});
       }).catch(error => {
-        debugger;
         console.log(error);
         dispatch({ type: 'FINISH_LOADING' });
         Alert.alert('Couldnt make your account at this time');
@@ -160,12 +158,13 @@ class HomeScreen extends React.Component {
           const fbPic = await fetch('https://graph.facebook.com/v2.10/' + fbProfile.data.id + '/picture?access_token=' + response.token);
           const fbEmail = await fetch('https://graph.facebook.com/v2.10/me?fields=email&access_token=' + response.token)
             .then(async(r) => r.json()
-          ).then(data => {
+          ).then(async(data) => {
             console.log(data);
             this.createUserFB(fbName[0], data.email, 'fb', response.token, data.id);
+            const pic = await fetch('https://graph.facebook.com/v2.10/' + fbProfile.data.id + '/picture?access_token=' + response.token);
+            await AsyncStorage.setItem(Keys.PICTURE, pic.url);
           });
           break;
-          // debugger;
           // this.createUser(fbName[0], 'null2ggggg', 'null', response.token, fbProfile.data.id);
           // return;
           break;
@@ -234,18 +233,20 @@ class HomeScreen extends React.Component {
     this.setState({ loginFormPresented: false });
   }
 
-  // FIXME
   _handleLogin = (email, pw) => {
     console.log('try login');
     let data = { email: email, password: pw };
     axios.post('https://crave-scoop.herokuapp.com/auth/login', data).then(response => {
       console.log(response);
-      debugger;
       AsyncStorage.setItem(Keys.USER_ID, response.data.userId, () => {
         AsyncStorage.setItem(Keys.SESSION_ID, response.data.sessionId, () => {
-          this.setState({ loginFormPresented: false });
-          this.props.dispatch({ type: 'LOGIN_SUCCESSFUL', user: response.data });
-          this.props.dispatch({ type: 'START_PLACES' });
+          axios.get(URLS.getUser(response.data.sessionId, response.data.userId)).then(user => {
+            this.props.dispatch({ type: 'LOGIN_SUCCESSFUL', user: user.data });
+            this.props.dispatch({ type: 'START_PLACES' });
+          }).catch(e => {
+            this.setState({ loginFormPresented: false });
+            setTimeout(() => {Alert.alert('Could not login at this time')}, 1000);
+          });
         });
       });
     }).catch(error => {

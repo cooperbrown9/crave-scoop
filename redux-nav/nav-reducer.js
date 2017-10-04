@@ -111,13 +111,13 @@ export default function nav (state = tempNavState, action) {
         NavigationActions.navigate({routeName: 'PlaceDetail', params: { model: action.model }}),
         state
       );
-      let newProducts = [];
-      for(let i = 0; i < action.model.products.length; i++) {
-        if(action.model.products[i].instock === 'yes') {
-          newProducts.push(action.model.products[i]);
-        }
-      }
-      action.model.products = newProducts;
+      // let newProducts = [];
+      // for(let i = 0; i < action.model.products.length; i++) {
+      //   if(action.model.products[i].instock === 'available') {
+      //     newProducts.push(action.model.products[i]);
+      //   }
+      // }
+      // action.model.products = newProducts;
       nextState.model = action.model;
       break;
 

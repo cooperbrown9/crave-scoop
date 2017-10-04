@@ -30,7 +30,7 @@ class SearchModal extends React.Component {
 
   queryVendors = (str) => {
     this.setState({loading: true});
-    axios.get('https://crave-scoop.herokuapp.com/search-vendors-test/' + str).then(response => {
+    axios.get('https://crave-scoop.herokuapp.com/search/' + str).then(response => {
       console.log(response.data);
       this.setState({vendors: response.data, loading: false});
     }).catch(error => {

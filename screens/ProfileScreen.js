@@ -142,7 +142,7 @@ export default class ProfileScreen extends React.Component {
 
             </View>
             <View style={styles.underline}></View>
-
+            {/*
             <View style={styles.notificationsView}>
 
               <View >
@@ -152,13 +152,14 @@ export default class ProfileScreen extends React.Component {
               <TouchableOpacity style={styles.optionsView_Text} >
                 <Text style={styles.options_Text} >Notifications</Text>
               </TouchableOpacity>
-
               <View style={{marginTop: 12}}>
                 <Image style={styles.options_Arrow} source={require('../assets/images/right-arrow.png')} ></Image>
               </View>
 
             </View>
+
             <View style={styles.underline}></View>
+            */}
 
           </View>
           {this.state.loading ?
@@ -279,7 +280,6 @@ const styles = StyleSheet.create({
 });
 
 var mapStateToProps = state => {
-  debugger;
   return {
     currentVendors: state.vendorHelper.vendors,
     user: state.auth.user

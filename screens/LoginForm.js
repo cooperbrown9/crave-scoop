@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, Image, Dimensions, ActivityIndicator } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors';
 
@@ -12,10 +12,21 @@ class LoginForm extends React.Component {
 
   state = {
     email: '',
-    password: ''
+    password: '',
+    loading: false
+  }
+
+  login = () => {
+    this.setState({ loading: true });
+    this.props.loginFunc(this.state.email, this.state.password);
+  }
+
+  componentWillUnmount() {
+    this.setState({ loading: false });
   }
 
   render() {
+    const { width, height } = Dimensions.get('window');
     return (
       <View style={styles.container} >
         <StatusBar
@@ -53,8 +64,14 @@ class LoginForm extends React.Component {
         </View>
 
         <View style={styles.loginButton} >
-          <RoundButton title='LOGIN' bgColor={Colors.DARK_BLUE} onPress={() => {this.props.loginFunc(this.state.email, this.state.password)}} borderOn={false} />
+          <RoundButton title='LOGIN' bgColor={Colors.DARK_BLUE} onPress={() => {this.login();/*this.props.loginFunc(this.state.email, this.state.password)*/}} borderOn={false} />
         </View>
+
+        {(this.state.loading) ?
+        <View style={{position: 'absolute', top: 0, left: 0,height: height, width: width, backgroundColor: 'rgba(255,255,255,0.5)', zIndex: 4 }} >
+          <ActivityIndicator animating={this.state.loading} size='large' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
+        </View>
+        : null }
 
       </View>
     )
