@@ -1,6 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Platform, Image} from 'react-native';
 import * as Colors from '../colors/colors.js';
 
 
@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'red'
+    backgroundColor: 'red',
+
   },
   leftButton: {
     height: 40,
@@ -65,7 +66,14 @@ const styles = StyleSheet.create({
     width: 16,
   },
   navBarTitleContainer: {
-    marginTop: 12,
+    ...Platform.select({
+      ios: {
+        marginTop: 12,
+      },
+      android: {
+        marginTop: 22,
+      },
+    }),
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -88,6 +96,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'stretch',
+    ...Platform.select({
+      ios: {
+      },
+      android: {
+        marginTop: 10,
+      },
+    }),
   },
   optionsView: {
     flex: 1,
