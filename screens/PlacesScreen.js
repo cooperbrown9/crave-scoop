@@ -364,7 +364,7 @@ class PlacesScreen extends React.Component {
           rightOnPress={this._presentProfileModal}
         />
 
-        <Modal animationType={'slide'} transparent={false} visible={this.state.profilePresented} >
+      <Modal animationType={'slide'} transparent={false} visible={this.state.profilePresented} styles={{marginTop: 0}}>
           <ProfileScreen dismissFunc={this._dismissProfileModal.bind(this)} logOutFunc={this._navigateHome.bind(this)} renderFavorites={this._loadFavorites.bind(this)} />
         </Modal>
 

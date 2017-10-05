@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StatusBar, TextInput, Button, TouchableOpacity, ActivityIndicator, Image, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StatusBar, Platform, TextInput, Button, TouchableOpacity, ActivityIndicator, Image, StyleSheet, Dimensions } from 'react-native';
 import axios from 'react-native-axios';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors.js';
@@ -59,7 +59,7 @@ class SearchModal extends React.Component {
           <View style={styles.searchBarContainer} >
 
             <Image style={styles.searchIcon} source={require('../assets/images/search.png')} />
-            <TextInput style={styles.searchBar} autoCapitalize={'none'} placeholder='Search...' editable={true} onChangeText={(text)=> {this._onChangeText(text)} }/>
+            <TextInput style={styles.searchBar} underlineColorAndroid={'transparent'} autoCapitalize={'none'} placeholder='Search...' editable={true} onChangeText={(text)=> {this._onChangeText(text)} }/>
 
             <TouchableOpacity onPress={() => this.props.dismissModal()}>
               <Image style={styles.resetIcon} source={require('../assets/images/close.png')} />
@@ -112,7 +112,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'red'
   },
   searchBarContainer: {
-    marginTop: 16,
+
+    ...Platform.select({
+      ios: {
+        marginTop: 16,
+      },
+      android: {
+        marginTop: 0,
+      },
+    }),
     height: 64,
     flexDirection: 'row',
     alignItems: 'center',
@@ -140,7 +148,13 @@ const styles = StyleSheet.create({
   searchBar: {
     flex: 1,
     fontSize: 18,
-    color: 'black',
+    ...Platform.select({
+      ios: {
+
+      },
+      android: {
+      },
+    }),
     marginLeft: 16,
     marginRight: 8
   },

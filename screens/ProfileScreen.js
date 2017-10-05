@@ -177,6 +177,7 @@ export default class ProfileScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'flex-start',
     backgroundColor: 'white',
     alignItems: 'stretch'
   },
@@ -250,7 +251,8 @@ const styles = StyleSheet.create({
   navBar:{
     ...Platform.select({
       android: {
-        marginTop: 0,
+        
+
       },
     }),
   },

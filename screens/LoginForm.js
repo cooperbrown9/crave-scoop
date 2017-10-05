@@ -33,7 +33,7 @@ class LoginForm extends React.Component {
           barStyle="dark-content"
         />
 
-        <TouchableOpacity style={{ position: 'absolute', left: 0, top: 64, marginLeft: 24, zIndex: 4 }} onPress={this.props.dismissFunc} >
+      <TouchableOpacity style={{ position: 'absolute', left: 0, top: 20, marginLeft: 24, zIndex: 4 }} onPress={this.props.dismissFunc} >
           <Image style={{ height: 24, width: 24 }} source={require('../assets/images/close.png')} />
         </TouchableOpacity>
 
@@ -45,6 +45,7 @@ class LoginForm extends React.Component {
           <View style={styles.field}>
             <TextInput style={styles.textInput}
               placeholder={'Email'}
+              underlineColorAndroid={'transparent'}
               autoCapitalize = {'none'}
               autoCorrect={false}
               onChangeText={(email) => this.setState({ email: email }) }
@@ -54,6 +55,7 @@ class LoginForm extends React.Component {
           <View style={styles.field}>
             <TextInput style={styles.textInput}
               placeholder={'Password'}
+              underlineColorAndroid={'transparent'}
               autoCapitalize = {'none'}
               autoCorrect={false}
               onChangeText={(pw) => this.setState({ password: pw }) }
@@ -100,7 +102,8 @@ const styles = StyleSheet.create({
   loginHeader: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'flex-start',
+    paddingTop: 16
   },
   loginHeaderText: {
     fontSize: 24,

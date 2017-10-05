@@ -66,6 +66,7 @@ class CreateProfileModal extends Component {
             <View style={styles.fieldContainer}>
               <TextInput style={styles.textInput}
                 placeholder={'Name'}
+                underlineColorAndroid={'transparent'}
                 autoCapitalize = {'none'}
                 autoCorrect={false}
                 onChangeText={(name) => this.setState({ name: name }) }
@@ -76,6 +77,7 @@ class CreateProfileModal extends Component {
             <View style={styles.fieldContainer}>
               <TextInput style={styles.textInput}
                 placeholder={'Zip Code'}
+                underlineColorAndroid={'transparent'}
                 autoCapitalize = {'none'}
                 autoCorrect={false}
                 onChangeText={(zip) => this.setState({ zipcode: zip }) }
@@ -86,6 +88,7 @@ class CreateProfileModal extends Component {
             <View style={styles.fieldContainer}>
               <TextInput style={styles.textInput}
                 placeholder={'Email'}
+                underlineColorAndroid={'transparent'}
                 autoCapitalize = {'none'}
                 autoCorrect={false}
                 onChangeText={(em) => this.setState({ email: em }) }
@@ -97,6 +100,7 @@ class CreateProfileModal extends Component {
               <TextInput style={styles.textInput}
                 secureTextEntry={this.state.passwordVisible}
                 placeholder={'Create Password'}
+                underlineColorAndroid={'transparent'}
                 autoCapitalize = {'none'}
                 autoCorrect={false}
                 onChangeText={(pw) => this.setState({password: pw})}
