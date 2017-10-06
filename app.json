@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "crave-scoop",
-    "description": "cravescoop",
+    "name": "Daily Crave App",
+    "description": "Get Real time updates on specials from your favorite local restaurants",
     "slug": "crave-scoop",
     "privacy": "public",
     "sdkVersion": "18.0.0",
-    "version": "2.0.3",
+    "version": "2.0.4",
     "orientation": "portrait",
     "primaryColor": "#cccccc",
     "icon": "./assets/icons/orange-bg-no-alpha.png",
