@@ -113,7 +113,7 @@ class CreateProfileModal extends Component {
             </View>
 
             <View style={styles.button}>
-                <RoundButton title='Sign Up' onPress={() => this.createUser()} bgColor={Colors.BLUE} color='white' borderOn={false}/>
+                <RoundButton title='Sign Up' onPress={() => this.createUser()} bgColor={Colors.DARK_BLUE} color='white' borderOn={false}/>
             </View>
 
             {/*
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   passwordVisibleButton:{
     height: 24,
     width: 24,
-    tintColor: '#41d9f4'
+    tintColor: Colors.DARK_BLUE
   },
   textInputsContainer:{
     flex: 3,
