@@ -139,7 +139,6 @@ class HomeScreen extends React.Component {
       this.props.dispatch({ type: 'FINISH_LOADING' });
       this.setState({ profilePresented: false, loginFormPresented: false });
       setTimeout(() => {Alert.alert('That email is already in use!')}, 1000);
-
     });
   }
 

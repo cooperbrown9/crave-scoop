@@ -61,7 +61,7 @@ class PlacesScreen extends React.Component {
       await this._getLocationAsync();
 
       // get vendors within 50 mile radius
-      await this.getInitialVendors(50);
+      await this.getInitialVendors(100);
     });
   }
 
@@ -242,7 +242,7 @@ class PlacesScreen extends React.Component {
       let lon = this.props.location.longitude.toString();
 
       // last parameter is the radius u want restaurants within
-      axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + lon + '/' + '1000').then((response) => {
+      axios.get('https://crave-scoop.herokuapp.com/geolocate-vendors/' + this.props.location.latitude + '/' + lon + '/' + '100').then((response) => {
         if(response.data.length < 1) {
           this.setState({ empty: true, emptyStateText: 'There are no nearby restaurants!', filterPresented: false, profilePresented: false });
           // Alert.alert('Oops!', 'There are no restaurants close to you!', [ {text: 'OK!', onPress: () => this.setState({filterPresented: false})} ]);

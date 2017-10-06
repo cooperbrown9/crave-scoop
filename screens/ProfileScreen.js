@@ -39,7 +39,7 @@ export default class ProfileScreen extends React.Component {
   async componentDidMount(){
     await this.getProfile();
     // if(this.state.user.zipcode != '') {
-      this.getLocation();
+    await this.getLocation();
     // }
   }
 
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
   navBar:{
     ...Platform.select({
       android: {
-        
+
 
       },
     }),
