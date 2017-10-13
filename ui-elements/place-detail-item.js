@@ -18,6 +18,10 @@ const PlaceDetailItem = (props) => (
           <Text style={styles.descriptionText}>{props.description}</Text>
         </View>
 
+        <View style={styles.timestampView}>
+          <Text style={styles.timestamp}>{props.time}</Text>
+        </View>
+
       </View>
   </TouchableOpacity>
 );
@@ -26,6 +30,7 @@ PlaceDetailItem.propTypes = {
   name: React.PropTypes.string.isRequired,
   description: React.PropTypes.string.isRequired,
   image: React.PropTypes.string,
+  time: React.PropTypes.string,
   onPress: React.PropTypes.func
 };
 
@@ -69,6 +74,16 @@ const styles = StyleSheet.create({
   descriptionView: {
     marginTop: 4,
     marginRight: 32
+  },
+  timestampView: {
+    marginRight: 32,
+    marginBottom: 4,
+    flex: 1,
+    justifyContent: 'flex-end'
+  },
+  timestamp: {
+    fontSize: 8,
+    fontFamily: 'varela-round'
   },
   descriptionText: {
     fontSize: 10,

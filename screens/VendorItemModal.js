@@ -15,8 +15,31 @@ class VendorItemModal extends React.Component {
     model: React.PropTypes.object
   };
 
+  state = {
+    nutritionFacts: []
+  }
+
   componentDidMount () {
     console.log(this.props.model);
+
+    let nutritionFacts = [];
+    if(this.props.model.vegetarian) {
+      nutritionFacts.push('Vegetarian');
+    }
+    if(this.props.model.vegan) {
+      nutritionFacts.push('Vegan');
+    }
+    if(this.props.model.nutFree) {
+      nutritionFacts.push('Nut Free');
+    }
+    if(this.props.model.dairyFree) {
+      nutritionFacts.push('Dairy Free');
+    }
+    if(this.props.model.glutenFree) {
+      nutritionFacts.push('Gluten Free');
+    }
+
+    this.setState({ nutritionFacts: nutritionFacts });
   }
 
   render() {
@@ -45,7 +68,7 @@ class VendorItemModal extends React.Component {
               <Text style={styles.restaurantDescription}>{this.props.model.description}</Text>
 
               <View style={{marginTop: 32}}>
-                  {this.props.nutritionFacts.map(fact =>
+                  {this.state.nutritionFacts.map(fact =>
                       <View style={styles.nutritionFactStyle} key={fact} >
                         <View style={{justifyContent: 'center', backgroundColor: 'transparent', alignItems: 'center', width: 24, height: 24, borderRadius: 4, marginBottom: 8}} >
                           <Image source={require('../assets/images/check-mark.png')} style={{width: 10, height: 10, tintColor: Colors.LIGHT_GREY,  marginBottom: 6}} />
@@ -103,7 +126,6 @@ class VendorItemModal extends React.Component {
       width: FRAME.Width,
       height: 180,
       resizeMode: 'cover'
-
     },
     navBarLeftButton: {
       height: 16,
@@ -158,7 +180,7 @@ class VendorItemModal extends React.Component {
     console.log(state);
    return {
      model: state.modal.model,
-     nutritionFacts: ['dairy free', 'vegan', 'gluten free', 'vegetarian'],
+    //  nutritionFacts: ['dairy free', 'vegan', 'gluten free', 'vegetarian'],
    }
   }
 

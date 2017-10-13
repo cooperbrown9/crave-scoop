@@ -52,11 +52,14 @@ class PlaceDetailScreen extends React.Component {
 
   // setTimeout(() => {setInterval(() => {this.loadMenuItems()}, 3000)}, 2000);
   if(this.state.goingBack) {
-    setInterval(() => {this.loadMenuItems() }, 3000);    
+    setInterval(() => {this.loadMenuItems() }, 3000);
   }
  }
 
  componentWillMount() {
+   for (let i = 0; i < this.props.model.products.length; i++) {
+     this.props.model.products[i].timeSince = this.calculateTimeSinceUpdate(this.props.model.products[i].timestamp);
+   }
    this.setState({ products: this.props.model.products });
    if(this.props.user.favorites !== undefined) {
      for(let i = 0; i < this.props.user.favorites.length; i++) {
@@ -68,15 +71,52 @@ class PlaceDetailScreen extends React.Component {
    }
  }
 
+ calculateTimeSinceUpdate = (timeStamp) => {
+   let time = parseInt(timeStamp);
+   if (time == 0) {
+     return '';
+   }
+
+   const currentTime = Date.now();
+   const datePosted = new Date(time);
+// substitute datePosted with real date from product.timestamp prop
+    const hoursInDay=1000 * 60 * 60;
+    const hoursCalc = Math.abs((datePosted - currentTime) / (hoursInDay));
+    const calcMinutes = hoursCalc * 100;
+    const minutesAgo = Math.round(calcMinutes);
+
+    if(hoursCalc < 1){
+      console.log('updated ' + minutesAgo + ' minutes ago');
+      return 'updated ' + minutesAgo + ' minutes ago';
+      // callback('posted' + minutesAgo + ' minutes ago');
+    }
+    if(hoursCalc < 24 && minutesAgo > 60){
+      console.log('updated ' + Math.round(hoursCalc) + ' hours ago');
+      return 'updated ' + Math.round(hoursCalc) + ' hours ago';
+      // callback('posted' + Math.round(hoursCalc) + ' hours ago');
+    }
+    if(hoursCalc > 24){
+      const time = hoursCalc / 24;
+      console.log('updated ' + Math.round(time) + ' days ago');
+      return 'updated ' + Math.round(time) + ' days ago';
+      // callback('posted' + Math.round(time) + ' days ago');
+    }
+    return 'nah';
+ }
+
  loadMenuItems = () => {
    axios.get('https://crave-scoop.herokuapp.com/get-vendor-products/' + this.props.model._id).then(response => {
      // pulls out all available products and stores in newProducts
      let newProducts = [];
+
      for(let i = 0; i < response.data.length; i++) {
+       response.data[i].timeSince = this.calculateTimeSinceUpdate(parseInt(response.data[i].timestamp));
+       debugger;
        if(response.data[i].instock === 'available') {
          newProducts.push(response.data[i]);
        }
      }
+
      this.setState({ products: newProducts });
    });
  }
@@ -114,7 +154,7 @@ class PlaceDetailScreen extends React.Component {
    return function(e) {
      e.preventDefault();
 
-     this.props.dispatch({type: 'VendorItemModal', model: { name: item.name, description: item.description, image: item.image }});
+     this.props.dispatch({type: 'VendorItemModal', model: { name: item.name, description: item.description, image: item.image, glutenFree: item.glutenFree, vegetarian: item.vegetarian, dairyFree: item.dairyFree, vegan: item.vegan, nutFree: item.nutFree }});
      this.setState({ vendorItemModalPresented: true });
    }
  }
@@ -181,7 +221,7 @@ class PlaceDetailScreen extends React.Component {
 
        <View style={styles.menuContainer} >
 
-         {this.state.products.map(product => <PlaceDetailItem name={product.name} description={product.description} image={product.image} onPress={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
+         {this.state.products.map(product => <PlaceDetailItem name={product.name} description={product.description} image={product.image} time={product.timeSince} onPress={this.handleKeyPress(product).bind(this)} key={product.name} /> )}
 
        </View>
 

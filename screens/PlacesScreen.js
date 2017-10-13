@@ -61,7 +61,7 @@ class PlacesScreen extends React.Component {
       await this._getLocationAsync();
 
       // get vendors within 50 mile radius
-      await this.getInitialVendors(100);
+      await this.getInitialVendors(1000);
     });
   }
 
