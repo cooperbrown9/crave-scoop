@@ -235,7 +235,7 @@ class PlaceDetailScreen extends React.Component {
 const styles = StyleSheet.create({
  scrollContainer: {
    flex: 1
- },
+ }, 
  topContainer : {
    flex: 1,
    flexDirection: 'column',
