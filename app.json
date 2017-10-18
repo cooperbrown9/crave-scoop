@@ -5,12 +5,12 @@
     "slug": "Daily Crave App",
     "privacy": "public",
     "sdkVersion": "18.0.0",
-    "version": "2.0.7",
+    "version": "2.1.0",
     "orientation": "portrait",
     "primaryColor": "#cccccc",
-    "icon": "./assets/icons/crave-logo.png",
+    "icon": "./assets/icons/crave-orange-logo.png",
     "notification": {
-      "icon": "./assets/icons/crave-logo.png",
+      "icon": "./assets/icons/crave-orange-logo.png",
       "color": "#000000"
     },
     "loading": {
