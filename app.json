@@ -8,9 +8,9 @@
     "version": "2.1.4",
     "orientation": "portrait",
     "primaryColor": "#cccccc",
-    "icon": "./assets/icons/crave-logo-2.jpg",
+    "icon": "./assets/icons/crave-logo-1-yah.png",
     "notification": {
-      "icon": "./assets/icons/crave-logo-2.jpg",
+      "icon": "./assets/icons/crave-logo-1-yah.png",
       "color": "#000000"
     },
     "loading": {
