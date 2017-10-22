@@ -2,10 +2,10 @@
   "expo": {
     "name": "Daily Crave App",
     "description": "Get Real time updates on specials from your favorite local restaurants",
-    "slug": "Daily Crave App",
+    "slug": "DailyCraveApp",
     "privacy": "public",
     "sdkVersion": "18.0.0",
-    "version": "2.1.8",
+    "version": "2.1.9",
     "orientation": "portrait",
     "primaryColor": "#cccccc",
     "icon": "./assets/icons/crave-logo-1-yah.png",
