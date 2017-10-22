@@ -5,7 +5,7 @@
     "slug": "Daily Crave App",
     "privacy": "public",
     "sdkVersion": "18.0.0",
-    "version": "2.1.7",
+    "version": "2.1.8",
     "orientation": "portrait",
     "primaryColor": "#cccccc",
     "icon": "./assets/icons/crave-logo-1-yah.png",
