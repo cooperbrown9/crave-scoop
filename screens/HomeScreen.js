@@ -316,8 +316,9 @@ const styles = StyleSheet.create({
 
   mainContainer: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'stretch',
+    justifyContent: 'center',
+
   },
   backgroundImage: {
     flex: 1,
