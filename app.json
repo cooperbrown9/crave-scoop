@@ -14,7 +14,7 @@
       "color": "#000000"
     },
     "loading": {
-      "icon": "./assets/images/cupcake.png",
+      "icon": "./assets/images/crave-loading-logo.png",
       "hideExponentText": true
     },
     "packagerOpts": {
