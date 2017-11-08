@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, StatusBar, View, Text, TouchableOpacity,
   Image, TextInput, AsyncStorage, Dimensions,
-  ActivityIndicator, Alert
+  ActivityIndicator, Alert, ScrollView
 } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors.js';
@@ -56,6 +56,7 @@ class CreateProfileModal extends Component {
           <StatusBar
             barStyle="dark-content"
           />
+        <ScrollView style={styles.scrollContainer} contentOffset={{x: 0, y: -72}} >
 
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Create Account</Text>
@@ -127,6 +128,8 @@ class CreateProfileModal extends Component {
             </View>
             */}
         </View>
+        <View style={{marginTop: frame.height - 140, height: 64, width: 32, backgroundColor:'transparent'}}></View>
+      </ScrollView>
 
         {this.state.loading ?
         <View style={{position: 'absolute', top: 0, left: 0,height: frame.height, width: frame.width, backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
@@ -144,6 +147,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'stretch',
 
+  },
+  scrollContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: 'transparent'
   },
   titleContainer:{
     flex: 1,
