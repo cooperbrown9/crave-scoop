@@ -5,7 +5,7 @@
     "slug": "Daily-Crave-App",
     "privacy": "public",
     "sdkVersion": "18.0.0",
-    "version": "2.2.1",
+    "version": "2.2.2",
     "orientation": "portrait",
     "primaryColor": "#cccccc",
     "icon": "./assets/icons/logo-crave.png",
@@ -14,7 +14,7 @@
       "color": "#000000"
     },
     "loading": {
-      "icon": "./assets/images/cupcake.png",
+      "icon": "./assets/images/crave-loading-logo.png",
       "hideExponentText": true
     },
     "packagerOpts": {
