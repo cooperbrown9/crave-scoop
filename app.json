@@ -24,7 +24,8 @@
       "bundleIdentifier": "com.crave.scoop"
     },
     "android": {
-      "package": "com.crave2.scoop"
+      "package": "com.crave2.scoop",
+      "versionCode": "2"
     },
   }
 }
