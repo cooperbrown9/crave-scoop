@@ -136,7 +136,10 @@ class PlaceDetailScreen extends React.Component {
  }
 
  _getHoursForDay() {
-   const today = todayHours = this.props.model.hours[new Date().getDay()];
+   let date = new Date().getDay() - 1;
+   if(date === -1)
+    date = 6;
+   const today = todayHours = this.props.model.hours[date];
    let todayHours = today.open + today.open_tod + ' - ' + today.close + today.close_tod;
 
    return todayHours;
@@ -235,7 +238,7 @@ class PlaceDetailScreen extends React.Component {
 const styles = StyleSheet.create({
  scrollContainer: {
    flex: 1
- }, 
+ },
  topContainer : {
    flex: 1,
    flexDirection: 'column',
