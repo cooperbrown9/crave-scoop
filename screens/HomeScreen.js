@@ -255,6 +255,17 @@ class HomeScreen extends React.Component {
     });
   }
 
+  createGuestUser() {
+    axios.post('https://crave-scoop.herokuapp.com/register-guest').then((response) => {
+      this.getUserLegit(response.data.sessionId, response.data.userId);
+    }).catch(e => {
+      console.log(e);
+      this.props.dispatch({ type: 'FINISH_LOADING' });
+      this.setState({ profilePresented: false, loginFormPresented: false });
+      setTimeout(() => {Alert.alert('Error logging in!')}, 1000);
+    });
+  }
+
   _goToPlacesScreen = () => {
     this.props.navigation.dispatch({ type: NavActionTypes.NAVIGATE_PLACES });
   };
@@ -295,9 +306,12 @@ class HomeScreen extends React.Component {
             <RoundButton title='Create Account' onPress={this._createProfileModalPresented} style={{ flex:1 }}/>
             <TouchableOpacity onPress={this.presentLoginForm}  >
               <Text style={styles.loginText}>Already have an account? <Text style={{ textDecorationLine: 'underline' }}>Login</Text></Text>
-
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {this.createGuestUser() }}>
+              <Text style={styles.skipText}>Skip for Now</Text>
             </TouchableOpacity>
           </View>
+
           <TouchableOpacity onPress={() => { console.log('hittas') }} >
             <Text style={styles.termsText}>Terms of Service</Text>
           </TouchableOpacity>
@@ -372,8 +386,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     color: 'white',
-
-
+  },
+  skipText: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: 'white',
+    marginTop: 16
   },
   heart: {
     height: 16,
