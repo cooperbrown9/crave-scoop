@@ -267,9 +267,17 @@ class PlacesScreen extends React.Component {
   }
 
   _vendorPickedSearch = (vendor) => {
-    axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + vendor._id).then(
-      response => this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
-    ).then(() => {
+    axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + vendor._id).then(response => {
+      let newProducts = [];
+      for(let i = 0; i < response.data.products.length; i++) {
+        if(response.data.products[i].instock === 'available') {
+          newProducts.push(response.data.products[i]);
+        }
+      }
+      response.data.products = newProducts;
+      this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
+
+    }).then(() => {
       this.setState({searchPresented: false});
     }).catch(error => {
       console.log(error);
