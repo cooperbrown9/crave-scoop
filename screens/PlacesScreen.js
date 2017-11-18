@@ -61,7 +61,7 @@ class PlacesScreen extends React.Component {
       await this._getLocationAsync();
 
       // get vendors within 50 mile radius
-      await this.getInitialVendors(1000);
+      await this.getInitialVendors(5000);
     });
   }
 
@@ -124,7 +124,7 @@ class PlacesScreen extends React.Component {
 
   reloadVendors() {
     this.setState({ vendorsLoaded: false, loading: true });
-    this.getInitialVendors(50);
+    this.getInitialVendors(5000);
   }
 
   getVendors = () => {
