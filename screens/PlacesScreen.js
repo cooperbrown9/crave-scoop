@@ -61,7 +61,7 @@ class PlacesScreen extends React.Component {
       await this._getLocationAsync();
 
       // get vendors within 50 mile radius
-      await this.getInitialVendors(1000);
+      await this.getInitialVendors(5000);
     });
   }
 
@@ -124,7 +124,7 @@ class PlacesScreen extends React.Component {
 
   reloadVendors() {
     this.setState({ vendorsLoaded: false, loading: true });
-    this.getInitialVendors(50);
+    this.getInitialVendors(5000);
   }
 
   getVendors = () => {
@@ -267,9 +267,17 @@ class PlacesScreen extends React.Component {
   }
 
   _vendorPickedSearch = (vendor) => {
-    axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + vendor._id).then(
-      response => this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
-    ).then(() => {
+    axios.get('https://crave-scoop.herokuapp.com/get-vendor/' + vendor._id).then(response => {
+      let newProducts = [];
+      for(let i = 0; i < response.data.products.length; i++) {
+        if(response.data.products[i].instock === 'available') {
+          newProducts.push(response.data.products[i]);
+        }
+      }
+      response.data.products = newProducts;
+      this.props.navigation.dispatch({type: NavActionTypes.NAVIGATE_PLACES_DETAIL, model: response.data})
+
+    }).then(() => {
       this.setState({searchPresented: false});
     }).catch(error => {
       console.log(error);
