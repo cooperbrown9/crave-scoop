@@ -25,7 +25,7 @@
     },
     "android": {
       "package": "com.crave2.scoop",
-      "versionCode": 2
+      "versionCode": 3
     },
   }
 }
