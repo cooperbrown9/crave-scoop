@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   nameView: {
     marginTop: 8,
-    marginRight: 32
+    marginRight: 32,
   },
   nameText: {
     fontSize: 18,
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   descriptionView: {
     marginTop: 4,
-    marginRight: 32
+    marginRight: 32,
   },
   timestampView: {
     marginRight: 32,
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   descriptionText: {
     fontSize: 10,
     color: 'black',
-    lineHeight: 0
+    // lineHeight: 0
   }
 
 });
