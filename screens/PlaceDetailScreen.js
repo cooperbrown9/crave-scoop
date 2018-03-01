@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
  restaurantDescription: {
    flex: 1,
    fontSize: 16,
-   lineHeight: 0,
+   // lineHeight: 0,
    marginLeft: 16,
    marginRight: 16,
    textAlign: 'center',
