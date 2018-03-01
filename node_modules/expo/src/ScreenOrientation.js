@@ -15,6 +15,6 @@ export const Orientation = {
 
 type OrientationT = $Enum<typeof Orientation>;
 
-export function allow(orientation: OrientationT) {
+export function allow(orientation: OrientationT): void {
   NativeModules.ExponentScreenOrientation.allow(orientation);
 }
