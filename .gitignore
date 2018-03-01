@@ -1,7 +1,6 @@
-.expo/**/*
+.expo/*
 .DS_Store
 assets/.DS_Store
-node_modules
+node_modules/**/*
 *.log
 .nvm
-/danger/node_modules/
