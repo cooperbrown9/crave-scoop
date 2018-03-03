@@ -1,8 +1,7 @@
 import React from 'react';
 import { AppRegistry, Platform, AsyncStorage, Alert, StatusBar, StyleSheet, View } from 'react-native';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import { connect } from 'react-redux';
 import NavReducer from './redux-nav/nav-reducer.js';
 import AppNavigatorWithState from './redux-nav/app-navigator.js';
 import MainReducer from './reducers/main-reducer.js';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
+import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, TouchableOpacity, Platform, Image} from 'react-native';
 import * as Colors from '../colors/colors.js';
 
@@ -24,11 +24,11 @@ const CustomNavBar = (props) => (
 
 
 CustomNavBar.propTypes = {
-  title: React.PropTypes.string.isRequired,
-  leftOnPress: React.PropTypes.func,
-  leftButton: React.PropTypes.element,
-  rightOnPress: React.PropTypes.func,
-  rightButton: React.PropTypes.element,
+  title: PropTypes.string.isRequired,
+  leftOnPress: PropTypes.func,
+  leftButton: PropTypes.element,
+  rightOnPress: PropTypes.func,
+  rightButton: PropTypes.element,
 
 };
 

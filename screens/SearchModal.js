@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, StatusBar, Platform, TextInput, Button, TouchableOpacity, ActivityIndicator, Image, StyleSheet, Dimensions } from 'react-native';
 import axios from 'react-native-axios';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors.js';
 
-class SearchModal extends React.Component {
+class SearchModal extends Component {
   state = {
     vendors: [],
     searchText: '',
@@ -12,10 +13,10 @@ class SearchModal extends React.Component {
   }
 
   static propTypes = {
-    dismissModal: React.PropTypes.func.isRequired,
-    vendorPicked: React.PropTypes.func.isRequired,
-    loading: React.PropTypes.bool,
-    searchWord: React.PropTypes.func.isRequired
+    dismissModal: PropTypes.func.isRequired,
+    vendorPicked: PropTypes.func.isRequired,
+    loading: PropTypes.bool,
+    searchWord: PropTypes.func.isRequired
   }
 
   static defaultProps = {

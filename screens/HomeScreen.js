@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   Image,
   TouchableOpacity,
@@ -29,7 +30,7 @@ import PlacesScreen from './PlacesScreen.js';
 import LoginForm from './LoginForm.js';
 import * as URLS from '../constants/url';
 
-class HomeScreen extends React.Component {
+class HomeScreen extends Component {
 
   static navigationOptions = {
     header: null,
@@ -281,11 +282,9 @@ class HomeScreen extends React.Component {
     let {width, height} = Dimensions.get('window');
     let halfHeight = height / 2;
     return (
-        <Image style={styles.backgroundImage} source={require('../assets/images/icecream-background.png')} >
-          <StatusBar
-            barStyle="dark-content"
-          />
+
         <View style={styles.mainContainer} >
+          <Image style={styles.backgroundImage} source={require('../assets/images/icecream-background.png')} />
           <Modal animationType={"slide"} transparent={false} visible={this.state.profilePresented} onRequestClose={() => {console.log('modal')}} >
               <CreateProfileModal dismissFunc={this._dismissCreateProfile.bind(this)} createUser={this.createUser.bind(this)} />
           </Modal>
@@ -321,7 +320,7 @@ class HomeScreen extends React.Component {
           </View>
           : null }
         </View>
-      </Image>
+
     );
   }
 }
@@ -335,7 +334,10 @@ const styles = StyleSheet.create({
 
   },
   backgroundImage: {
-    flex: 1,
+    position: 'absolute',
+    zIndex: 0,
+    left: 0, right: 0, top: 0, bottom: 0,
+    // flex: 1,
     width: undefined,
     height: undefined,
     backgroundColor:'transparent',
@@ -347,7 +349,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-end',
     marginLeft: 0,
-    marginRight: 32,
+    marginRight: 32, marginLeft: 32
   },
   image: {
     tintColor: 'white',
@@ -355,7 +357,7 @@ const styles = StyleSheet.create({
   underline: {
     marginBottom: 32,
     height: 2,
-    marginLeft: 32,
+    marginLeft: 32, marginRight: 32,
     backgroundColor: 'gray'
   },
   welcomeMessage: {
@@ -364,7 +366,7 @@ const styles = StyleSheet.create({
     color: 'white',
     lineHeight: 0,
     fontWeight: 'bold',
-    marginLeft: 8,
+    marginLeft: 8, marginRight: 8,
     marginTop: 32
   },
   buttonContainer: {
@@ -380,18 +382,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
     textDecorationStyle: 'solid',
-    bottom: 32
+    bottom: 32,
+    backgroundColor: 'transparent'
   },
   loginText: {
     fontSize: 16,
     textAlign: 'center',
     color: 'white',
+    backgroundColor: 'transparent'
   },
   skipText: {
     fontSize: 16,
     textAlign: 'center',
     color: 'white',
-    marginTop: 16
+    marginTop: 16,
+    backgroundColor: 'transparent'
   },
   heart: {
     height: 16,

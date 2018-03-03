@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   StyleSheet,
   ScrollView,
@@ -18,7 +19,7 @@ import * as NavActionTypes from '../action-types/navigation-action-types.js';
 import axios from 'react-native-axios';
 import * as Colors from '../colors/colors.js';
 
-class PlaceDetailScreen extends React.Component {
+class PlaceDetailScreen extends Component {
 
   static navigationOptions = {
    header: null,

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 
 const PlaceDetailItem = (props) => (
@@ -27,11 +28,11 @@ const PlaceDetailItem = (props) => (
 );
 
 PlaceDetailItem.propTypes = {
-  name: React.PropTypes.string.isRequired,
-  description: React.PropTypes.string.isRequired,
-  image: React.PropTypes.string,
-  time: React.PropTypes.string,
-  onPress: React.PropTypes.func
+  name: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  image: PropTypes.string,
+  time: PropTypes.string,
+  onPress: PropTypes.func
 };
 
 PlaceDetailItem.defaultProps = {

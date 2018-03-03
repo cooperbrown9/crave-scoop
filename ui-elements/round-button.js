@@ -18,11 +18,11 @@ const RoundButton = (props) => (
 
 
 RoundButton.propTypes = {
-  title: React.PropTypes.string.isRequired,
-  onPress: React.PropTypes.func.isRequired,
-  borderOn: React.PropTypes.bool,
-  bgColor: React.PropTypes.string,
-  textColor: React.PropTypes.string
+  title: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired,
+  borderOn: PropTypes.bool,
+  bgColor: PropTypes.string,
+  textColor: PropTypes.string
 };
 
 RoundButton.defaultProps = {

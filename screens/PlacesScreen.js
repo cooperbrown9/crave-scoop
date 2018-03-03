@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   Image,
   Linking,
@@ -32,14 +33,14 @@ import * as Keys from '../local-storage/keys.js';
 import { Constants, Location, Permissions } from 'expo';
 
 
-class PlacesScreen extends React.Component {
+class PlacesScreen extends Component {
 
   static navigationOptions = {
     header: null
   };
 
   static propTypes = {
-    model: React.PropTypes.object,
+    model: PropTypes.object,
   }
 
   state = {

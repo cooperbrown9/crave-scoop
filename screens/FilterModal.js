@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, View, StatusBar, ScrollView, Text, Image, TouchableOpacity, ActivityIndicator, Dimensions } from 'react-native';
-import CheckBox from 'react-native-check-box';
+// import CheckBox from 'react-native-check-box';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors.js';
 import CustomNavBar from '../ui-elements/custom-nav-bar.js';
@@ -8,15 +9,15 @@ import axios from 'react-native-axios';
 import { connect } from 'react-redux';
 import * as NavActionTypes from '../action-types/navigation-action-types.js';
 
-class FilterModal extends React.Component {
+class FilterModal extends Component {
 
   static propTypes = {
-    dismissFunc: React.PropTypes.func.isRequired,
-    name: React.PropTypes.string,
-    filterFunc: React.PropTypes.func,
-    renderFavorites: React.PropTypes.func,
-    renderNearby: React.PropTypes.func,
-    resetVendors: React.PropTypes.func
+    dismissFunc: PropTypes.func.isRequired,
+    name: PropTypes.string,
+    filterFunc: PropTypes.func,
+    renderFavorites: PropTypes.func,
+    renderNearby: PropTypes.func,
+    resetVendors: PropTypes.func
   };
 
   state = {

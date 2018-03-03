@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -15,10 +16,10 @@ import UserID from '../test-user/user.js';
 export default class VendorView extends Component {
 
   static propTypes = {
-    onTouch: React.PropTypes.func,
-    model: React.PropTypes.object,
-    userFavorites: React.PropTypes.array,
-    updateUser: React.PropTypes.func
+    onTouch: PropTypes.func,
+    model: PropTypes.object,
+    userFavorites: PropTypes.array,
+    updateUser: PropTypes.func
   }
 
   state = {

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, StatusBar, Platform, View, Text, TouchableOpacity, Image, AsyncStorage, ActivityIndicator, Dimensions } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors.js';import UserID from '../test-user/user.js';
@@ -24,12 +25,12 @@ export default class ProfileScreen extends React.Component {
   }
 
   static propTypes = {
-    name: React.PropTypes.string,
-    zipcode: React.PropTypes.string,
-    dismissFunc: React.PropTypes.func,
-    logOutFunc: React.PropTypes.func,
-    renderFavorites: React.PropTypes.func,
-    loading: React.PropTypes.bool
+    name: PropTypes.string,
+    zipcode: PropTypes.string,
+    dismissFunc: PropTypes.func,
+    logOutFunc: PropTypes.func,
+    renderFavorites: PropTypes.func,
+    loading: PropTypes.bool
   };
 
   static defaultProps = {

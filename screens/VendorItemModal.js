@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, StatusBar, View, ScrollView, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import * as Colors from '../colors/colors.js';
 import CustomNavBar from '../ui-elements/custom-nav-bar.js';
@@ -8,11 +9,11 @@ import { bindActionCreators } from 'redux';
 var FRAME = Dimensions.get('window');
 
 
-class VendorItemModal extends React.Component {
+class VendorItemModal extends Component {
 
   static propTypes = {
-    dismissFunc: React.PropTypes.func.isRequired,
-    model: React.PropTypes.object
+    dismissFunc: PropTypes.func.isRequired,
+    model: PropTypes.object
   };
 
   state = {

@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, Image, Dimensions, ActivityIndicator } from 'react-native';
 import RoundButton from '../ui-elements/round-button.js';
 import * as Colors from '../colors/colors';
 
-class LoginForm extends React.Component {
+class LoginForm extends Component {
 
   static propTypes = {
-    dismissFunc: React.PropTypes.func,
-    loginFunc: React.PropTypes.func
+    dismissFunc: PropTypes.func,
+    loginFunc: PropTypes.func
   }
 
   state = {
