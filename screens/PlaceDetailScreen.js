@@ -118,10 +118,10 @@ class PlaceDetailScreen extends Component {
        }
      }
      this.setState({ products: newProducts.sort(function(a, b) {
-       if (!a.hasOwnProperty('rank') || isNaN(a.rank)) {
+       if (!a.hasOwnProperty('rank') || isNaN(a.rank) || a.rank == "") {
          a.rank = 0;
        }
-       if(!b.hasOwnProperty('rank') || isNaN(b.rank)) {
+       if(!b.hasOwnProperty('rank') || isNaN(b.rank) || b.rank == "") {
          b.rank = 0;
        }
        return parseFloat(a.rank) - parseFloat(b.rank);
@@ -173,10 +173,10 @@ class PlaceDetailScreen extends Component {
  render() {
    var icon = this.state.isFavorite ? require('../assets/images/black-heart.png') : require('../assets/images/heart.png');
    this.state.products.sort(function(a, b) {
-     if (!a.hasOwnProperty('rank') || isNaN(a.rank)) {
+     if (!a.hasOwnProperty('rank') || isNaN(a.rank) || a.rank == "") {
        a.rank = 0;
      }
-     if(!b.hasOwnProperty('rank') || isNaN(b.rank)) {
+     if(!b.hasOwnProperty('rank') || isNaN(b.rank) || b.rank == "") {
        b.rank = 0;
      }
      return parseFloat(a.rank) - parseFloat(b.rank);
