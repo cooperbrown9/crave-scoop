@@ -95,7 +95,12 @@ export default class App extends React.Component {
     return (
       <Provider store={this.store} >
 
-        <AppNavigatorWithState />
+          <AppNavigatorWithState />
+          {/*
+
+          <View style={{flex: 1, backgroundColor:'magenta'}}></View>
+          */}
+
       </Provider>
 
     );

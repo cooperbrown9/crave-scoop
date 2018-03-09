@@ -112,13 +112,20 @@ class PlaceDetailScreen extends Component {
 
      for(let i = 0; i < response.data.length; i++) {
        response.data[i].timeSince = this.calculateTimeSinceUpdate(parseInt(response.data[i].timestamp));
-       debugger;
        if(response.data[i].instock === 'available') {
          newProducts.push(response.data[i]);
+         console.log(response.data[i]);
        }
      }
-
-     this.setState({ products: newProducts });
+     this.setState({ products: newProducts.sort(function(a, b) {
+       if (!a.hasOwnProperty('rank') || isNaN(a.rank)) {
+         a.rank = 0;
+       }
+       if(!b.hasOwnProperty('rank') || isNaN(b.rank)) {
+         b.rank = 0;
+       }
+       return parseFloat(a.rank) - parseFloat(b.rank);
+     }) });
    });
  }
 
@@ -165,7 +172,15 @@ class PlaceDetailScreen extends Component {
 
  render() {
    var icon = this.state.isFavorite ? require('../assets/images/black-heart.png') : require('../assets/images/heart.png');
-
+   this.state.products.sort(function(a, b) {
+     if (!a.hasOwnProperty('rank') || isNaN(a.rank)) {
+       a.rank = 0;
+     }
+     if(!b.hasOwnProperty('rank') || isNaN(b.rank)) {
+       b.rank = 0;
+     }
+     return parseFloat(a.rank) - parseFloat(b.rank);
+   });
    return(
      !this.state.goingBack ? (
      <ScrollView style={styles.ScrollContainer} >
