@@ -187,11 +187,13 @@ class PlaceDetailScreen extends Component {
        <View style={styles.topContainer} >
 
          <View style={styles.topView_Image} >
-           <Image style={styles.topImage} source={{uri: this.props.model.background_image}}>
-             <TouchableOpacity onPress={this.toggleLike}>
+           <View style={styles.topImage}>
+           <Image style={styles.topImage} source={{uri: this.props.model.background_image}} />
+             <TouchableOpacity style={styles.heartIconContainer} onPress={this.toggleLike}>
                <Image style={styles.heartIcon} source={icon} />
              </TouchableOpacity>
-           </Image>
+
+           </View>
          </View>
 
          <View style={styles.infoContainer} >
@@ -251,6 +253,10 @@ const styles = StyleSheet.create({
  },
  topImage: {
    height: 180
+ },
+ heartIconContainer: {
+   position: 'absolute',
+   right: 4, top: 4
  },
  heartIcon: {
    height: 32,

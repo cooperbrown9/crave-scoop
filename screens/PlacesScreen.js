@@ -105,14 +105,11 @@ class PlacesScreen extends Component {
                 response.data[i] = response.data[j];
                 response.data[j] = temp;
               }
-
             }
             if(i === response.data.length - 2) {
               this.setState({ restaurants: response.data, vendorsLoaded: true, loading: false, empty: false, filterPresented: false });
             }
           }
-          // debugger;
-          // this.setState({ restaurants: response.data, vendorsLoaded: true, loading: false, empty: false });
         }
       }).catch(error => {
         Alert.alert('Could not load vendors in your area');
