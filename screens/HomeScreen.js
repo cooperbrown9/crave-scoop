@@ -375,7 +375,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'stretch',
     marginTop: 200,
-    width: Dimensions.get('window').width - (Dimensions.get('window').width/10),
+    marginLeft: 32, marginRight: 32,
+    // width: Dimensions.get('window').width - (Dimensions.get('window').width/10),
   },
   termsText: {
     color: 'white',
